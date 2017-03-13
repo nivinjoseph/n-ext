@@ -44,8 +44,8 @@ class ObjectExt
     
     public static getValue(source: any, key: string): any
     {
-        if (!key.hasValue()) return source;
-        if (!key.contains(".")) return source[key];
+        if (key == null || ObjectExt.stringIsWhiteSpace(key)) return source;
+        if (!ObjectExt.stringContains(key, ".")) return source[key];
 
         let splitted = key.split(".");
         let current = source;
@@ -60,22 +60,8 @@ class ObjectExt
     
     public static setValue(source: any, key: string, value: any): void
     {
-        if (!key.hasValue()) return;
-        if (!key.contains(".")) source[key] = value;
-        
-        // let obj = {
-        //     name: "Nivin",
-        //     address: {
-        //         street: {
-        //             number: 74,
-        //             name: "Kennedy rd"
-        //         },
-        //         city: "Scarborough",
-        //         province: "ON"
-        //     }
-        // };
-        
-        // address.street.name
+        if (key == null || ObjectExt.stringIsWhiteSpace(key)) return;
+        if (!ObjectExt.stringContains(key, ".")) source[key] = value;
         
         let splitted = key.split(".");
         let current = source;
@@ -88,6 +74,16 @@ class ObjectExt
         
         current[splitted[splitted.length - 1]] = value;
         
+    }
+    
+    private static stringIsWhiteSpace(value: string): boolean
+    {
+        return value.trim().length === 0;
+    }
+
+    public static stringContains(primary: string, sub: string): boolean
+    {
+        return primary.indexOf(sub) !== -1;
     }
 }
 

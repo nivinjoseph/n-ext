@@ -1,13 +1,8 @@
 var StringExt = (function () {
     function StringExt() {
     }
-    StringExt.hasValue = function (value) {
-        if (value != null) {
-            if (!(typeof value === "string"))
-                throw "Argument Exception: Argument is not of type string.";
-            return value.trim().length > 0;
-        }
-        return false;
+    StringExt.isWhiteSpace = function (value) {
+        return value.trim().length === 0;
     };
     StringExt.contains = function (primary, sub) {
         return primary.indexOf(sub) !== -1;
@@ -34,19 +29,19 @@ var StringExt = (function () {
             return result;
         for (var i = 0; i < params.length; i++) {
             var format = "{" + i.toString() + "}";
-            while (result.contains(format))
+            while (StringExt.contains(result, format))
                 result = result.replace(format, params[i].toString());
         }
         return result;
     };
     return StringExt;
 }());
-Object.defineProperty(String.prototype, "hasValue", {
+Object.defineProperty(String.prototype, "isWhiteSpace", {
     configurable: false,
     enumerable: false,
     writable: false,
     value: function () {
-        return StringExt.hasValue(this);
+        return StringExt.isWhiteSpace(this);
     }
 });
 Object.defineProperty(String.prototype, "contains", {

@@ -1,106 +1,90 @@
-class StringExt
-{
-    public static isWhiteSpace(value: string): boolean
-    {
+var StringExt = (function () {
+    function StringExt() {
+    }
+    StringExt.isWhiteSpace = function (value) {
         return value.trim().length === 0;
-    }
-
-    public static contains(primary: string, sub: string): boolean
-    {
+    };
+    StringExt.contains = function (primary, sub) {
         return primary.indexOf(sub) !== -1;
-    }
-
-    public static startsWith(primary: string, sub: string): boolean
-    {
+    };
+    StringExt.startsWith = function (primary, sub) {
         return primary.indexOf(sub) === 0;
-    }
-
-    public static endsWith(primary: string, sub: string): boolean
-    {
-        let index = primary.lastIndexOf(sub);
+    };
+    StringExt.endsWith = function (primary, sub) {
+        var index = primary.lastIndexOf(sub);
         return (index + sub.length) === primary.length;
-    }
-
-    public static extractNumbers(value: string): string
-    {
+    };
+    StringExt.extractNumbers = function (value) {
         return value.replace(/[^0-9]/g, '');
-    }
-
-    public static format(formatString: string, ...params: any[]): string
-    {
-        let result = formatString;
-        if (result == null) return null;
-
-        if (params == null || params.length == 0) return result;
-
-        for (let i = 0; i < params.length; i++)
-        {
-            let format = "{" + i.toString() + "}";
+    };
+    StringExt.format = function (formatString) {
+        var params = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            params[_i - 1] = arguments[_i];
+        }
+        var result = formatString;
+        if (result == null)
+            return null;
+        if (params == null || params.length == 0)
+            return result;
+        for (var i = 0; i < params.length; i++) {
+            var format = "{" + i.toString() + "}";
             while (StringExt.contains(result, format))
                 result = result.replace(format, params[i].toString());
         }
-
         return result;
-    }
-}
-
-
+    };
+    return StringExt;
+}());
 Object.defineProperty(String.prototype, "isWhiteSpace", {
     configurable: false,
     enumerable: false,
     writable: false,
-    value: function (): boolean
-    {
+    value: function () {
         return StringExt.isWhiteSpace(this);
     }
 });
-
 Object.defineProperty(String.prototype, "contains", {
     configurable: false,
     enumerable: false,
     writable: false,
-    value: function (sub: string): boolean
-    {
+    value: function (sub) {
         return StringExt.contains(this, sub);
     }
 });
-
 Object.defineProperty(String.prototype, "startsWith", {
     configurable: false,
     enumerable: false,
     writable: false,
-    value: function (sub: string): boolean
-    {
+    value: function (sub) {
         return StringExt.startsWith(this, sub);
     }
 });
-
 Object.defineProperty(String.prototype, "endsWith", {
     configurable: false,
     enumerable: false,
     writable: false,
-    value: function (sub: string): boolean
-    {
+    value: function (sub) {
         return StringExt.endsWith(this, sub);
     }
 });
-
 Object.defineProperty(String.prototype, "extractNumbers", {
     configurable: false,
     enumerable: false,
     writable: false,
-    value: function (): string
-    {
+    value: function () {
         return StringExt.extractNumbers(this);
     }
 });
-
 Object.defineProperty(String.prototype, "format", {
     configurable: false,
     enumerable: false,
     writable: false,
-    value: function (...params: any[]): string
-    {
+    value: function () {
+        var params = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            params[_i] = arguments[_i];
+        }
         return StringExt.format(this, params);
     }
 });
