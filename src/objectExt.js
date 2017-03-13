@@ -8,7 +8,7 @@ var ObjectExt = (function () {
         var target = factoryFunc();
         source = JSON.parse(JSON.stringify(source));
         for (var key in source) {
-            if (source.hasOwnProperty(key) && typeof source[key] != "function" && typeof target[key] != "function") {
+            if (source.hasOwnProperty(key) && typeof source[key] !== "function" && typeof target[key] !== "function") {
                 target[key] = source[key];
             }
         }
@@ -34,9 +34,9 @@ var ObjectExt = (function () {
         return (typeof source);
     };
     ObjectExt.getValue = function (source, key) {
-        if (key == null || key.isWhiteSpace())
+        if (key == null || ObjectExt.stringIsWhiteSpace(key))
             return source;
-        if (!key.contains("."))
+        if (!ObjectExt.stringContains(key, "."))
             return source[key];
         var splitted = key.split(".");
         var current = source;
@@ -48,30 +48,24 @@ var ObjectExt = (function () {
         return current;
     };
     ObjectExt.setValue = function (source, key, value) {
-        if (key == null || key.isWhiteSpace())
+        if (key == null || ObjectExt.stringIsWhiteSpace(key))
             return;
-        if (!key.contains("."))
+        if (!ObjectExt.stringContains(key, "."))
             source[key] = value;
-        // let obj = {
-        //     name: "Nivin",
-        //     address: {
-        //         street: {
-        //             number: 74,
-        //             name: "Kennedy rd"
-        //         },
-        //         city: "Scarborough",
-        //         province: "ON"
-        //     }
-        // };
-        // address.street.name
         var splitted = key.split(".");
         var current = source;
         for (var i = 0; i < splitted.length - 1; i++) {
             current = current[splitted[i]];
-            if (current == null || current == undefined)
+            if (current == null || current === undefined)
                 current = {};
         }
         current[splitted[splitted.length - 1]] = value;
+    };
+    ObjectExt.stringIsWhiteSpace = function (value) {
+        return value.trim().length === 0;
+    };
+    ObjectExt.stringContains = function (primary, sub) {
+        return primary.indexOf(sub) !== -1;
     };
     return ObjectExt;
 }());

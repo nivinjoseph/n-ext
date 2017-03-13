@@ -15,7 +15,7 @@ var StringExt = (function () {
         return (index + sub.length) === primary.length;
     };
     StringExt.extractNumbers = function (value) {
-        return value.replace(/[^0-9]/g, '');
+        return value.replace(/[^0-9]/g, "");
     };
     StringExt.format = function (formatString) {
         var params = [];
@@ -25,7 +25,7 @@ var StringExt = (function () {
         var result = formatString;
         if (result == null)
             return null;
-        if (params == null || params.length == 0)
+        if (params == null || params.length === 0)
             return result;
         for (var i = 0; i < params.length; i++) {
             var format = "{" + i.toString() + "}";

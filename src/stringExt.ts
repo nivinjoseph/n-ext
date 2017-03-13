@@ -23,7 +23,7 @@ class StringExt
 
     public static extractNumbers(value: string): string
     {
-        return value.replace(/[^0-9]/g, '');
+        return value.replace(/[^0-9]/g, "");
     }
 
     public static format(formatString: string, ...params: any[]): string
@@ -31,7 +31,7 @@ class StringExt
         let result = formatString;
         if (result == null) return null;
 
-        if (params == null || params.length == 0) return result;
+        if (params == null || params.length === 0) return result;
 
         for (let i = 0; i < params.length; i++)
         {

@@ -7,9 +7,9 @@ class ObjectExt
         let target = factoryFunc();
         source = JSON.parse(JSON.stringify(source));
         
-        for (var key in source)
+        for (let key in source)
         {
-            if (source.hasOwnProperty(key) && typeof source[key] != "function" && typeof target[key] != "function")
+            if (source.hasOwnProperty(key) && typeof source[key] !== "function" && typeof target[key] !== "function")
             {
                 target[key] = source[key];
             }
@@ -26,7 +26,7 @@ class ObjectExt
             name = name.substr(0, name.indexOf("("));
             name = name.trim();
             return name;
-        }
+        };
         
         if (typeof source === "object")
         {
@@ -69,7 +69,7 @@ class ObjectExt
         for (let i = 0; i < splitted.length - 1; i++)
         {
             current = current[splitted[i]];
-            if (current == null || current == undefined) current = {};
+            if (current == null || current === undefined) current = {};
         }
         
         current[splitted[splitted.length - 1]] = value;
