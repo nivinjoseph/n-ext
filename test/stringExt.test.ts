@@ -1,7 +1,7 @@
 import * as assert from "assert";
 import "../src/stringExt";
 
-suite("StringExt", () =>
+suite.only("StringExt", () =>
 {
     suite("isWhiteSpace()", () =>
     {
@@ -39,6 +39,19 @@ suite("StringExt", () =>
             let result = testVal.isWhiteSpace();
             
             assert.ok(result === false);
+        });
+    });
+    
+    suite("contains()", () =>
+    {
+        test("should return true if argument is a substring of the original string", () =>
+        {
+            let testVal = "foo bar";
+            let arg = "bar";
+            
+            let result = testVal.contains(arg);
+            
+            assert.deepStrictEqual(result, true);
         });
     });
 });

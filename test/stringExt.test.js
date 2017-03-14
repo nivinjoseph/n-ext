@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var assert = require("assert");
 require("../src/stringExt");
-suite("StringExt", function () {
+suite.only("StringExt", function () {
     suite("isWhiteSpace()", function () {
         test("should return true when called on an empty string", function () {
             var testVal = "";
@@ -23,6 +23,14 @@ suite("StringExt", function () {
             var testVal = "  foo bar  ";
             var result = testVal.isWhiteSpace();
             assert.ok(result === false);
+        });
+    });
+    suite("contains()", function () {
+        test("should return true if argument is a substring of the original string", function () {
+            var testVal = "foo bar";
+            var arg = "bar";
+            var result = testVal.contains(arg);
+            assert.deepStrictEqual(result, true);
         });
     });
 });
