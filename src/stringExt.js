@@ -1,7 +1,7 @@
 var StringExt = (function () {
     function StringExt() {
     }
-    StringExt.isWhiteSpace = function (value) {
+    StringExt.isEmptyOrWhiteSpace = function (value) {
         return value.trim().length === 0;
     };
     StringExt.contains = function (primary, sub) {
@@ -36,12 +36,12 @@ var StringExt = (function () {
     };
     return StringExt;
 }());
-Object.defineProperty(String.prototype, "isWhiteSpace", {
+Object.defineProperty(String.prototype, "isEmptyOrWhiteSpace", {
     configurable: false,
     enumerable: false,
     writable: false,
     value: function () {
-        return StringExt.isWhiteSpace(this);
+        return StringExt.isEmptyOrWhiteSpace(this);
     }
 });
 Object.defineProperty(String.prototype, "contains", {
@@ -85,7 +85,7 @@ Object.defineProperty(String.prototype, "format", {
         for (var _i = 0; _i < arguments.length; _i++) {
             params[_i] = arguments[_i];
         }
-        return StringExt.format(this, params);
+        return StringExt.format.apply(StringExt, [this].concat(params));
     }
 });
 //# sourceMappingURL=stringExt.js.map
