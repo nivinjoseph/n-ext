@@ -1,6 +1,6 @@
 class StringExt
 {
-    public static isWhiteSpace(value: string): boolean
+    public static isEmptyOrWhiteSpace(value: string): boolean
     {
         return value.trim().length === 0;
     }
@@ -45,13 +45,13 @@ class StringExt
 }
 
 
-Object.defineProperty(String.prototype, "isWhiteSpace", {
+Object.defineProperty(String.prototype, "isEmptyOrWhiteSpace", {
     configurable: false,
     enumerable: false,
     writable: false,
     value: function (): boolean
     {
-        return StringExt.isWhiteSpace(this);
+        return StringExt.isEmptyOrWhiteSpace(this);
     }
 });
 
@@ -101,6 +101,6 @@ Object.defineProperty(String.prototype, "format", {
     writable: false,
     value: function (...params: any[]): string
     {
-        return StringExt.format(this, params);
+        return StringExt.format(this, ...params);
     }
 });

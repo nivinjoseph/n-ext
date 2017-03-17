@@ -1,5 +1,3 @@
-import "./stringExt";
-
 class ObjectExt
 {
     public static mapToObject(source: any, factoryFunc: () => any): any
@@ -45,35 +43,39 @@ class ObjectExt
     public static getValue(source: any, key: string): any
     {
         if (key == null || ObjectExt.stringIsWhiteSpace(key)) return source;
-        if (!ObjectExt.stringContains(key, ".")) return source[key];
-
-        let splitted = key.split(".");
+        key = key.trim();
+        if (!ObjectExt.stringContains(key, "."))
+            return source[key] === undefined ? null : source[key];
+        
+        let splitted = key.split(".").map(t => t.trim());
         let current = source;
 
         for (let i = 0; i < splitted.length; i++)
         {
-            if (!current) return null;
+            if (current === null || current === undefined) return null;
             current = current[splitted[i]];
         }
-        return current;
+        return current === undefined ? null : current;
     }
     
     public static setValue(source: any, key: string, value: any): void
     {
         if (key == null || ObjectExt.stringIsWhiteSpace(key)) return;
+        key = key.trim();
         if (!ObjectExt.stringContains(key, ".")) source[key] = value;
         
-        let splitted = key.split(".");
+        let splitted = key.split(".").map(t => t.trim());
         let current = source;
         
         for (let i = 0; i < splitted.length - 1; i++)
         {
-            current = current[splitted[i]];
-            if (current == null || current === undefined) current = {};
+            let next = current[splitted[i]]; 
+            if (next === null || next === undefined) next = {};
+            current[splitted[i]] = next;
+            current = next;
         }
         
         current[splitted[splitted.length - 1]] = value;
-        
     }
     
     private static stringIsWhiteSpace(value: string): boolean
