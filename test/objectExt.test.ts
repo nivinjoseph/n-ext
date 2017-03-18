@@ -1,7 +1,7 @@
 import * as assert from "assert";
 import "../src/objectExt";
 
-suite.only("ObjectExt", () =>
+suite("ObjectExt", () =>
 {
     suite("mapToObject", () =>
     {

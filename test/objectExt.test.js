@@ -12,7 +12,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var assert = require("assert");
 require("../src/objectExt");
-suite.only("ObjectExt", function () {
+suite("ObjectExt", function () {
     suite("mapToObject", function () {
         var original;
         var mapped;
