@@ -3,13 +3,13 @@ import "../src/stringExt";
 
 suite.only("StringExt", () =>
 {
-    suite("isWhiteSpace", () =>
+    suite("isEmptyOrWhiteSpace", () =>
     {
         test("should return true when called on an empty string", () =>
         {
             let target = "";
             
-            let result = target.isWhiteSpace();
+            let result = target.isEmptyOrWhiteSpace();
             
             assert.strictEqual(result, true);
         });
@@ -18,7 +18,7 @@ suite.only("StringExt", () =>
         {
             let target = "   ";
             
-            let result = target.isWhiteSpace();
+            let result = target.isEmptyOrWhiteSpace();
             
             assert.strictEqual(result, true);
         });
@@ -27,7 +27,7 @@ suite.only("StringExt", () =>
         {
             let target = "foo";
             
-            let result = target.isWhiteSpace();
+            let result = target.isEmptyOrWhiteSpace();
             
             assert.strictEqual(result, false);
         });
@@ -36,7 +36,7 @@ suite.only("StringExt", () =>
         {
             let target = "  foo bar  ";
             
-            let result = target.isWhiteSpace();
+            let result = target.isEmptyOrWhiteSpace();
             
             assert.strictEqual(result, false);
         });

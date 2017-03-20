@@ -2,7 +2,7 @@ declare global
 {
     interface String
     {
-        isWhiteSpace(): boolean;
+        isEmptyOrWhiteSpace(): boolean;
         contains(value: string): boolean;
         startsWith(value: string): boolean;
         endsWith(value: string): boolean;
