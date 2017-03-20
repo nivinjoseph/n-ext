@@ -78,7 +78,7 @@ suite.only("ArrayExt", function () {
         test("should return a new array object of the same length as the target when target is a single element array", function () {
             var ordered = single.orderByDesc();
             assert.strictEqual(ordered.length, single.length);
-            assert.notStrictEqual(ordered, 1);
+            assert.notStrictEqual(ordered, single);
         });
         test("should return a new array object of the same length as the target when target is a n element array", function () {
             var ordered = numbers.orderByDesc();
@@ -191,7 +191,7 @@ suite.only("ArrayExt", function () {
         });
     });
     suite("remove", function () {
-        test("should return array of numbers in target aminus removed element(s)", function () {
+        test("should return array of numbers in target minus removed element(s)", function () {
             numbers.remove(3);
             assert.ok(arrayEqual(numbers, [2, 1, 7]));
         });
