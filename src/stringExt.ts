@@ -18,6 +18,7 @@ class StringExt
     public static endsWith(primary: string, sub: string): boolean
     {
         let index = primary.lastIndexOf(sub);
+        if (index === -1) return false;
         return (index + sub.length) === primary.length;
     }
 
@@ -28,7 +29,7 @@ class StringExt
 
     public static format(formatString: string, ...params: any[]): string
     {
-        let result = formatString;
+        let result = formatString.toString();
         if (result == null) return null;
 
         if (params == null || params.length === 0) return result;
@@ -51,7 +52,7 @@ Object.defineProperty(String.prototype, "isEmptyOrWhiteSpace", {
     writable: false,
     value: function (): boolean
     {
-        return StringExt.isEmptyOrWhiteSpace(this);
+        return StringExt.isEmptyOrWhiteSpace(this.toString());
     }
 });
 
@@ -61,7 +62,7 @@ Object.defineProperty(String.prototype, "contains", {
     writable: false,
     value: function (sub: string): boolean
     {
-        return StringExt.contains(this, sub);
+        return StringExt.contains(this.toString(), sub);
     }
 });
 
@@ -71,7 +72,7 @@ Object.defineProperty(String.prototype, "startsWith", {
     writable: false,
     value: function (sub: string): boolean
     {
-        return StringExt.startsWith(this, sub);
+        return StringExt.startsWith(this.toString(), sub);
     }
 });
 
@@ -81,7 +82,7 @@ Object.defineProperty(String.prototype, "endsWith", {
     writable: false,
     value: function (sub: string): boolean
     {
-        return StringExt.endsWith(this, sub);
+        return StringExt.endsWith(this.toString(), sub);
     }
 });
 
@@ -91,7 +92,7 @@ Object.defineProperty(String.prototype, "extractNumbers", {
     writable: false,
     value: function (): string
     {
-        return StringExt.extractNumbers(this);
+        return StringExt.extractNumbers(this.toString());
     }
 });
 
@@ -101,6 +102,6 @@ Object.defineProperty(String.prototype, "format", {
     writable: false,
     value: function (...params: any[]): string
     {
-        return StringExt.format(this, ...params);
+        return StringExt.format(this.toString(), ...params);
     }
 });

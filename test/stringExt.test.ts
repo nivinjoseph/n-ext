@@ -157,14 +157,14 @@ suite.only("StringExt", () =>
             assert.strictEqual(result, false);
         });
         
-        test("should return true if the target string is an empty string and the argument has a single character", () =>
+        test("should return false if the target string is an empty string and the argument has a single character", () =>
         {
             let target = "";
             let arg = "a";
 
-            let result = target.endsWith(arg);
+            let result = target.startsWith(arg);
 
-            assert.strictEqual(result, true);
+            assert.strictEqual(result, false);
         });
 
         test("should return false if target string is a space character and the argument is a non space character", () =>
@@ -172,7 +172,7 @@ suite.only("StringExt", () =>
             let target = " ";
             let arg = "a";
 
-            let result = target.endsWith(arg);
+            let result = target.startsWith(arg);
 
             assert.strictEqual(result, false);
         });
@@ -182,7 +182,7 @@ suite.only("StringExt", () =>
             let target = "Foo";
             let arg = "Foo";
 
-            let result = target.endsWith(arg);
+            let result = target.startsWith(arg);
 
             assert.strictEqual(result, true);
         });
@@ -192,27 +192,27 @@ suite.only("StringExt", () =>
             let target = " Foo";
             let arg = "F";
 
-            let result = target.endsWith(arg);
+            let result = target.startsWith(arg);
 
             assert.strictEqual(result, false);
         });
         
-        test("should return false if target string is a space character and the argument is a non space character", () =>
+        test("should return true if target string is a space character and the argument is a non space character", () =>
         {
             let target = " ";
             let arg = "";
 
-            let result = target.endsWith(arg);
+            let result = target.startsWith(arg);
 
-            assert.strictEqual(result, false);
+            assert.strictEqual(result, true);
         });
         
-        test("should return false if target string is a non space character and the argument is a space character", () =>
+        test("should return false if target is an empty string and the argument is a space character", () =>
         {
             let target = "";
             let arg = " ";
 
-            let result = target.endsWith(arg);
+            let result = target.startsWith(arg);
 
             assert.strictEqual(result, false);
         });
@@ -225,7 +225,7 @@ suite.only("StringExt", () =>
             let target = "Foo";
             let arg = "o";
 
-            let result = target.startsWith(arg);
+            let result = target.endsWith(arg);
 
             assert.strictEqual(result, true);
         });
@@ -235,7 +235,7 @@ suite.only("StringExt", () =>
             let target = "Foo";
             let arg = "a";
 
-            let result = target.startsWith(arg);
+            let result = target.endsWith(arg);
 
             assert.strictEqual(result, false);
         });
@@ -245,7 +245,7 @@ suite.only("StringExt", () =>
             let target = "Foo";
             let arg = "O";
 
-            let result = target.startsWith(arg);
+            let result = target.endsWith(arg);
 
             assert.strictEqual(result, false);
         });
@@ -255,7 +255,7 @@ suite.only("StringExt", () =>
             let target = "Foo";
             let arg = "";
 
-            let result = target.startsWith(arg);
+            let result = target.endsWith(arg);
 
             assert.strictEqual(result, true);
         });
@@ -265,19 +265,19 @@ suite.only("StringExt", () =>
             let target = "Foo";
             let arg = " ";
 
-            let result = target.startsWith(arg);
+            let result = target.endsWith(arg);
 
             assert.strictEqual(result, false);
         });
 
-        test("should return true if the target string is an empty string and the argument has a character", () =>
+        test("should return false if the target string is an empty string and the argument has a single character", () =>
         {
             let target = "";
             let arg = "a";
 
             let result = target.endsWith(arg);
 
-            assert.strictEqual(result, true);
+            assert.strictEqual(result, false);
         });
 
         test("should return false if target string is a space character and the argument is a non space character", () =>
@@ -310,17 +310,17 @@ suite.only("StringExt", () =>
             assert.strictEqual(result, false);
         });
 
-        test("should return false if target string is a space character and the argument is a non space character", () =>
+        test("should return true if target string is a space character and the argument is a non space character", () =>
         {
             let target = " ";
             let arg = "";
 
             let result = target.endsWith(arg);
 
-            assert.strictEqual(result, false);
+            assert.strictEqual(result, true);
         });
 
-        test("should return false if target string is a non space character and the argument is a space character", () =>
+        test("should return false if target is an empty string and the argument is a space character", () =>
         {
             let target = "";
             let arg = " ";
@@ -436,13 +436,13 @@ suite.only("StringExt", () =>
             assert.strictEqual(result, "my name is");
         });
         
-        test("should return original string if target has placeholders and argument provided is an empty string", () =>
+        test("should return formated string with placeholder replaced by empty string if target has placeholders and argument provided is an empty string", () =>
         {
             let target = "my name is {0} {1}";
 
             let result = target.format("");
 
-            assert.strictEqual(result, "my name is {0} {1}");
+            assert.strictEqual(result, "my name is  {1}");
         });
         
         test("should return original string if target has placeholders but no arguments are provided", () =>
@@ -469,7 +469,7 @@ suite.only("StringExt", () =>
 
             let result = target.format("Viola");
 
-            assert.strictEqual(result, "my name is Viola");
+            assert.strictEqual(result, "my name is Viola {1}");
         });
     });
 });
