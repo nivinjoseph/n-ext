@@ -1,7 +1,7 @@
 var StringExt = (function () {
     function StringExt() {
     }
-    StringExt.isWhiteSpace = function (value) {
+    StringExt.isEmptyOrWhiteSpace = function (value) {
         return value.trim().length === 0;
     };
     StringExt.contains = function (primary, sub) {
@@ -12,20 +12,22 @@ var StringExt = (function () {
     };
     StringExt.endsWith = function (primary, sub) {
         var index = primary.lastIndexOf(sub);
+        if (index === -1)
+            return false;
         return (index + sub.length) === primary.length;
     };
     StringExt.extractNumbers = function (value) {
-        return value.replace(/[^0-9]/g, '');
+        return value.replace(/[^0-9]/g, "");
     };
     StringExt.format = function (formatString) {
         var params = [];
         for (var _i = 1; _i < arguments.length; _i++) {
             params[_i - 1] = arguments[_i];
         }
-        var result = formatString;
+        var result = formatString.toString();
         if (result == null)
             return null;
-        if (params == null || params.length == 0)
+        if (params == null || params.length === 0)
             return result;
         for (var i = 0; i < params.length; i++) {
             var format = "{" + i.toString() + "}";
@@ -36,12 +38,12 @@ var StringExt = (function () {
     };
     return StringExt;
 }());
-Object.defineProperty(String.prototype, "isWhiteSpace", {
+Object.defineProperty(String.prototype, "isEmptyOrWhiteSpace", {
     configurable: false,
     enumerable: false,
     writable: false,
     value: function () {
-        return StringExt.isWhiteSpace(this);
+        return StringExt.isEmptyOrWhiteSpace(this.toString());
     }
 });
 Object.defineProperty(String.prototype, "contains", {
@@ -49,7 +51,7 @@ Object.defineProperty(String.prototype, "contains", {
     enumerable: false,
     writable: false,
     value: function (sub) {
-        return StringExt.contains(this, sub);
+        return StringExt.contains(this.toString(), sub);
     }
 });
 Object.defineProperty(String.prototype, "startsWith", {
@@ -57,7 +59,7 @@ Object.defineProperty(String.prototype, "startsWith", {
     enumerable: false,
     writable: false,
     value: function (sub) {
-        return StringExt.startsWith(this, sub);
+        return StringExt.startsWith(this.toString(), sub);
     }
 });
 Object.defineProperty(String.prototype, "endsWith", {
@@ -65,7 +67,7 @@ Object.defineProperty(String.prototype, "endsWith", {
     enumerable: false,
     writable: false,
     value: function (sub) {
-        return StringExt.endsWith(this, sub);
+        return StringExt.endsWith(this.toString(), sub);
     }
 });
 Object.defineProperty(String.prototype, "extractNumbers", {
@@ -73,7 +75,7 @@ Object.defineProperty(String.prototype, "extractNumbers", {
     enumerable: false,
     writable: false,
     value: function () {
-        return StringExt.extractNumbers(this);
+        return StringExt.extractNumbers(this.toString());
     }
 });
 Object.defineProperty(String.prototype, "format", {
@@ -85,6 +87,6 @@ Object.defineProperty(String.prototype, "format", {
         for (var _i = 0; _i < arguments.length; _i++) {
             params[_i] = arguments[_i];
         }
-        return StringExt.format(this, params);
+        return StringExt.format.apply(StringExt, [this.toString()].concat(params));
     }
 });

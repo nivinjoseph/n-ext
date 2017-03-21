@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-require("./stringExt");
 var ObjectExt = (function () {
     function ObjectExt() {
     }
@@ -8,7 +5,7 @@ var ObjectExt = (function () {
         var target = factoryFunc();
         source = JSON.parse(JSON.stringify(source));
         for (var key in source) {
-            if (source.hasOwnProperty(key) && typeof source[key] != "function" && typeof target[key] != "function") {
+            if (source.hasOwnProperty(key) && typeof source[key] !== "function" && typeof target[key] !== "function") {
                 target[key] = source[key];
             }
         }
@@ -36,28 +33,32 @@ var ObjectExt = (function () {
     ObjectExt.getValue = function (source, key) {
         if (key == null || ObjectExt.stringIsWhiteSpace(key))
             return source;
+        key = key.trim();
         if (!ObjectExt.stringContains(key, "."))
-            return source[key];
-        var splitted = key.split(".");
+            return source[key] === undefined ? null : source[key];
+        var splitted = key.split(".").map(function (t) { return t.trim(); });
         var current = source;
         for (var i = 0; i < splitted.length; i++) {
-            if (!current)
+            if (current === null || current === undefined)
                 return null;
             current = current[splitted[i]];
         }
-        return current;
+        return current === undefined ? null : current;
     };
     ObjectExt.setValue = function (source, key, value) {
         if (key == null || ObjectExt.stringIsWhiteSpace(key))
             return;
+        key = key.trim();
         if (!ObjectExt.stringContains(key, "."))
             source[key] = value;
-        var splitted = key.split(".");
+        var splitted = key.split(".").map(function (t) { return t.trim(); });
         var current = source;
         for (var i = 0; i < splitted.length - 1; i++) {
-            current = current[splitted[i]];
-            if (current == null || current == undefined)
-                current = {};
+            var next = current[splitted[i]];
+            if (next === null || next === undefined)
+                next = {};
+            current[splitted[i]] = next;
+            current = next;
         }
         current[splitted[splitted.length - 1]] = value;
     };
