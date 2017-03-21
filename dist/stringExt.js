@@ -90,3 +90,4 @@ Object.defineProperty(String.prototype, "format", {
         return StringExt.format.apply(StringExt, [this.toString()].concat(params));
     }
 });
+//# sourceMappingURL=stringExt.js.map
