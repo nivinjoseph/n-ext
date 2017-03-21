@@ -5,9 +5,7 @@
         "noImplicitAny": false,
         "sourceMap": true,
         "inlineSources": true,
-        "outDir": ".",
-        "declaration": true,
-        "declarationDir": "."
+        "outDir": "."
     },
     "include": [
         "../src/**/*.ts"
