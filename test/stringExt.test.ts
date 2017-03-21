@@ -1,7 +1,7 @@
 import * as assert from "assert";
 import "../src/stringExt";
 
-suite.only("StringExt", () =>
+suite("StringExt", () =>
 {
     suite("isEmptyOrWhiteSpace", () =>
     {

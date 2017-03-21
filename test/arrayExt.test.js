@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var assert = require("assert");
 require("../src/arrayExt");
-suite.only("ArrayExt", function () {
+suite("ArrayExt", function () {
     var numbers;
     var strings;
     var empty;

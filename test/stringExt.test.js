@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var assert = require("assert");
 require("../src/stringExt");
-suite.only("StringExt", function () {
+suite("StringExt", function () {
     suite("isEmptyOrWhiteSpace", function () {
         test("should return true when called on an empty string", function () {
             var target = "";
