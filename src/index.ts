@@ -1,3 +1,3 @@
-import "./stringExt";
-import "./objectExt";
-import "./arrayExt";
+import "./string-ext";
+import "./object-ext";
+import "./array-ext";

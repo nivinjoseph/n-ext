@@ -1,5 +1,5 @@
 import * as assert from "assert";
-import "../src/arrayExt";
+import "../src/array-ext";
 
 suite("ArrayExt", () =>    
 {

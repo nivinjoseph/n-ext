@@ -1,5 +1,5 @@
 import * as assert from "assert";
-import "../src/stringExt";
+import "../src/string-ext";
 
 suite("StringExt", () =>
 {
@@ -8,36 +8,28 @@ suite("StringExt", () =>
         test("should return true when called on an empty string", () =>
         {
             let target = "";
-            
             let result = target.isEmptyOrWhiteSpace();
-            
             assert.strictEqual(result, true);
         });
         
         test("should return true when called on a non-empty string with space characters", () =>
         {
             let target = "   ";
-            
             let result = target.isEmptyOrWhiteSpace();
-            
             assert.strictEqual(result, true);
         });
         
         test("should return false when called on a non-empty string", () =>
         {
-            let target = "foo";
-            
+            let target = "foo";    
             let result = target.isEmptyOrWhiteSpace();
-            
             assert.strictEqual(result, false);
         });
         
         test("should return false when called on a non-empty string with space and regular characters", () =>
         {
-            let target = "  foo bar  ";
-            
+            let target = "  foo bar  ";    
             let result = target.isEmptyOrWhiteSpace();
-            
             assert.strictEqual(result, false);
         });
     });
@@ -48,9 +40,7 @@ suite("StringExt", () =>
         {
             let target = "foo bar";
             let arg = "bar";
-            
             let result = target.contains(arg);
-            
             assert.strictEqual(result, true);
         });
         
@@ -58,9 +48,7 @@ suite("StringExt", () =>
         {
             let target = "foo bar";
             let arg = "baz";
-            
             let result = target.contains(arg);
-            
             assert.strictEqual(result, false);
         });
         
@@ -68,9 +56,7 @@ suite("StringExt", () =>
         {
             let target = "foo bar";
             let arg = "foo baz";
-
             let result = target.contains(arg);
-
             assert.strictEqual(result, false);
         });
         
@@ -78,9 +64,7 @@ suite("StringExt", () =>
         {
             let target = "foo bar";
             let arg = " ";
-            
             let result = target.contains(arg);
-            
             assert.strictEqual(result, true);
         });
         
@@ -88,9 +72,7 @@ suite("StringExt", () =>
         {
             let target = "foo bar";
             let arg = "";
-            
             let result = target.contains(arg);
-            
             assert.strictEqual(result, true);
         });
         
@@ -98,9 +80,7 @@ suite("StringExt", () =>
         {
             let target = "";
             let arg = "";
-            
             let result = target.contains(arg);
-            
             assert.strictEqual(result, true);
         });
     });
@@ -111,19 +91,15 @@ suite("StringExt", () =>
         {
             let target = "Foo";
             let arg = "F";
-            
             let result = target.startsWith(arg);
-            
             assert.strictEqual(result, true);
         });
         
         test("should return false if the first character in the target string does not match the argument", () =>
         {
             let target = "Foo";
-            let arg = "A";
-            
+            let arg = "A"; 
             let result = target.startsWith(arg);
-            
             assert.strictEqual(result, false);
         });
         
@@ -131,9 +107,7 @@ suite("StringExt", () =>
         {
             let target = "Foo";
             let arg = "f";
-
             let result = target.startsWith(arg);
-
             assert.strictEqual(result, false);
         });
         
@@ -141,9 +115,7 @@ suite("StringExt", () =>
         {
             let target = "Foo";
             let arg = "";
-            
             let result = target.startsWith(arg);
-            
             assert.strictEqual(result, true);
         });
         
@@ -151,9 +123,7 @@ suite("StringExt", () =>
         {
             let target = "Foo";
             let arg = " ";
-            
             let result = target.startsWith(arg);
-            
             assert.strictEqual(result, false);
         });
         
@@ -161,9 +131,7 @@ suite("StringExt", () =>
         {
             let target = "";
             let arg = "a";
-
             let result = target.startsWith(arg);
-
             assert.strictEqual(result, false);
         });
 
@@ -171,9 +139,7 @@ suite("StringExt", () =>
         {
             let target = " ";
             let arg = "a";
-
             let result = target.startsWith(arg);
-
             assert.strictEqual(result, false);
         });
 
@@ -181,9 +147,7 @@ suite("StringExt", () =>
         {
             let target = "Foo";
             let arg = "Foo";
-
             let result = target.startsWith(arg);
-
             assert.strictEqual(result, true);
         });
         
@@ -191,9 +155,7 @@ suite("StringExt", () =>
         {
             let target = " Foo";
             let arg = "F";
-
             let result = target.startsWith(arg);
-
             assert.strictEqual(result, false);
         });
         
@@ -201,9 +163,7 @@ suite("StringExt", () =>
         {
             let target = " ";
             let arg = "";
-
             let result = target.startsWith(arg);
-
             assert.strictEqual(result, true);
         });
         
@@ -211,9 +171,7 @@ suite("StringExt", () =>
         {
             let target = "";
             let arg = " ";
-
             let result = target.startsWith(arg);
-
             assert.strictEqual(result, false);
         });
     });
@@ -224,9 +182,7 @@ suite("StringExt", () =>
         {
             let target = "Foo";
             let arg = "o";
-
             let result = target.endsWith(arg);
-
             assert.strictEqual(result, true);
         });
 
@@ -234,9 +190,7 @@ suite("StringExt", () =>
         {
             let target = "Foo";
             let arg = "a";
-
             let result = target.endsWith(arg);
-
             assert.strictEqual(result, false);
         });
 
@@ -244,9 +198,7 @@ suite("StringExt", () =>
         {
             let target = "Foo";
             let arg = "O";
-
             let result = target.endsWith(arg);
-
             assert.strictEqual(result, false);
         });
 
@@ -254,9 +206,7 @@ suite("StringExt", () =>
         {
             let target = "Foo";
             let arg = "";
-
             let result = target.endsWith(arg);
-
             assert.strictEqual(result, true);
         });
 
@@ -264,9 +214,7 @@ suite("StringExt", () =>
         {
             let target = "Foo";
             let arg = " ";
-
             let result = target.endsWith(arg);
-
             assert.strictEqual(result, false);
         });
 
@@ -274,9 +222,7 @@ suite("StringExt", () =>
         {
             let target = "";
             let arg = "a";
-
             let result = target.endsWith(arg);
-
             assert.strictEqual(result, false);
         });
 
@@ -284,9 +230,7 @@ suite("StringExt", () =>
         {
             let target = " ";
             let arg = "a";
-
             let result = target.endsWith(arg);
-
             assert.strictEqual(result, false);
         });
 
@@ -294,9 +238,7 @@ suite("StringExt", () =>
         {
             let target = "Foo";
             let arg = "Foo";
-
             let result = target.endsWith(arg);
-
             assert.strictEqual(result, true);
         });
 
@@ -304,9 +246,7 @@ suite("StringExt", () =>
         {
             let target = "Foo ";
             let arg = "o";
-
             let result = target.endsWith(arg);
-
             assert.strictEqual(result, false);
         });
 
@@ -314,9 +254,7 @@ suite("StringExt", () =>
         {
             let target = " ";
             let arg = "";
-
             let result = target.endsWith(arg);
-
             assert.strictEqual(result, true);
         });
 
@@ -324,9 +262,7 @@ suite("StringExt", () =>
         {
             let target = "";
             let arg = " ";
-
             let result = target.endsWith(arg);
-
             assert.strictEqual(result, false);
         });
     });
@@ -335,46 +271,36 @@ suite("StringExt", () =>
     {
         test("should return empty string when target string contains no numbers", () =>
         {
-            let target = "abc";
-            
+            let target = "abc";        
             let result = target.extractNumbers();
-            
             assert.strictEqual(result, "");
         });
         
         test("should return numbers when target string has numbers at the beginning", () =>
         {
             let target = "123abc";
-            
             let result = target.extractNumbers();
-            
             assert.strictEqual(result, "123");
         });
         
         test("should return numbers when target string has numbers at the end", () =>
         {
             let target = "abc123";
-            
             let result = target.extractNumbers();
-            
             assert.strictEqual(result, "123");
         });
         
         test("should return numbers when target string has numbers in the middle", () =>
         {
             let target = "abc123abc";
-            
             let result = target.extractNumbers();
-            
             assert.strictEqual(result, "123");
         });
         
         test("should return all numbers when target string has numbers scattered throught", () =>
         {
             let target = "1a2b3c";
-            
             let result = target.extractNumbers();
-            
             assert.strictEqual(result, "123");
         });
         
@@ -385,90 +311,70 @@ suite("StringExt", () =>
         test("should return formated string with arguments in order", () =>
         {
             let target = "my name is {0} {1}";  
-            
             let result = target.format("Viola", "Deluca");
-            
             assert.strictEqual(result, "my name is Viola Deluca");
         });
         
         test("should return formated string containing only first argument twice", () =>
         {
             let target = "my name is {0} {0}";
-
             let result = target.format("Viola", "Deluca");
-
             assert.strictEqual(result, "my name is Viola Viola");
         });
 
         test("should return formated string with arguments in reverse order", () =>
         {
             let target = "my name is {1} {0}";
-
             let result = target.format("Viola", "Deluca");
-
             assert.strictEqual(result, "my name is Deluca Viola");
         });
 
         test("should return formated string containing only first argument, leaving {2} unchanged", () =>
         {
             let target = "my name is {0} {2}";
-
             let result = target.format("Viola", "Deluca");
-
             assert.strictEqual(result, "my name is Viola {2}");
         });
         
         test("should return an empty string if target is an empty string and argument has value", () =>
         {
             let target = "";
-
             let result = target.format("Viola", "Deluca");
-
             assert.strictEqual(result, "");
         });
         
         test("should return original target unformated when target provides no placeholders", () =>
         {
             let target = "my name is";
-
             let result = target.format("Viola", "Deluca");
-
             assert.strictEqual(result, "my name is");
         });
         
         test("should return formated string with placeholder replaced by empty string if target has placeholders and argument provided is an empty string", () =>
         {
             let target = "my name is {0} {1}";
-
             let result = target.format("");
-
             assert.strictEqual(result, "my name is  {1}");
         });
         
         test("should return original string if target has placeholders but no arguments are provided", () =>
         {
             let target = "my name is {0} {1}";
-
             let result = target.format();
-
             assert.strictEqual(result, "my name is {0} {1}");
         });
         
         test("should return formated string with first two arguments when there are more arguments than placeholders", () =>
         {
             let target = "my name is {0} {1}";
-
             let result = target.format("Viola", "Deluca", "Nivin", "Joseph");
-
             assert.strictEqual(result, "my name is Viola Deluca");
         });
         
         test("should return formated string with only first placeholder changed given a single argument", () =>
         {
             let target = "my name is {0} {1}";
-
             let result = target.format("Viola");
-
             assert.strictEqual(result, "my name is Viola {1}");
         });
     });

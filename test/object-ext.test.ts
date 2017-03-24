@@ -1,5 +1,5 @@
 import * as assert from "assert";
-import "../src/objectExt";
+import "../src/object-ext";
 
 suite("ObjectExt", () =>
 {
