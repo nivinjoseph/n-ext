@@ -261,7 +261,7 @@ suite("ObjectExt", () =>
     {
         let targetCountry: Object = null;
         let targetAddress: Object = null;
-        let target: Object = null;
+        let target: {[index: string]: any} = null;
         let targetString: string = null;
         
         let getCurrentTargetString = () => JSON.stringify(target);

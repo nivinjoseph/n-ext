@@ -8,6 +8,7 @@
         "no-internal-module": true,
         "no-trailing-whitespace": false,
         "no-var-keyword": true,
+        "no-default-export": true,
         "one-line": [true, "check-whitespace"],
         "quotemark": [true, "double"],
         "semicolon": [true, "always"],
