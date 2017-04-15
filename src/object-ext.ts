@@ -18,23 +18,33 @@ class ObjectExt
     
     public static getTypeName(source: any): string 
     {
-        let getFuncName = (funcDef: string) =>
+        let getName = (funcDef: string) =>
         {
-            let name = funcDef.substr("function".length);
-            name = name.substr(0, name.indexOf("("));
-            name = name.trim();
-            return name;
+            let name = funcDef.trim();
+            if (ObjectExt.stringStartsWith(name, "function"))
+            {
+                name = name.substr("function".length);
+                name = name.substr(0, name.indexOf("("));
+            }    
+            else if (ObjectExt.stringStartsWith(name, "class"))
+            {
+                name = name.substr("class".length);
+                name = name.substr(0, name.indexOf("{")).trim();
+                if (ObjectExt.stringContains(name, " "))
+                    name = name.split(" ")[0];
+            }    
+            return name.trim();
         };
         
         if (typeof source === "object")
         {
-            let value = getFuncName(source.constructor.toString());
+            let value = getName(source.constructor.toString());
             if (value === "n Object") return "Object";
             else return value;
         }
         else if (typeof source === "function")
         {
-            return getFuncName(source.toString());
+            return getName(source.toString());
         }
 
         return (typeof source);
@@ -83,9 +93,14 @@ class ObjectExt
         return value.trim().length === 0;
     }
 
-    public static stringContains(primary: string, sub: string): boolean
+    private static stringContains(primary: string, sub: string): boolean
     {
         return primary.indexOf(sub) !== -1;
+    }
+    
+    private static stringStartsWith(primary: string, sub: string): boolean
+    {
+        return primary.indexOf(sub) === 0;
     }
 }
 

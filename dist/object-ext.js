@@ -12,21 +12,29 @@ var ObjectExt = (function () {
         return target;
     };
     ObjectExt.getTypeName = function (source) {
-        var getFuncName = function (funcDef) {
-            var name = funcDef.substr("function".length);
-            name = name.substr(0, name.indexOf("("));
-            name = name.trim();
-            return name;
+        var getName = function (funcDef) {
+            var name = funcDef.trim();
+            if (ObjectExt.stringStartsWith(name, "function")) {
+                name = name.substr("function".length);
+                name = name.substr(0, name.indexOf("("));
+            }
+            else if (ObjectExt.stringStartsWith(name, "class")) {
+                name = name.substr("class".length);
+                name = name.substr(0, name.indexOf("{")).trim();
+                if (ObjectExt.stringContains(name, " "))
+                    name = name.split(" ")[0];
+            }
+            return name.trim();
         };
         if (typeof source === "object") {
-            var value = getFuncName(source.constructor.toString());
+            var value = getName(source.constructor.toString());
             if (value === "n Object")
                 return "Object";
             else
                 return value;
         }
         else if (typeof source === "function") {
-            return getFuncName(source.toString());
+            return getName(source.toString());
         }
         return (typeof source);
     };
@@ -67,6 +75,9 @@ var ObjectExt = (function () {
     };
     ObjectExt.stringContains = function (primary, sub) {
         return primary.indexOf(sub) !== -1;
+    };
+    ObjectExt.stringStartsWith = function (primary, sub) {
+        return primary.indexOf(sub) === 0;
     };
     return ObjectExt;
 }());
