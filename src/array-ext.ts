@@ -105,6 +105,31 @@ class ArrayExt
             array.pop();
         }
     }
+    
+    public static equals<T>(array: T[], compareArray: T[]): boolean
+    {
+        if (array === compareArray)
+            return true;
+
+        if (array === null || compareArray === null)
+            return false;
+
+        if (!(array instanceof Array) || !(compareArray instanceof Array))
+            return false;
+
+        if (array.length !== compareArray.length)
+            return false;
+
+        for (let i = 0; i < array.length; i++)
+        {
+            if (array[i] === compareArray[i])
+                continue;
+
+            return false;
+        }
+
+        return true;
+    }
 }
 
 Object.defineProperty(Array.prototype, "orderBy", {
@@ -174,5 +199,15 @@ Object.defineProperty(Array.prototype, "clear", {
     value: function (): void
     {
         return ArrayExt.clear(this);
+    }
+});
+
+Object.defineProperty(Array.prototype, "equals", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function (compareArray: Array<any>): boolean
+    {
+        return ArrayExt.equals(this, compareArray);
     }
 });

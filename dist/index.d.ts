@@ -30,6 +30,7 @@ declare global
         count(predicate: (value: T) => boolean): number;
         remove(value: T): boolean;
         clear(): void;
+        equals(compareArray: Array<T>): boolean
     }
     
     interface ReadonlyArray<T>
@@ -42,6 +43,7 @@ declare global
         take(count: number): Array<T>;
         count(): number;
         count(predicate: (value: T) => boolean): number;
+        equals(compareArray: Array<T>): boolean
     }    
 }
 

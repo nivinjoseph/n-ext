@@ -339,4 +339,26 @@ suite("ArrayExt", () =>
             assert.ok(arrayEqual(single, []));
         });
     });
+    
+    suite("equals", () =>
+    {
+        test("should return true when arrays are similar", () =>
+        {
+            let obj = {};
+            let original = ["a", 1, false, obj];
+            let compare = ["a", 1, false, obj];
+            
+            let result = original.equals(compare);
+            assert.strictEqual(result, true);
+        });
+        
+        test("should return false when arrays are not similar", () =>
+        {
+            let original = ["a", 1, false, {}];
+            let compare = ["a", 1, false, {}];
+
+            let result = original.equals(compare);
+            assert.strictEqual(result, false);
+        });
+    });
 });

@@ -80,6 +80,22 @@ var ArrayExt = (function () {
             array.pop();
         }
     };
+    ArrayExt.equals = function (array, compareArray) {
+        if (array === compareArray)
+            return true;
+        if (array === null || compareArray === null)
+            return false;
+        if (!(array instanceof Array) || !(compareArray instanceof Array))
+            return false;
+        if (array.length !== compareArray.length)
+            return false;
+        for (var i = 0; i < array.length; i++) {
+            if (array[i] === compareArray[i])
+                continue;
+            return false;
+        }
+        return true;
+    };
     return ArrayExt;
 }());
 Object.defineProperty(Array.prototype, "orderBy", {
@@ -136,6 +152,14 @@ Object.defineProperty(Array.prototype, "clear", {
     writable: false,
     value: function () {
         return ArrayExt.clear(this);
+    }
+});
+Object.defineProperty(Array.prototype, "equals", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function (compareArray) {
+        return ArrayExt.equals(this, compareArray);
     }
 });
 //# sourceMappingURL=array-ext.js.map
