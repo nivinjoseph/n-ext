@@ -31,6 +31,18 @@ declare global
         remove(value: T): boolean;
         clear(): void;
     }
+    
+    interface ReadonlyArray<T>
+    {
+        orderBy(): Array<T>;
+        orderBy(compareFunc: (value: T) => any): Array<T>;
+        orderByDesc(): Array<T>;
+        orderByDesc(compareFunc: (value: T) => any): Array<T>;
+        skip(count: number): Array<T>;
+        take(count: number): Array<T>;
+        count(): number;
+        count(predicate: (value: T) => boolean): number;
+    }    
 }
 
 export { }
