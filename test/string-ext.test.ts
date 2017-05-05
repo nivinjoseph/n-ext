@@ -378,4 +378,40 @@ suite("StringExt", () =>
             assert.strictEqual(result, "my name is Viola {1}");
         });
     });
+    
+    suite("replaceAll", () =>
+    {
+        test("should not change anything if search value is not found", () =>
+        {
+            let target = "Mr Blue has a blue house and a blue car";
+            let searchValue = "red";
+            let replaceValue = "green";
+            
+            let result = target.replaceAll(searchValue, replaceValue);
+            
+            assert.strictEqual(result, target);
+        });
+        
+        test("should replace all occurances of search value if it is found", () =>
+        {
+            let target = "Mr Blue has a blue house and a blue car";
+            let searchValue = "blue";
+            let replaceValue = "red";
+
+            let result = target.replaceAll(searchValue, replaceValue);
+
+            assert.strictEqual(result, "Mr Blue has a red house and a red car");
+        });
+        
+        test("should replace all occurances of search value case insensitive if found", () =>
+        {
+            let target = "Mr Blue has a blue house and a blue car";
+            let searchValue = "blue";
+            let replaceValue = "red";
+
+            let result = target.replaceAll(searchValue, replaceValue, true);
+
+            assert.strictEqual(result, "Mr red has a red house and a red car");
+        });
+    });
 });

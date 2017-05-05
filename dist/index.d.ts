@@ -8,6 +8,7 @@ declare global
         endsWith(value: string): boolean;
         extractNumbers(): string;
         format(...params: any[]): string;
+        replaceAll(searchValue: string, replaceValue: string, ignoreCase?: boolean): string;
     }
 
     interface Object

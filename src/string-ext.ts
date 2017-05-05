@@ -43,6 +43,16 @@ class StringExt
 
         return result;
     }
+    
+    public static replaceAll(primary: string, searchValue: string, replaceValue: string, ignoreCase?: boolean): string
+    {
+        let matchOperatorsRe = /[|\\{}()[\]^$+*?.]/g;
+        let result = primary.replace(matchOperatorsRe, "\\$&");
+        
+        let searchRe = new RegExp(searchValue, ignoreCase ? "gi" : "g");
+        
+        return result.replace(searchRe, replaceValue);
+    }
 }
 
 
@@ -103,5 +113,15 @@ Object.defineProperty(String.prototype, "format", {
     value: function (...params: any[]): string
     {
         return StringExt.format(this.toString(), ...params);
+    }
+});
+
+Object.defineProperty(String.prototype, "replaceAll", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function (searchValue: string, replaceValue: string, ignoreCase?: boolean): string
+    {
+        return StringExt.replaceAll(this.toString(), searchValue, replaceValue, ignoreCase);
     }
 });

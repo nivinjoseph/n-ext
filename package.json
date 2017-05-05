@@ -6,9 +6,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "ts-build": "tsc -p .",
-    "x-ts-build-watch1": "npm run ts-build -- -w",
     "ts-build-dist": "tsc -p ./dist",
-    "x-ts-build-watch2": "watch 'npm run build' ./src --wait 1 --interval 1",
     "pretest": "npm run ts-build",
     "test": "mocha --reporter spec --ui tdd --require ts-node/register './test/**/*.test.js' || true",
     "pretest-ci": "npm run pretest",

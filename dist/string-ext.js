@@ -36,6 +36,12 @@ var StringExt = (function () {
         }
         return result;
     };
+    StringExt.replaceAll = function (primary, searchValue, replaceValue, ignoreCase) {
+        var matchOperatorsRe = /[|\\{}()[\]^$+*?.]/g;
+        var result = primary.replace(matchOperatorsRe, "\\$&");
+        var searchRe = new RegExp(searchValue, ignoreCase ? "gi" : "g");
+        return result.replace(searchRe, replaceValue);
+    };
     return StringExt;
 }());
 Object.defineProperty(String.prototype, "isEmptyOrWhiteSpace", {
@@ -88,6 +94,14 @@ Object.defineProperty(String.prototype, "format", {
             params[_i] = arguments[_i];
         }
         return StringExt.format.apply(StringExt, [this.toString()].concat(params));
+    }
+});
+Object.defineProperty(String.prototype, "replaceAll", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function (searchValue, replaceValue, ignoreCase) {
+        return StringExt.replaceAll(this.toString(), searchValue, replaceValue, ignoreCase);
     }
 });
 //# sourceMappingURL=string-ext.js.map
