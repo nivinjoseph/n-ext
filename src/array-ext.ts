@@ -45,6 +45,26 @@ class ArrayExt
 
         return internalArray;
     }
+    
+    public static distinct<T>(array: T[]): T[];
+    public static distinct<T>(array: T[], equalityFunc: (value1: T, value2: T) => boolean): T[];
+    public static distinct<T>(array: T[], equalityFunc?: (value1: T, value2: T) => boolean): T[]
+    {
+        if (equalityFunc == null)
+            equalityFunc = (value1: T, value2: T) => value1 === value2;
+        
+        let internalArray: T[] = [];
+        
+        for (let i = 0; i < array.length; i++)
+        {
+            let item = array[i];
+            if (internalArray.some(t => equalityFunc(t, item)))
+                continue;
+            internalArray.push(item);
+        }    
+        
+        return internalArray;
+    }
 
     public static skip<T>(array: T[], count: number): T[]
     {
@@ -149,6 +169,16 @@ Object.defineProperty(Array.prototype, "orderByDesc", {
     value: function (compareFunc?: (value: any) => any): Array<any>
     {
         return ArrayExt.orderByDesc(this, compareFunc);
+    }
+});
+
+Object.defineProperty(Array.prototype, "distinct", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function (equalityFunc?: (value1: any, value2: any) => boolean): Array<any>
+    {
+        return ArrayExt.distinct(this, equalityFunc);
     }
 });
 

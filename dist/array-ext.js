@@ -35,6 +35,21 @@ var ArrayExt = (function () {
         });
         return internalArray;
     };
+    ArrayExt.distinct = function (array, equalityFunc) {
+        if (equalityFunc == null)
+            equalityFunc = function (value1, value2) { return value1 === value2; };
+        var internalArray = [];
+        var _loop_1 = function (i) {
+            var item = array[i];
+            if (internalArray.some(function (t) { return equalityFunc(t, item); }))
+                return "continue";
+            internalArray.push(item);
+        };
+        for (var i = 0; i < array.length; i++) {
+            _loop_1(i);
+        }
+        return internalArray;
+    };
     ArrayExt.skip = function (array, count) {
         if (count < 0)
             count = 0;
@@ -112,6 +127,14 @@ Object.defineProperty(Array.prototype, "orderByDesc", {
     writable: false,
     value: function (compareFunc) {
         return ArrayExt.orderByDesc(this, compareFunc);
+    }
+});
+Object.defineProperty(Array.prototype, "distinct", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function (equalityFunc) {
+        return ArrayExt.distinct(this, equalityFunc);
     }
 });
 Object.defineProperty(Array.prototype, "skip", {

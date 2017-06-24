@@ -25,6 +25,8 @@ declare global
         orderBy(compareFunc: (value: T) => any): Array<T>;
         orderByDesc(): Array<T>;
         orderByDesc(compareFunc: (value: T) => any): Array<T>;
+        distinct(): Array<T>;
+        distinct(equalityFunc: (value1: T, value2: T) => boolean): Array<T>;
         skip(count: number): Array<T>;
         take(count: number): Array<T>;
         count(): number;
@@ -40,6 +42,8 @@ declare global
         orderBy(compareFunc: (value: T) => any): Array<T>;
         orderByDesc(): Array<T>;
         orderByDesc(compareFunc: (value: T) => any): Array<T>;
+        distinct(): Array<T>;
+        distinct(equalityFunc: (value1: T, value2: T) => boolean): Array<T>;
         skip(count: number): Array<T>;
         take(count: number): Array<T>;
         count(): number;

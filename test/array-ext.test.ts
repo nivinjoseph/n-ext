@@ -139,6 +139,35 @@ suite("ArrayExt", () =>
         });
     });
 
+    suite("distinct", () =>
+    {
+        test("given array with primitives, should return distinct values", () =>
+        {
+            let duplicates = ["foo", "bar", "foo", "baz"];
+            let distinct = duplicates.distinct();
+            assert.strictEqual(distinct.length, 3);
+            assert.ok(arrayEqual(distinct, ["foo", "bar", "baz"]));
+        });
+        
+        test("given array of objects, should return distinct values", () =>
+        {
+            let duplicate = { id: 1, name: "shrey" };
+            let duplicates = [duplicate, { id: 2, name: "nivin" }, { id: 3, name: "shrey" }, duplicate];
+            let distinct = duplicates.distinct();
+            assert.strictEqual(distinct.length, 3);
+            assert.ok(arrayEqual(distinct, [duplicates[0], duplicates[1], duplicates[2]]));
+        });
+        
+        test("given array of objects and equality func, should return distinct values in accordance with the equality func", () =>
+        {
+            let duplicate = { id: 1, name: "shrey" };
+            let duplicates = [duplicate, { id: 2, name: "nivin" }, { id: 3, name: "shrey" }, duplicate];
+            let distinct = duplicates.distinct((t, u) => t.name === u.name);
+            assert.strictEqual(distinct.length, 2);
+            assert.ok(arrayEqual(distinct, [duplicates[0], duplicates[1]]));
+        });
+    });
+    
     suite("skip", () =>
     {
         test("should return a new empty array object when target is an empty array", () =>
