@@ -57,6 +57,7 @@ var ObjectExt = (function () {
         if (key == null || ObjectExt.stringIsWhiteSpace(key))
             return;
         key = key.trim();
+        value = value === undefined ? null : value;
         if (!ObjectExt.stringContains(key, "."))
             source[key] = value;
         var splitted = key.split(".").map(function (t) { return t.trim(); });

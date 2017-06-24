@@ -72,6 +72,7 @@ class ObjectExt
     {
         if (key == null || ObjectExt.stringIsWhiteSpace(key)) return;
         key = key.trim();
+        value = value === undefined ? null : value;
         if (!ObjectExt.stringContains(key, ".")) source[key] = value;
         
         let splitted = key.split(".").map(t => t.trim());
