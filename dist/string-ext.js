@@ -36,11 +36,14 @@ var StringExt = (function () {
         }
         return result;
     };
-    StringExt.replaceAll = function (primary, searchValue, replaceValue, ignoreCase) {
-        var matchOperatorsRe = /[|\\{}()[\]^$+*?.]/g;
-        var result = primary.replace(matchOperatorsRe, "\\$&");
-        var searchRe = new RegExp(searchValue, ignoreCase ? "gi" : "g");
-        return result.replace(searchRe, replaceValue);
+    StringExt.replaceAll = function (primary, searchValue, replaceValue) {
+        // let matchOperatorsRe = /[|\\{}()[\]^$+*?.]/g;
+        // let result = primary.replace(matchOperatorsRe, "\\$&");
+        // let searchRe = new RegExp(searchValue, ignoreCase ? "gi" : "g");
+        // return result.replace(searchRe, replaceValue);
+        while (primary.indexOf(searchValue) !== -1)
+            primary = primary.replace(searchValue, replaceValue);
+        return primary;
     };
     return StringExt;
 }());
@@ -100,8 +103,8 @@ Object.defineProperty(String.prototype, "replaceAll", {
     configurable: false,
     enumerable: false,
     writable: false,
-    value: function (searchValue, replaceValue, ignoreCase) {
-        return StringExt.replaceAll(this.toString(), searchValue, replaceValue, ignoreCase);
+    value: function (searchValue, replaceValue) {
+        return StringExt.replaceAll(this.toString(), searchValue, replaceValue);
     }
 });
 //# sourceMappingURL=string-ext.js.map

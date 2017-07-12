@@ -403,15 +403,26 @@ suite("StringExt", () =>
             assert.strictEqual(result, "Mr Blue has a red house and a red car");
         });
         
-        test("should replace all occurances of search value case insensitive if found", () =>
+        // test("should replace all occurances of search value case insensitive if found", () =>
+        // {
+        //     let target = "Mr Blue has a blue house and a blue car";
+        //     let searchValue = "blue";
+        //     let replaceValue = "red";
+
+        //     let result = target.replaceAll(searchValue, replaceValue, true);
+
+        //     assert.strictEqual(result, "Mr red has a red house and a red car");
+        // });
+        
+        test("should replace all occurances of search value when original value contains special characters", () =>
         {
-            let target = "Mr Blue has a blue house and a blue car";
-            let searchValue = "blue";
-            let replaceValue = "red";
+            let target = "http://localhost:4002/pim-api/getProducts?$pageNumber=1&$pageSize=500";
+            let searchValue = "Products";
+            let replaceValue = "Assets";
 
-            let result = target.replaceAll(searchValue, replaceValue, true);
+            let result = target.replaceAll(searchValue, replaceValue);
 
-            assert.strictEqual(result, "Mr red has a red house and a red car");
+            assert.strictEqual(result, "http://localhost:4002/pim-api/getAssets?$pageNumber=1&$pageSize=500");
         });
     });
 });
