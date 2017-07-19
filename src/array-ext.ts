@@ -150,7 +150,99 @@ class ArrayExt
 
         return true;
     }
+    
+    public static async parallelForEach<T>(array: T[], asyncFunc: (input: T) => Promise<void>, degreesOfParallelism: number): Promise<void>
+    {
+        if (!degreesOfParallelism || degreesOfParallelism <= 0)
+            degreesOfParallelism = array.length;
+        
+        let taskManager = new TaskManager(degreesOfParallelism, asyncFunc);
+        
+        for (let i = 0; i < array.length; i++)
+            await taskManager.executeTaskForItem(array[i], i);
+        
+        await taskManager.finish();
+    }
 }
+
+class TaskManager<T>
+{
+    private readonly _taskCount: number;
+    private readonly _taskFunc: (input: T) => Promise<void>;
+    private readonly _tasks: Task<T>[];
+    
+    
+    public constructor(taskCount: number, taskFunc: (input: T) => Promise<void>)
+    {
+        this._taskCount = taskCount;
+        this._taskFunc = taskFunc;
+        this._tasks = [];
+        for (let i = 0; i < this._taskCount; i++)
+            this._tasks.push(new Task<T>(i));
+    }
+    
+    
+    public async executeTaskForItem(item: T, itemIndex: number): Promise<void>
+    {
+        let availableTask = this._tasks.find(t => t.isFree);
+        if (!availableTask)
+        {
+            let task = await Promise.race(this._tasks.map(t => t.promise));
+            task.free();
+            availableTask = task;
+        }
+        
+        availableTask.execute(item, itemIndex, this._taskFunc);
+    }
+    
+    public finish(): Promise<any>
+    {
+        return Promise.all(this._tasks.filter(t => !t.isFree).map(t => t.promise));
+    }
+}   
+
+class Task<T>
+{
+    private readonly _id: number;
+    private _item: T;
+    private _itemIndex: number;
+    private _promise: Promise<Task<T>>;
+    
+    
+    public get id(): number { return this._id; }
+    public get item(): T { return this._item; }
+    public get itemIndex(): number { return this._itemIndex; }
+    public get promise(): Promise<Task<T>> { return this._promise; }
+    public get isFree(): boolean { return this._promise === null; }
+    
+    
+    public constructor(id: number)
+    {
+        this._id = id;
+        this._item = null;
+        this._itemIndex = null;
+        this._promise = null;
+    }
+    
+    
+    public execute(item: T, itemIndex: number, taskFunc: (input: T) => Promise<void>): void
+    {
+        this._item = item;
+        this._itemIndex = itemIndex;
+        this._promise = new Promise((resolve, reject) =>
+        {
+            taskFunc(item)
+                .then(() => resolve(this))
+                .catch((err) => reject(err));
+        });
+    }
+    
+    public free(): void
+    {
+        this._item = this._itemIndex = this._promise = null;
+    }
+}    
+   
 
 Object.defineProperty(Array.prototype, "orderBy", {
     configurable: false,
@@ -239,5 +331,15 @@ Object.defineProperty(Array.prototype, "equals", {
     value: function (compareArray: Array<any>): boolean
     {
         return ArrayExt.equals(this, compareArray);
+    }
+});
+
+Object.defineProperty(Array.prototype, "parallelForEach", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function (asyncFunc: (input: any) => Promise<void>, degreesOfParallelism: number): Promise<void>
+    {
+        return ArrayExt.parallelForEach(this, asyncFunc, degreesOfParallelism);
     }
 });

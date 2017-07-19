@@ -13,7 +13,7 @@ declare global
 
     interface Object
     {
-        mapToObject(factoryFunc: () => any): any;
+        // mapToObject(factoryFunc: () => any): any;
         getTypeName(): string;
         getValue(key: string): any;
         setValue(key: string, value: any): void;
@@ -33,7 +33,8 @@ declare global
         count(predicate: (value: T) => boolean): number;
         remove(value: T): boolean;
         clear(): void;
-        equals(compareArray: Array<T>): boolean
+        equals(compareArray: Array<T>): boolean;
+        parallelForEach<T>(asyncFunc: (input: T) => Promise<void>, degreesOfParallelism: number): Promise<void>;
     }
     
     interface ReadonlyArray<T>
@@ -48,7 +49,8 @@ declare global
         take(count: number): Array<T>;
         count(): number;
         count(predicate: (value: T) => boolean): number;
-        equals(compareArray: Array<T>): boolean
+        equals(compareArray: Array<T>): boolean;
+        parallelForEach<T>(asyncFunc: (input: T) => Promise<void>, degreesOfParallelism: number): Promise<void>;
     }    
 }
 

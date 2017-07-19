@@ -1,20 +1,20 @@
 class ObjectExt
 {
-    public static mapToObject(source: any, factoryFunc: () => any): any
-    {
-        let target = factoryFunc();
-        source = JSON.parse(JSON.stringify(source));
+    // public static mapToObject(source: any, factoryFunc: () => any): any
+    // {
+    //     let target = factoryFunc();
+    //     source = JSON.parse(JSON.stringify(source));
         
-        for (let key in source)
-        {
-            if (source.hasOwnProperty(key) && typeof source[key] !== "function" && typeof target[key] !== "function")
-            {
-                target[key] = source[key];
-            }
-        }
+    //     for (let key in source)
+    //     {
+    //         if (source.hasOwnProperty(key) && typeof source[key] !== "function" && typeof target[key] !== "function")
+    //         {
+    //             target[key] = source[key];
+    //         }
+    //     }
         
-        return target;
-    }
+    //     return target;
+    // }
     
     public static getTypeName(source: any): string 
     {
@@ -106,15 +106,15 @@ class ObjectExt
 }
 
 
-Object.defineProperty(Object.prototype, "mapToObject", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (factoryFunc: () => any): any
-    {
-        return ObjectExt.mapToObject(this, factoryFunc);
-    }
-});
+// Object.defineProperty(Object.prototype, "mapToObject", {
+//     configurable: false,
+//     enumerable: false,
+//     writable: false,
+//     value: function (factoryFunc: () => any): any
+//     {
+//         return ObjectExt.mapToObject(this, factoryFunc);
+//     }
+// });
 
 Object.defineProperty(Object.prototype, "getTypeName", {
     configurable: false,

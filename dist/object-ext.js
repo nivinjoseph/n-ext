@@ -1,19 +1,20 @@
-var ObjectExt = (function () {
-    function ObjectExt() {
-    }
-    ObjectExt.mapToObject = function (source, factoryFunc) {
-        var target = factoryFunc();
-        source = JSON.parse(JSON.stringify(source));
-        for (var key in source) {
-            if (source.hasOwnProperty(key) && typeof source[key] !== "function" && typeof target[key] !== "function") {
-                target[key] = source[key];
-            }
-        }
-        return target;
-    };
-    ObjectExt.getTypeName = function (source) {
-        var getName = function (funcDef) {
-            var name = funcDef.trim();
+class ObjectExt {
+    // public static mapToObject(source: any, factoryFunc: () => any): any
+    // {
+    //     let target = factoryFunc();
+    //     source = JSON.parse(JSON.stringify(source));
+    //     for (let key in source)
+    //     {
+    //         if (source.hasOwnProperty(key) && typeof source[key] !== "function" && typeof target[key] !== "function")
+    //         {
+    //             target[key] = source[key];
+    //         }
+    //     }
+    //     return target;
+    // }
+    static getTypeName(source) {
+        let getName = (funcDef) => {
+            let name = funcDef.trim();
             if (ObjectExt.stringStartsWith(name, "function")) {
                 name = name.substr("function".length);
                 name = name.substr(0, name.indexOf("("));
@@ -27,7 +28,7 @@ var ObjectExt = (function () {
             return name.trim();
         };
         if (typeof source === "object") {
-            var value = getName(source.constructor.toString());
+            let value = getName(source.constructor.toString());
             if (value === "n Object")
                 return "Object";
             else
@@ -37,59 +38,59 @@ var ObjectExt = (function () {
             return getName(source.toString());
         }
         return (typeof source);
-    };
-    ObjectExt.getValue = function (source, key) {
+    }
+    static getValue(source, key) {
         if (key == null || ObjectExt.stringIsWhiteSpace(key))
             return source;
         key = key.trim();
         if (!ObjectExt.stringContains(key, "."))
             return source[key] === undefined ? null : source[key];
-        var splitted = key.split(".").map(function (t) { return t.trim(); });
-        var current = source;
-        for (var i = 0; i < splitted.length; i++) {
+        let splitted = key.split(".").map(t => t.trim());
+        let current = source;
+        for (let i = 0; i < splitted.length; i++) {
             if (current === null || current === undefined)
                 return null;
             current = current[splitted[i]];
         }
         return current === undefined ? null : current;
-    };
-    ObjectExt.setValue = function (source, key, value) {
+    }
+    static setValue(source, key, value) {
         if (key == null || ObjectExt.stringIsWhiteSpace(key))
             return;
         key = key.trim();
         value = value === undefined ? null : value;
         if (!ObjectExt.stringContains(key, "."))
             source[key] = value;
-        var splitted = key.split(".").map(function (t) { return t.trim(); });
-        var current = source;
-        for (var i = 0; i < splitted.length - 1; i++) {
-            var next = current[splitted[i]];
+        let splitted = key.split(".").map(t => t.trim());
+        let current = source;
+        for (let i = 0; i < splitted.length - 1; i++) {
+            let next = current[splitted[i]];
             if (next === null || next === undefined)
                 next = {};
             current[splitted[i]] = next;
             current = next;
         }
         current[splitted[splitted.length - 1]] = value;
-    };
-    ObjectExt.stringIsWhiteSpace = function (value) {
-        return value.trim().length === 0;
-    };
-    ObjectExt.stringContains = function (primary, sub) {
-        return primary.indexOf(sub) !== -1;
-    };
-    ObjectExt.stringStartsWith = function (primary, sub) {
-        return primary.indexOf(sub) === 0;
-    };
-    return ObjectExt;
-}());
-Object.defineProperty(Object.prototype, "mapToObject", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (factoryFunc) {
-        return ObjectExt.mapToObject(this, factoryFunc);
     }
-});
+    static stringIsWhiteSpace(value) {
+        return value.trim().length === 0;
+    }
+    static stringContains(primary, sub) {
+        return primary.indexOf(sub) !== -1;
+    }
+    static stringStartsWith(primary, sub) {
+        return primary.indexOf(sub) === 0;
+    }
+}
+// Object.defineProperty(Object.prototype, "mapToObject", {
+//     configurable: false,
+//     enumerable: false,
+//     writable: false,
+//     value: function (factoryFunc: () => any): any
+//     {
+//         return ObjectExt.mapToObject(this, factoryFunc);
+//     }
+// });
 Object.defineProperty(Object.prototype, "getTypeName", {
     configurable: false,
     enumerable: false,

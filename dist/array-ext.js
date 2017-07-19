@@ -1,15 +1,21 @@
-var ArrayExt = (function () {
-    function ArrayExt() {
-    }
-    ArrayExt.orderBy = function (array, compareFunc) {
-        var internalArray = [];
-        for (var i = 0; i < array.length; i++)
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+class ArrayExt {
+    static orderBy(array, compareFunc) {
+        let internalArray = [];
+        for (let i = 0; i < array.length; i++)
             internalArray.push(array[i]);
         if (compareFunc == null)
-            compareFunc = function (value) { return value; };
-        internalArray.sort(function (a, b) {
-            var valA = compareFunc(a);
-            var valB = compareFunc(b);
+            compareFunc = (value) => value;
+        internalArray.sort((a, b) => {
+            let valA = compareFunc(a);
+            let valB = compareFunc(b);
             if (valA < valB)
                 return -1;
             if (valA > valB)
@@ -17,16 +23,16 @@ var ArrayExt = (function () {
             return 0;
         });
         return internalArray;
-    };
-    ArrayExt.orderByDesc = function (array, compareFunc) {
-        var internalArray = [];
-        for (var i = 0; i < array.length; i++)
+    }
+    static orderByDesc(array, compareFunc) {
+        let internalArray = [];
+        for (let i = 0; i < array.length; i++)
             internalArray.push(array[i]);
         if (compareFunc == null)
-            compareFunc = function (value) { return value; };
-        internalArray.sort(function (a, b) {
-            var valA = compareFunc(a);
-            var valB = compareFunc(b);
+            compareFunc = (value) => value;
+        internalArray.sort((a, b) => {
+            let valA = compareFunc(a);
+            let valB = compareFunc(b);
             if (valB < valA)
                 return -1;
             if (valB > valA)
@@ -34,68 +40,65 @@ var ArrayExt = (function () {
             return 0;
         });
         return internalArray;
-    };
-    ArrayExt.distinct = function (array, equalityFunc) {
+    }
+    static distinct(array, equalityFunc) {
         if (equalityFunc == null)
-            equalityFunc = function (value1, value2) { return value1 === value2; };
-        var internalArray = [];
-        var _loop_1 = function (i) {
-            var item = array[i];
-            if (internalArray.some(function (t) { return equalityFunc(t, item); }))
-                return "continue";
+            equalityFunc = (value1, value2) => value1 === value2;
+        let internalArray = [];
+        for (let i = 0; i < array.length; i++) {
+            let item = array[i];
+            if (internalArray.some(t => equalityFunc(t, item)))
+                continue;
             internalArray.push(item);
-        };
-        for (var i = 0; i < array.length; i++) {
-            _loop_1(i);
         }
         return internalArray;
-    };
-    ArrayExt.skip = function (array, count) {
+    }
+    static skip(array, count) {
         if (count < 0)
             count = 0;
-        var result = new Array();
-        for (var i = count; i < array.length; i++) {
+        let result = new Array();
+        for (let i = count; i < array.length; i++) {
             result.push(array[i]);
         }
         return result;
-    };
-    ArrayExt.take = function (array, count) {
+    }
+    static take(array, count) {
         if (count < 0)
             count = 0;
         else if (count > array.length)
             count = array.length;
-        var result = new Array();
-        for (var i = 0; i < count; i++) {
+        let result = new Array();
+        for (let i = 0; i < count; i++) {
             result.push(array[i]);
         }
         return result;
-    };
-    ArrayExt.count = function (array, predicate) {
+    }
+    static count(array, predicate) {
         if (predicate == null) {
             return array.length;
         }
         else {
-            var count = 0;
-            for (var i = 0; i < array.length; i++) {
+            let count = 0;
+            for (let i = 0; i < array.length; i++) {
                 if (predicate(array[i]))
                     count++;
             }
             return count;
         }
-    };
-    ArrayExt.remove = function (array, value) {
-        var index = array.indexOf(value);
+    }
+    static remove(array, value) {
+        let index = array.indexOf(value);
         if (index < 0)
             return false;
         array.splice(index, 1);
         return true;
-    };
-    ArrayExt.clear = function (array) {
+    }
+    static clear(array) {
         while (array.length > 0) {
             array.pop();
         }
-    };
-    ArrayExt.equals = function (array, compareArray) {
+    }
+    static equals(array, compareArray) {
         if (array === compareArray)
             return true;
         if (array === null || compareArray === null)
@@ -104,15 +107,72 @@ var ArrayExt = (function () {
             return false;
         if (array.length !== compareArray.length)
             return false;
-        for (var i = 0; i < array.length; i++) {
+        for (let i = 0; i < array.length; i++) {
             if (array[i] === compareArray[i])
                 continue;
             return false;
         }
         return true;
-    };
-    return ArrayExt;
-}());
+    }
+    static parallelForEach(array, asyncFunc, degreesOfParallelism) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!degreesOfParallelism || degreesOfParallelism <= 0)
+                degreesOfParallelism = array.length;
+            let taskManager = new TaskManager(degreesOfParallelism, asyncFunc);
+            for (let i = 0; i < array.length; i++)
+                yield taskManager.executeTaskForItem(array[i], i);
+            yield taskManager.finish();
+        });
+    }
+}
+class TaskManager {
+    constructor(taskCount, taskFunc) {
+        this._taskCount = taskCount;
+        this._taskFunc = taskFunc;
+        this._tasks = [];
+        for (let i = 0; i < this._taskCount; i++)
+            this._tasks.push(new Task(i));
+    }
+    executeTaskForItem(item, itemIndex) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let availableTask = this._tasks.find(t => t.isFree);
+            if (!availableTask) {
+                let task = yield Promise.race(this._tasks.map(t => t.promise));
+                task.free();
+                availableTask = task;
+            }
+            availableTask.execute(item, itemIndex, this._taskFunc);
+        });
+    }
+    finish() {
+        return Promise.all(this._tasks.filter(t => !t.isFree).map(t => t.promise));
+    }
+}
+class Task {
+    constructor(id) {
+        this._id = id;
+        this._item = null;
+        this._itemIndex = null;
+        this._promise = null;
+    }
+    get id() { return this._id; }
+    get item() { return this._item; }
+    get itemIndex() { return this._itemIndex; }
+    get promise() { return this._promise; }
+    get isFree() { return this._promise === null; }
+    execute(item, itemIndex, taskFunc) {
+        this._item = item;
+        this._itemIndex = itemIndex;
+        this._promise = new Promise((resolve, reject) => {
+            taskFunc(item)
+                .then(() => resolve(this))
+                .catch((err) => reject(err));
+        });
+    }
+    free() {
+        this._item = this._itemIndex = this._promise = null;
+    }
+}
 Object.defineProperty(Array.prototype, "orderBy", {
     configurable: false,
     enumerable: false,
@@ -183,6 +243,14 @@ Object.defineProperty(Array.prototype, "equals", {
     writable: false,
     value: function (compareArray) {
         return ArrayExt.equals(this, compareArray);
+    }
+});
+Object.defineProperty(Array.prototype, "parallelForEach", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function (asyncFunc, degreesOfParallelism) {
+        return ArrayExt.parallelForEach(this, asyncFunc, degreesOfParallelism);
     }
 });
 //# sourceMappingURL=array-ext.js.map

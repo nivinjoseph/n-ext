@@ -390,4 +390,29 @@ suite("ArrayExt", () =>
             assert.strictEqual(result, false);
         });
     });
+    
+    suite("parallelForEach", () =>
+    {
+        test("should successfully execute", async () =>
+        {
+            let target = [1, 2, 3, 4, 5];
+            let result: number[] = [];
+            let asyncFunc = (num: number) =>
+            {
+                return new Promise<void>((resolve, reject) =>
+                {
+                    setTimeout(() =>
+                    {
+                        result.push(num);
+                        resolve();
+                        
+                    }, num * 100);
+                });
+            };
+            
+            await target.parallelForEach(asyncFunc, 2);
+            
+            assert.strictEqual(target.length, result.length);
+        });
+    });
 });
