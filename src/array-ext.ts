@@ -47,18 +47,18 @@ class ArrayExt
     }
     
     public static distinct<T>(array: T[]): T[];
-    public static distinct<T>(array: T[], equalityFunc: (value1: T, value2: T) => boolean): T[];
-    public static distinct<T>(array: T[], equalityFunc?: (value1: T, value2: T) => boolean): T[]
+    public static distinct<T>(array: T[], compareFunc: (value: T) => any): T[];
+    public static distinct<T>(array: T[], compareFunc?: (value: T) => any): T[]
     {
-        if (equalityFunc == null)
-            equalityFunc = (value1: T, value2: T) => value1 === value2;
+        if (compareFunc == null)
+            compareFunc = (value: T) => value;
         
         let internalArray: T[] = [];
         
         for (let i = 0; i < array.length; i++)
         {
             let item = array[i];
-            if (internalArray.some(t => equalityFunc(t, item)))
+            if (internalArray.some(t => compareFunc(t) === compareFunc(item)))
                 continue;
             internalArray.push(item);
         }    
@@ -151,38 +151,85 @@ class ArrayExt
         return true;
     }
     
-    public static async parallelForEach<T>(array: T[], asyncFunc: (input: T) => Promise<void>, degreesOfParallelism: number): Promise<void>
+    public static async forEachAsync<T>(array: T[], asyncFunc: (input: T) => Promise<void>, degreesOfParallelism?: number): Promise<void>
+    {   
+        let taskManager = new TaskManager(array, asyncFunc, degreesOfParallelism, false);
+        await taskManager.execute();
+    }
+    
+    public static async mapAsync<T, U>(array: T[], asyncFunc: (input: T) => Promise<U>, degreesOfParallelism?: number): Promise<U[]>
     {
-        if (!degreesOfParallelism || degreesOfParallelism <= 0)
-            degreesOfParallelism = array.length;
+        let taskManager = new TaskManager(array, asyncFunc, degreesOfParallelism, true);
+        await taskManager.execute();
+        return taskManager.getResults();
+    }
+    
+    public static async reduceAsync<T, U>(array: T[], asyncFunc: (acc: U, input: T) => Promise<U>, accumulator?: U): Promise<U>
+    {
+        let index = 0;
+        if (accumulator === undefined)
+        {
+            accumulator = <any>array[0];
+            index = 1;
+        }
         
-        let taskManager = new TaskManager(degreesOfParallelism, asyncFunc);
+        for (let i = index; i < array.length; i++)
+            accumulator = await asyncFunc(accumulator, array[i]);
         
-        for (let i = 0; i < array.length; i++)
-            await taskManager.executeTaskForItem(array[i], i);
-        
-        await taskManager.finish();
+        return accumulator;
     }
 }
 
 class TaskManager<T>
 {
+    private readonly _array: T[];
+    private readonly _taskFunc: (input: T) => Promise<any>;
     private readonly _taskCount: number;
-    private readonly _taskFunc: (input: T) => Promise<void>;
+    private readonly _captureResults: boolean;
     private readonly _tasks: Task<T>[];
+    private readonly _results: any[];
     
     
-    public constructor(taskCount: number, taskFunc: (input: T) => Promise<void>)
+    public constructor(array: T[], taskFunc: (input: T) => Promise<any>, taskCount: number, captureResults: boolean)
     {
-        this._taskCount = taskCount;
+        this._array = array;
         this._taskFunc = taskFunc;
+        this._taskCount = !taskCount || taskCount <= 0 ? this._array.length : taskCount;
+        this._captureResults = captureResults;
+        
         this._tasks = [];
         for (let i = 0; i < this._taskCount; i++)
-            this._tasks.push(new Task<T>(i));
+            this._tasks.push(new Task<T>(this, i, this._taskFunc, captureResults));
+        
+        if (this._captureResults)
+            this._results = [];
     }
     
     
-    public async executeTaskForItem(item: T, itemIndex: number): Promise<void>
+    public async execute(): Promise<void>
+    {
+        for (let i = 0; i < this._array.length; i++)
+        {
+            if (this._captureResults)
+                this._results.push(null);
+            await this.executeTaskForItem(this._array[i], i);
+        }
+        
+        await this.finish();
+    }
+    
+    public addResult(itemIndex: number, result: any): void
+    {
+        this._results[itemIndex] = result;
+    }
+    
+    public getResults(): any[]
+    {
+        return this._results;
+    }
+    
+    
+    private async executeTaskForItem(item: T, itemIndex: number): Promise<void>
     {
         let availableTask = this._tasks.find(t => t.isFree);
         if (!availableTask)
@@ -192,10 +239,10 @@ class TaskManager<T>
             availableTask = task;
         }
         
-        availableTask.execute(item, itemIndex, this._taskFunc);
+        availableTask.execute(item, itemIndex);
     }
     
-    public finish(): Promise<any>
+    private finish(): Promise<any>
     {
         return Promise.all(this._tasks.filter(t => !t.isFree).map(t => t.promise));
     }
@@ -203,43 +250,45 @@ class TaskManager<T>
 
 class Task<T>
 {
+    private readonly _manager: TaskManager<T>;
     private readonly _id: number;
-    private _item: T;
-    private _itemIndex: number;
+    private readonly _taskFunc: (input: T) => Promise<any>;
+    private readonly _captureResult: boolean;
     private _promise: Promise<Task<T>>;
     
     
-    public get id(): number { return this._id; }
-    public get item(): T { return this._item; }
-    public get itemIndex(): number { return this._itemIndex; }
     public get promise(): Promise<Task<T>> { return this._promise; }
     public get isFree(): boolean { return this._promise === null; }
     
     
-    public constructor(id: number)
+    public constructor(manager: TaskManager<T>, id: number, taskFunc: (input: T) => Promise<any>, captureResult: boolean)
     {
+        this._manager = manager;
         this._id = id;
-        this._item = null;
-        this._itemIndex = null;
+        this._taskFunc = taskFunc;
+        this._captureResult = captureResult;
         this._promise = null;
     }
     
     
-    public execute(item: T, itemIndex: number, taskFunc: (input: T) => Promise<void>): void
+    public execute(item: T, itemIndex: number): void
     {
-        this._item = item;
-        this._itemIndex = itemIndex;
         this._promise = new Promise((resolve, reject) =>
         {
-            taskFunc(item)
-                .then(() => resolve(this))
+            this._taskFunc(item)
+                .then((result) =>
+                {
+                    if (this._captureResult)
+                        this._manager.addResult(itemIndex, result);
+                    resolve(this);
+                })
                 .catch((err) => reject(err));
         });
     }
     
     public free(): void
     {
-        this._item = this._itemIndex = this._promise = null;
+        this._promise = null;
     }
 }    
    
@@ -268,9 +317,9 @@ Object.defineProperty(Array.prototype, "distinct", {
     configurable: false,
     enumerable: false,
     writable: false,
-    value: function (equalityFunc?: (value1: any, value2: any) => boolean): Array<any>
+    value: function (compareFunc?: (value: any) => any): Array<any>
     {
-        return ArrayExt.distinct(this, equalityFunc);
+        return ArrayExt.distinct(this, compareFunc);
     }
 });
 
@@ -334,12 +383,32 @@ Object.defineProperty(Array.prototype, "equals", {
     }
 });
 
-Object.defineProperty(Array.prototype, "parallelForEach", {
+Object.defineProperty(Array.prototype, "forEachAsync", {
     configurable: false,
     enumerable: false,
     writable: false,
-    value: function (asyncFunc: (input: any) => Promise<void>, degreesOfParallelism: number): Promise<void>
+    value: function (asyncFunc: (input: any) => Promise<void>, degreesOfParallelism?: number): Promise<void>
     {
-        return ArrayExt.parallelForEach(this, asyncFunc, degreesOfParallelism);
+        return ArrayExt.forEachAsync(this, asyncFunc, degreesOfParallelism);
+    }
+});
+
+Object.defineProperty(Array.prototype, "mapAsync", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function (asyncFunc: (input: any) => Promise<any>, degreesOfParallelism?: number): Promise<any[]>
+    {
+        return ArrayExt.mapAsync(this, asyncFunc, degreesOfParallelism);
+    }
+});
+
+Object.defineProperty(Array.prototype, "reduceAsync", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function (asyncFunc: (acc: any, input: any) => Promise<any>, accumulator?: any): Promise<any>
+    {
+        return ArrayExt.reduceAsync(this, asyncFunc, accumulator);
     }
 });

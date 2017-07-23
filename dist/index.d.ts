@@ -26,7 +26,7 @@ declare global
         orderByDesc(): Array<T>;
         orderByDesc(compareFunc: (value: T) => any): Array<T>;
         distinct(): Array<T>;
-        distinct(equalityFunc: (value1: T, value2: T) => boolean): Array<T>;
+        distinct(compareFunc: (value: T) => any): Array<T>;
         skip(count: number): Array<T>;
         take(count: number): Array<T>;
         count(): number;
@@ -34,7 +34,9 @@ declare global
         remove(value: T): boolean;
         clear(): void;
         equals(compareArray: Array<T>): boolean;
-        parallelForEach<T>(asyncFunc: (input: T) => Promise<void>, degreesOfParallelism: number): Promise<void>;
+        forEachAsync<T>(asyncFunc: (input: T) => Promise<void>, degreesOfParallelism?: number): Promise<void>;
+        mapAsync<T, U>(asyncFunc: (input: T) => Promise<U>, degreesOfParallelism?: number): Promise<Array<U>>;
+        reduceAsync<T, U>(asyncFunc: (acc: U, input: T) => Promise<U>, accumulator?: U): Promise<U>;
     }
     
     interface ReadonlyArray<T>
@@ -44,13 +46,15 @@ declare global
         orderByDesc(): Array<T>;
         orderByDesc(compareFunc: (value: T) => any): Array<T>;
         distinct(): Array<T>;
-        distinct(equalityFunc: (value1: T, value2: T) => boolean): Array<T>;
+        distinct(compareFunc: (value: T) => any): Array<T>;
         skip(count: number): Array<T>;
         take(count: number): Array<T>;
         count(): number;
         count(predicate: (value: T) => boolean): number;
         equals(compareArray: Array<T>): boolean;
-        parallelForEach<T>(asyncFunc: (input: T) => Promise<void>, degreesOfParallelism: number): Promise<void>;
+        forEachAsync<T>(asyncFunc: (input: T) => Promise<void>, degreesOfParallelism?: number): Promise<void>;
+        mapAsync<T, U>(asyncFunc: (input: T) => Promise<U>, degreesOfParallelism?: number): Promise<Array<U>>;
+        reduceAsync<T, U>(asyncFunc: (acc: U, input: T) => Promise<U>, accumulator?: U): Promise<U>;
     }    
 }
 

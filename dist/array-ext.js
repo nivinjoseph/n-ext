@@ -41,13 +41,13 @@ class ArrayExt {
         });
         return internalArray;
     }
-    static distinct(array, equalityFunc) {
-        if (equalityFunc == null)
-            equalityFunc = (value1, value2) => value1 === value2;
+    static distinct(array, compareFunc) {
+        if (compareFunc == null)
+            compareFunc = (value) => value;
         let internalArray = [];
         for (let i = 0; i < array.length; i++) {
             let item = array[i];
-            if (internalArray.some(t => equalityFunc(t, item)))
+            if (internalArray.some(t => compareFunc(t) === compareFunc(item)))
                 continue;
             internalArray.push(item);
         }
@@ -114,24 +114,59 @@ class ArrayExt {
         }
         return true;
     }
-    static parallelForEach(array, asyncFunc, degreesOfParallelism) {
+    static forEachAsync(array, asyncFunc, degreesOfParallelism) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!degreesOfParallelism || degreesOfParallelism <= 0)
-                degreesOfParallelism = array.length;
-            let taskManager = new TaskManager(degreesOfParallelism, asyncFunc);
-            for (let i = 0; i < array.length; i++)
-                yield taskManager.executeTaskForItem(array[i], i);
-            yield taskManager.finish();
+            let taskManager = new TaskManager(array, asyncFunc, degreesOfParallelism, false);
+            yield taskManager.execute();
+        });
+    }
+    static mapAsync(array, asyncFunc, degreesOfParallelism) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let taskManager = new TaskManager(array, asyncFunc, degreesOfParallelism, true);
+            yield taskManager.execute();
+            return taskManager.getResults();
+        });
+    }
+    static reduceAsync(array, asyncFunc, accumulator) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let index = 0;
+            if (accumulator === undefined) {
+                accumulator = array[0];
+                index = 1;
+            }
+            for (let i = index; i < array.length; i++)
+                accumulator = yield asyncFunc(accumulator, array[i]);
+            return accumulator;
         });
     }
 }
 class TaskManager {
-    constructor(taskCount, taskFunc) {
-        this._taskCount = taskCount;
+    constructor(array, taskFunc, taskCount, captureResults) {
+        this._array = array;
         this._taskFunc = taskFunc;
+        this._taskCount = !taskCount || taskCount <= 0 ? this._array.length : taskCount;
+        this._captureResults = captureResults;
         this._tasks = [];
         for (let i = 0; i < this._taskCount; i++)
-            this._tasks.push(new Task(i));
+            this._tasks.push(new Task(this, i, this._taskFunc, captureResults));
+        if (this._captureResults)
+            this._results = [];
+    }
+    execute() {
+        return __awaiter(this, void 0, void 0, function* () {
+            for (let i = 0; i < this._array.length; i++) {
+                if (this._captureResults)
+                    this._results.push(null);
+                yield this.executeTaskForItem(this._array[i], i);
+            }
+            yield this.finish();
+        });
+    }
+    addResult(itemIndex, result) {
+        this._results[itemIndex] = result;
+    }
+    getResults() {
+        return this._results;
     }
     executeTaskForItem(item, itemIndex) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -141,7 +176,7 @@ class TaskManager {
                 task.free();
                 availableTask = task;
             }
-            availableTask.execute(item, itemIndex, this._taskFunc);
+            availableTask.execute(item, itemIndex);
         });
     }
     finish() {
@@ -149,28 +184,28 @@ class TaskManager {
     }
 }
 class Task {
-    constructor(id) {
+    constructor(manager, id, taskFunc, captureResult) {
+        this._manager = manager;
         this._id = id;
-        this._item = null;
-        this._itemIndex = null;
+        this._taskFunc = taskFunc;
+        this._captureResult = captureResult;
         this._promise = null;
     }
-    get id() { return this._id; }
-    get item() { return this._item; }
-    get itemIndex() { return this._itemIndex; }
     get promise() { return this._promise; }
     get isFree() { return this._promise === null; }
-    execute(item, itemIndex, taskFunc) {
-        this._item = item;
-        this._itemIndex = itemIndex;
+    execute(item, itemIndex) {
         this._promise = new Promise((resolve, reject) => {
-            taskFunc(item)
-                .then(() => resolve(this))
+            this._taskFunc(item)
+                .then((result) => {
+                if (this._captureResult)
+                    this._manager.addResult(itemIndex, result);
+                resolve(this);
+            })
                 .catch((err) => reject(err));
         });
     }
     free() {
-        this._item = this._itemIndex = this._promise = null;
+        this._promise = null;
     }
 }
 Object.defineProperty(Array.prototype, "orderBy", {
@@ -193,8 +228,8 @@ Object.defineProperty(Array.prototype, "distinct", {
     configurable: false,
     enumerable: false,
     writable: false,
-    value: function (equalityFunc) {
-        return ArrayExt.distinct(this, equalityFunc);
+    value: function (compareFunc) {
+        return ArrayExt.distinct(this, compareFunc);
     }
 });
 Object.defineProperty(Array.prototype, "skip", {
@@ -245,12 +280,28 @@ Object.defineProperty(Array.prototype, "equals", {
         return ArrayExt.equals(this, compareArray);
     }
 });
-Object.defineProperty(Array.prototype, "parallelForEach", {
+Object.defineProperty(Array.prototype, "forEachAsync", {
     configurable: false,
     enumerable: false,
     writable: false,
     value: function (asyncFunc, degreesOfParallelism) {
-        return ArrayExt.parallelForEach(this, asyncFunc, degreesOfParallelism);
+        return ArrayExt.forEachAsync(this, asyncFunc, degreesOfParallelism);
+    }
+});
+Object.defineProperty(Array.prototype, "mapAsync", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function (asyncFunc, degreesOfParallelism) {
+        return ArrayExt.mapAsync(this, asyncFunc, degreesOfParallelism);
+    }
+});
+Object.defineProperty(Array.prototype, "reduceAsync", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function (asyncFunc, accumulator) {
+        return ArrayExt.reduceAsync(this, asyncFunc, accumulator);
     }
 });
 //# sourceMappingURL=array-ext.js.map

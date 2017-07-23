@@ -162,7 +162,7 @@ suite("ArrayExt", () =>
         {
             let duplicate = { id: 1, name: "shrey" };
             let duplicates = [duplicate, { id: 2, name: "nivin" }, { id: 3, name: "shrey" }, duplicate];
-            let distinct = duplicates.distinct((t, u) => t.name === u.name);
+            let distinct = duplicates.distinct(t => t.name);
             assert.strictEqual(distinct.length, 2);
             assert.ok(arrayEqual(distinct, [duplicates[0], duplicates[1]]));
         });
@@ -391,11 +391,11 @@ suite("ArrayExt", () =>
         });
     });
     
-    suite("parallelForEach", () =>
+    suite("forEachAsync", () =>
     {
         test("should successfully execute", async () =>
         {
-            let target = [1, 2, 3, 4, 5];
+            let target = [1, 2, 3, 4, 5, 6];
             let result: number[] = [];
             let asyncFunc = (num: number) =>
             {
@@ -405,14 +405,101 @@ suite("ArrayExt", () =>
                     {
                         result.push(num);
                         resolve();
-                        
-                    }, num * 100);
+                    }, 200);
                 });
             };
             
-            await target.parallelForEach(asyncFunc, 2);
+            let before = Date.now();
+            await target.forEachAsync(asyncFunc, 2);
+            let after = Date.now();
             
             assert.strictEqual(target.length, result.length);
+            assert.ok(arrayEqual(result, target));
+            assert.ok((after - before) < 650);
+        });
+    });
+    
+    suite("mapAsync", () =>
+    {
+        test("should successfully execute", async () =>
+        {
+            let target = [1, 2, 3, 4, 5, 6];
+            let asyncFunc = (num: number) =>
+            {
+                return new Promise<number>((resolve, reject) =>
+                {
+                    setTimeout(() =>
+                    {
+                        resolve(num * num);
+                    }, 200);
+                });
+            };
+
+            let before = Date.now();
+            let result = await target.mapAsync(asyncFunc, 3);
+            let after = Date.now();
+
+            assert.strictEqual(target.length, result.length);
+            assert.ok(arrayEqual(result, [1, 4, 9, 16, 25, 36]));
+            assert.ok((after - before) < 650);
+        });
+    });
+    
+    suite("reduceAsync", () =>
+    {
+        test("should return right value when called without accumulator", async () =>
+        {
+            let target = [1, 2, 3, 4, 5, 6];
+            let numExecutions = 0;
+            let reduced = target.reduce((acc, num) =>
+            {
+                numExecutions++;
+                return acc + num;
+            });
+            
+            // console.log("numExecutions", numExecutions);
+            let asyncFunc = (acc: number, num: number) =>
+            {
+                return new Promise<number>((resolve, reject) =>
+                {
+                    setTimeout(() =>
+                    {
+                        resolve(acc + num);
+                    }, 200);
+                });
+            };
+
+            let before = Date.now();
+            let result = await target.reduceAsync(asyncFunc);
+            let after = Date.now();
+
+            assert.strictEqual(result, 21);
+            assert.strictEqual(result, reduced);
+            assert.ok((after - before) > 1000);
+        });
+        
+        test("should return right value when called with accumulator", async () =>
+        {
+            let target = [1, 2, 3, 4, 5, 6];
+            let reduced = target.reduce((acc, num) => acc + num, 0);
+            let asyncFunc = (acc: number, num: number) =>
+            {
+                return new Promise<number>((resolve, reject) =>
+                {
+                    setTimeout(() =>
+                    {
+                        resolve(acc + num);
+                    }, 200);
+                });
+            };
+
+            let before = Date.now();
+            let result = await target.reduceAsync(asyncFunc, 0);
+            let after = Date.now();
+
+            assert.strictEqual(result, 21);
+            assert.strictEqual(result, reduced);
+            assert.ok((after - before) > 1200);
         });
     });
 });
