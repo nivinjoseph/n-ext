@@ -22,6 +22,7 @@ declare global
 
     interface Array<T>
     {
+        contains(value: T): boolean;
         orderBy(): Array<T>;
         orderBy(compareFunc: (value: T) => any): Array<T>;
         orderByDesc(): Array<T>;
@@ -42,6 +43,7 @@ declare global
     
     interface ReadonlyArray<T>
     {
+        contains(value: T): boolean;
         orderBy(): Array<T>;
         orderBy(compareFunc: (value: T) => any): Array<T>;
         orderByDesc(): Array<T>;

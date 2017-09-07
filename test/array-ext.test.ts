@@ -54,6 +54,23 @@ suite("ArrayExt", () =>
 
         return true;
     };
+    
+    suite("contains", () =>
+    {
+        test("should return true if item is in the target array", () =>
+        {
+            let target = ["a", "b", "c"];
+            let result = target.contains("c");
+            assert.strictEqual(result, true);
+        });
+        
+        test("should return false if item is not in the target array", () =>
+        {
+            let target = [1, 2, 3];
+            let result = target.contains(4);
+            assert.strictEqual(result, false);
+        });
+    });
 
     suite("orderBy", () =>
     {

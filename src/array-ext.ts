@@ -1,5 +1,10 @@
 class ArrayExt
 {
+    public static contains<T>(array: T[], value: T): boolean
+    {
+        return array.some(t => t === value);
+    }
+    
     public static orderBy<T>(array: T[]): T[];
     public static orderBy<T>(array: T[], compareFunc: (value: T) => any): T[];
     public static orderBy<T>(array: T[], compareFunc?: (value: T) => any): T[]
@@ -290,7 +295,17 @@ class Task<T>
     {
         this._promise = null;
     }
-}    
+}   
+
+Object.defineProperty(Array.prototype, "contains", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function (value: any): boolean
+    {
+        return ArrayExt.contains(this, value);
+    }
+});
    
 
 Object.defineProperty(Array.prototype, "orderBy", {

@@ -7,6 +7,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 class ArrayExt {
+    static contains(array, value) {
+        return array.some(t => t === value);
+    }
     static orderBy(array, compareFunc) {
         let internalArray = [];
         for (let i = 0; i < array.length; i++)
@@ -208,6 +211,14 @@ class Task {
         this._promise = null;
     }
 }
+Object.defineProperty(Array.prototype, "contains", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function (value) {
+        return ArrayExt.contains(this, value);
+    }
+});
 Object.defineProperty(Array.prototype, "orderBy", {
     configurable: false,
     enumerable: false,
