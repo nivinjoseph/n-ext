@@ -49,6 +49,19 @@ suite("ObjectExt", () =>
     //     });
     // });
     
+    suite("merge", () =>
+    {
+        test("should successfully merge", () =>
+        {
+            let obj: Object = { a: 1, b: "2" };
+            let val = { b: 2, c: false };
+            
+            obj.merge(val);
+            
+            assert.deepStrictEqual(obj, { a: 1, b: 2, c: false });
+        });
+    });
+    
     suite("getTypeName", () =>
     {
         let val: Object = null;

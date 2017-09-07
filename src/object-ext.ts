@@ -16,6 +16,11 @@ class ObjectExt
     //     return target;
     // }
     
+    public static merge(target: object, source: object): void
+    {
+        Object.assign(target, source);
+    }
+    
     public static getTypeName(source: any): string 
     {
         let getName = (funcDef: string) =>
@@ -115,6 +120,16 @@ class ObjectExt
 //         return ObjectExt.mapToObject(this, factoryFunc);
 //     }
 // });
+
+Object.defineProperty(Object.prototype, "merge", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function (value: object): void
+    {
+        ObjectExt.merge(this, value);
+    }
+});
 
 Object.defineProperty(Object.prototype, "getTypeName", {
     configurable: false,
