@@ -14,7 +14,7 @@ declare global
     interface Object
     {
         // mapToObject(factoryFunc: () => any): any;
-        merge(value: object): void;
+        // merge(value: object): void;
         getTypeName(): string;
         getValue(key: string): any;
         setValue(key: string, value: any): void;

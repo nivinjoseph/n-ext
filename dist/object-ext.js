@@ -12,9 +12,10 @@ class ObjectExt {
     //     }
     //     return target;
     // }
-    static merge(target, source) {
-        Object.assign(target, source);
-    }
+    // public static merge(target: object, source: object): void
+    // {
+    //     Object.assign(target, source);
+    // }
     static getTypeName(source) {
         let getName = (funcDef) => {
             let name = funcDef.trim();
@@ -94,14 +95,15 @@ class ObjectExt {
 //         return ObjectExt.mapToObject(this, factoryFunc);
 //     }
 // });
-Object.defineProperty(Object.prototype, "merge", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (value) {
-        ObjectExt.merge(this, value);
-    }
-});
+// Object.defineProperty(Object.prototype, "merge", {
+//     configurable: false,
+//     enumerable: false,
+//     writable: false,
+//     value: function (value: object): void
+//     {
+//         ObjectExt.merge(this, value);
+//     }
+// });
 Object.defineProperty(Object.prototype, "getTypeName", {
     configurable: false,
     enumerable: false,
