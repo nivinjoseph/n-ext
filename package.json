@@ -1,6 +1,6 @@
 {
   "name": "n-ext",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "description": "Extensions for core Javascript types",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
