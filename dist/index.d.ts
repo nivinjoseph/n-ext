@@ -9,6 +9,10 @@ declare global
         extractNumbers(): string;
         format(...params: any[]): string;
         replaceAll(searchValue: string, replaceValue: string): string;
+        base64Encode(): string;
+        base64Decode(): string;
+        base64UrlEncode(): string;
+        base64UrlDecode(): string;
     }
 
     interface Object

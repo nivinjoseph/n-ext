@@ -58,6 +58,55 @@ class StringExt
         
         return primary;
     }
+    
+    public static base64Encode(value: string): string
+    {
+        return Buffer.from(value, "utf8").toString("base64");
+    }
+    
+    public static base64Decode(value: string): string
+    {
+        return Buffer.from(value, "base64").toString("utf8");
+    }
+    
+    public static base64UrlEncode(value: string): string
+    {
+        return Buffer.from(value, "utf8").toString("base64")
+            .replace(/=/g, "")
+            .replace(/\+/g, "-")
+            .replace(/\//g, "_");
+    }
+    
+    public static base64UrlDecode(value: string): string
+    {
+        value = StringExt.padString(value)
+            .replace(/\-/g, "+")
+            .replace(/_/g, "/");
+        
+        return Buffer.from(value, "base64").toString("utf8");
+    }
+    
+    
+    private static padString(input: string): string
+    {
+        let segmentLength = 4;
+        let stringLength = input.length;
+        let diff = stringLength % segmentLength;
+
+        if (!diff)
+            return input;
+
+        let position = stringLength;
+        let padLength = segmentLength - diff;
+        let paddedStringLength = stringLength + padLength;
+        let buffer = new Buffer(paddedStringLength);
+        buffer.write(input);
+
+        while (padLength--)
+            buffer.write("=", position++);
+
+        return buffer.toString();
+    }
 }
 
 
@@ -128,5 +177,45 @@ Object.defineProperty(String.prototype, "replaceAll", {
     value: function (searchValue: string, replaceValue: string): string
     {
         return StringExt.replaceAll(this.toString(), searchValue, replaceValue);
+    }
+});
+
+Object.defineProperty(String.prototype, "base64Encode", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function (): string
+    {
+        return StringExt.base64Encode(this.toString());
+    }
+});
+
+Object.defineProperty(String.prototype, "base64Decode", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function (): string
+    {
+        return StringExt.base64Decode(this.toString());
+    }
+});
+
+Object.defineProperty(String.prototype, "base64UrlEncode", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function (): string
+    {
+        return StringExt.base64UrlEncode(this.toString());
+    }
+});
+
+Object.defineProperty(String.prototype, "base64UrlDecode", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function (): string
+    {
+        return StringExt.base64UrlDecode(this.toString());
     }
 });

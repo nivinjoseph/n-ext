@@ -425,4 +425,30 @@ suite("StringExt", () =>
             assert.strictEqual(result, "http://localhost:4002/pim-api/getAssets?$pageNumber=1&$pageSize=500");
         });
     });
+    
+    suite("base64Encode and base64Decode", () =>
+    {
+        test("should successfully encode and decode", () =>
+        {
+            let value = "sdjhfbe326t3rguy78hy^T^%R*uq9321we183et++==hgdedrt^%$#@!)(*";
+            let encoded = value.base64Encode();
+            // console.log(encoded);
+            assert.notStrictEqual(encoded, value);
+            let decoded = encoded.base64Decode();
+            assert.strictEqual(decoded, value);
+        });
+    });
+    
+    suite("base64UrlEncode and base64UrlDecode", () =>
+    {
+        test("should successfully encode and decode", () =>
+        {
+            let value = "sdjhfbe326t3rguy78hy^T^%R*uq9321we183et++==hgdedrt^%$#@!)(*";
+            let encoded = value.base64UrlEncode();
+            // console.log(encoded);
+            assert.notStrictEqual(encoded, value);
+            let decoded = encoded.base64UrlDecode();
+            assert.strictEqual(decoded, value);
+        });
+    });
 });
