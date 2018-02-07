@@ -144,7 +144,7 @@ Object.defineProperty(Object.prototype, "getTypeName", {
 Object.defineProperty(Object.prototype, "getValue", {
     configurable: false,
     enumerable: false,
-    writable: false,
+    writable: true,
     value: function (key: string): any
     {
         return ObjectExt.getValue(this, key);
@@ -154,7 +154,7 @@ Object.defineProperty(Object.prototype, "getValue", {
 Object.defineProperty(Object.prototype, "setValue", {
     configurable: false,
     enumerable: false,
-    writable: false,
+    writable: true,
     value: function (key: string, value: any): void
     {
         ObjectExt.setValue(this, key, value);
