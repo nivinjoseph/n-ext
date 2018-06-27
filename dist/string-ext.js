@@ -1,3 +1,6 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const buffer_1 = require("buffer");
 class StringExt {
     static isEmptyOrWhiteSpace(value) {
         return value.trim().length === 0;
@@ -16,6 +19,9 @@ class StringExt {
     }
     static extractNumbers(value) {
         return value.replace(/[^0-9]/g, "");
+    }
+    static extractCharacters(value) {
+        return value.replace(/[^a-zA-Z ]/g, "");
     }
     static format(formatString, ...params) {
         let result = formatString.toString();
@@ -40,13 +46,13 @@ class StringExt {
         return primary;
     }
     static base64Encode(value) {
-        return Buffer.from(value, "utf8").toString("base64");
+        return buffer_1.Buffer.from(value, "utf8").toString("base64");
     }
     static base64Decode(value) {
-        return Buffer.from(value, "base64").toString("utf8");
+        return buffer_1.Buffer.from(value, "base64").toString("utf8");
     }
     static base64UrlEncode(value) {
-        return Buffer.from(value, "utf8").toString("base64")
+        return buffer_1.Buffer.from(value, "utf8").toString("base64")
             .replace(/=/g, "")
             .replace(/\+/g, "-")
             .replace(/\//g, "_");
@@ -55,7 +61,7 @@ class StringExt {
         value = StringExt.padString(value)
             .replace(/\-/g, "+")
             .replace(/_/g, "/");
-        return Buffer.from(value, "base64").toString("utf8");
+        return buffer_1.Buffer.from(value, "base64").toString("utf8");
     }
     static padString(input) {
         let segmentLength = 4;
@@ -66,7 +72,7 @@ class StringExt {
         let position = stringLength;
         let padLength = segmentLength - diff;
         let paddedStringLength = stringLength + padLength;
-        let buffer = new Buffer(paddedStringLength);
+        let buffer = new buffer_1.Buffer(paddedStringLength);
         buffer.write(input);
         while (padLength--)
             buffer.write("=", position++);
@@ -111,6 +117,14 @@ Object.defineProperty(String.prototype, "extractNumbers", {
     writable: false,
     value: function () {
         return StringExt.extractNumbers(this.toString());
+    }
+});
+Object.defineProperty(String.prototype, "extractCharacters", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function () {
+        return StringExt.extractCharacters(this.toString());
     }
 });
 Object.defineProperty(String.prototype, "format", {
