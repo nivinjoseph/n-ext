@@ -33,5 +33,8 @@
     "ts-node": "^2.1.0",
     "tslint": "^4.5.1",
     "typescript": "^2.2.1"
+  },
+  "dependencies": {
+    "buffer": "^5.1.0"
   }
 }

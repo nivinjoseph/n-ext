@@ -7,6 +7,7 @@ declare global
         startsWith(value: string): boolean;
         endsWith(value: string): boolean;
         extractNumbers(): string;
+        extractCharacters(): string;
         format(...params: any[]): string;
         replaceAll(searchValue: string, replaceValue: string): string;
         base64Encode(): string;

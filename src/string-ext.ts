@@ -1,3 +1,6 @@
+import { Buffer } from "buffer";
+
+
 class StringExt
 {
     public static isEmptyOrWhiteSpace(value: string): boolean
@@ -25,6 +28,11 @@ class StringExt
     public static extractNumbers(value: string): string
     {
         return value.replace(/[^0-9]/g, "");
+    }
+    
+    public static extractCharacters(value: string): string
+    {
+        return value.replace(/[^a-zA-Z ]/g, "");
     }
 
     public static format(formatString: string, ...params: any[]): string
@@ -157,6 +165,16 @@ Object.defineProperty(String.prototype, "extractNumbers", {
     value: function (): string
     {
         return StringExt.extractNumbers(this.toString());
+    }
+});
+
+Object.defineProperty(String.prototype, "extractCharacters", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function (): string
+    {
+        return StringExt.extractCharacters(this.toString());
     }
 });
 

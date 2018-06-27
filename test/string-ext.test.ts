@@ -297,13 +297,50 @@ suite("StringExt", () =>
             assert.strictEqual(result, "123");
         });
         
-        test("should return all numbers when target string has numbers scattered throught", () =>
+        test("should return all numbers when target string has numbers scattered through out", () =>
         {
-            let target = "1a2b3c";
+            let target = "1a24-b34__89c/78l";
             let result = target.extractNumbers();
-            assert.strictEqual(result, "123");
+            assert.strictEqual(result, "124348978");
         });
-        
+    });
+    
+    suite("extractCharacters", () =>
+    {
+        test("should return empty string when target string contains no characters", () =>
+        {
+            let target = "123";
+            let result = target.extractCharacters();
+            assert.strictEqual(result, "");
+        });
+
+        test("should return characters when target string has characters at the beginning", () =>
+        {
+            let target = "ab c 123";
+            let result = target.extractCharacters();
+            assert.strictEqual(result, "ab c ");
+        });
+
+        test("should return characters when target string has characters at the end", () =>
+        {
+            let target = "123ab c";
+            let result = target.extractCharacters();
+            assert.strictEqual(result, "ab c");
+        });
+
+        test("should return characters when target string has characters in the middle", () =>
+        {
+            let target = "123abc345 ";
+            let result = target.extractCharacters();
+            assert.strictEqual(result, "abc ");
+        });
+
+        test("should return all characters when target string has characters scattered through out", () =>
+        {
+            let target = "1a24bk-jf348 9c  78l ";
+            let result = target.extractCharacters();
+            assert.strictEqual(result, "abkjf c  l ");
+        });
     });
     
     suite("format", () =>
