@@ -73,25 +73,25 @@ suite("ObjectExt", () =>
             typeName = null;
         });
         
-        test("should return 'Number' for number instance", () =>
+        test("should return 'number' for number instance", () =>
         {
             val = 1;
             typeName = val.getTypeName();
-            assert.strictEqual(typeName, "Number");
+            assert.strictEqual(typeName, "number");
         });
         
-        test("should return 'Boolean' for bool instance", () =>
+        test("should return 'boolean' for bool instance", () =>
         {
             val = true;
             typeName = val.getTypeName();
-            assert.strictEqual(typeName, "Boolean");
+            assert.strictEqual(typeName, "boolean");
         });
         
-        test("should return 'String' for string instance", () =>
+        test("should return 'string' for string instance", () =>
         {
             val = "value";
             typeName = val.getTypeName();
-            assert.strictEqual(typeName, "String");
+            assert.strictEqual(typeName, "string");
         });
         
         test("should return 'Array' for array instance", () =>

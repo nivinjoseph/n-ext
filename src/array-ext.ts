@@ -256,6 +256,7 @@ class TaskManager<T>
 class Task<T>
 {
     private readonly _manager: TaskManager<T>;
+    // @ts-ignore
     private readonly _id: number;
     private readonly _taskFunc: (input: T) => Promise<any>;
     private readonly _captureResult: boolean;

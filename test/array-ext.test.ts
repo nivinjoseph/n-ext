@@ -416,6 +416,7 @@ suite("ArrayExt", () =>
             let result: number[] = [];
             let asyncFunc = (num: number) =>
             {
+                // @ts-ignore
                 return new Promise<void>((resolve, reject) =>
                 {
                     setTimeout(() =>
@@ -443,6 +444,7 @@ suite("ArrayExt", () =>
             let target = [1, 2, 3, 4, 5, 6];
             let asyncFunc = (num: number) =>
             {
+                // @ts-ignore
                 return new Promise<number>((resolve, reject) =>
                 {
                     setTimeout(() =>
@@ -467,6 +469,7 @@ suite("ArrayExt", () =>
         test("should return right value when called without accumulator", async () =>
         {
             let target = [1, 2, 3, 4, 5, 6];
+            // @ts-ignore
             let numExecutions = 0;
             let reduced = target.reduce((acc, num) =>
             {
@@ -477,6 +480,7 @@ suite("ArrayExt", () =>
             // console.log("numExecutions", numExecutions);
             let asyncFunc = (acc: number, num: number) =>
             {
+                // @ts-ignore
                 return new Promise<number>((resolve, reject) =>
                 {
                     setTimeout(() =>
@@ -501,6 +505,7 @@ suite("ArrayExt", () =>
             let reduced = target.reduce((acc, num) => acc + num, 0);
             let asyncFunc = (acc: number, num: number) =>
             {
+                // @ts-ignore
                 return new Promise<number>((resolve, reject) =>
                 {
                     setTimeout(() =>
