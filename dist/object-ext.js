@@ -1,21 +1,5 @@
+"use strict";
 class ObjectExt {
-    // public static mapToObject(source: any, factoryFunc: () => any): any
-    // {
-    //     let target = factoryFunc();
-    //     source = JSON.parse(JSON.stringify(source));
-    //     for (let key in source)
-    //     {
-    //         if (source.hasOwnProperty(key) && typeof source[key] !== "function" && typeof target[key] !== "function")
-    //         {
-    //             target[key] = source[key];
-    //         }
-    //     }
-    //     return target;
-    // }
-    // public static merge(target: object, source: object): void
-    // {
-    //     Object.assign(target, source);
-    // }
     static getTypeName(source) {
         let getName = (funcDef) => {
             let name = funcDef.trim();
@@ -86,24 +70,6 @@ class ObjectExt {
         return primary.indexOf(sub) === 0;
     }
 }
-// Object.defineProperty(Object.prototype, "mapToObject", {
-//     configurable: false,
-//     enumerable: false,
-//     writable: false,
-//     value: function (factoryFunc: () => any): any
-//     {
-//         return ObjectExt.mapToObject(this, factoryFunc);
-//     }
-// });
-// Object.defineProperty(Object.prototype, "merge", {
-//     configurable: false,
-//     enumerable: false,
-//     writable: false,
-//     value: function (value: object): void
-//     {
-//         ObjectExt.merge(this, value);
-//     }
-// });
 Object.defineProperty(Object.prototype, "getTypeName", {
     configurable: false,
     enumerable: false,
