@@ -81,8 +81,8 @@ class ObjectExt {
         });
         return target;
     }
-    static deserialize(source, targetClass, ...keys) {
-        const values = keys.map(t => {
+    static deserialize(source, targetClass, ...keysOrValues) {
+        const values = keysOrValues.map(t => {
             if (typeof (t) === "string") {
                 const key = t.trim();
                 return key[0] === ":" ? key.substr(1) : ObjectExt.getValue(source, key);
@@ -138,8 +138,8 @@ Object.defineProperty(Object.prototype, "deserialize", {
     configurable: false,
     enumerable: false,
     writable: false,
-    value: function (targetClass, ...keys) {
-        return ObjectExt.deserialize(this, targetClass, ...keys);
+    value: function (targetClass, ...keysOrValues) {
+        return ObjectExt.deserialize(this, targetClass, ...keysOrValues);
     }
 });
 //# sourceMappingURL=object-ext.js.map
