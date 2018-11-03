@@ -124,9 +124,9 @@ class ObjectExt
         return target;
     }
 
-    public static deserialize(source: any, targetClass: Function, ...keys: Array<any>): object
+    public static deserialize(source: any, targetClass: Function, ...keysOrValues: Array<any>): object
     {
-        const values = keys.map(t =>
+        const values = keysOrValues.map(t =>
         {
             if (typeof (t) === "string")
             {
@@ -223,8 +223,8 @@ Object.defineProperty(Object.prototype, "deserialize", {
     configurable: false,
     enumerable: false,
     writable: false,
-    value: function (targetClass: Function, ...keys: Array<any>): object
+    value: function (targetClass: Function, ...keysOrValues: Array<any>): object
     {
-        return ObjectExt.deserialize(this, targetClass, ...keys);
+        return ObjectExt.deserialize(this, targetClass, ...keysOrValues);
     }
 });
