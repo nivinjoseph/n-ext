@@ -42,15 +42,15 @@ class ObjectExt {
         }
         return current === undefined ? null : current;
     }
-    static setValue(source, key, value) {
+    static setValue(target, key, value) {
         if (key == null || ObjectExt.stringIsWhiteSpace(key))
             return;
         key = key.trim();
         value = value === undefined ? null : value;
         if (!ObjectExt.stringContains(key, "."))
-            source[key] = value;
+            target[key] = value;
         let splitted = key.split(".").map(t => t.trim());
-        let current = source;
+        let current = target;
         for (let i = 0; i < splitted.length - 1; i++) {
             let next = current[splitted[i]];
             if (next === null || next === undefined)
@@ -59,6 +59,38 @@ class ObjectExt {
             current = next;
         }
         current[splitted[splitted.length - 1]] = value;
+    }
+    static serialize(source, ...keys) {
+        const keyMaps = keys.map(t => {
+            if (ObjectExt.stringContains(t, " as ")) {
+                const splitted = t.split(" as ");
+                return {
+                    sourceKey: splitted[0].trim(),
+                    targetKey: splitted[1].trim()
+                };
+            }
+            return {
+                sourceKey: t,
+                targetKey: t
+            };
+        });
+        const target = {};
+        keyMaps.forEach(t => {
+            const value = ObjectExt.getValue(source, t.sourceKey);
+            ObjectExt.setValue(target, t.targetKey, value);
+        });
+        return target;
+    }
+    static deserialize(source, targetClass, ...keys) {
+        const values = keys.map(t => {
+            if (typeof (t) === "string") {
+                const key = t.trim();
+                return key[0] === ":" ? key.substr(1) : ObjectExt.getValue(source, key);
+            }
+            return t;
+        });
+        const target = new targetClass(...values);
+        return target;
     }
     static stringIsWhiteSpace(value) {
         return value.trim().length === 0;
@@ -92,6 +124,22 @@ Object.defineProperty(Object.prototype, "setValue", {
     writable: true,
     value: function (key, value) {
         ObjectExt.setValue(this, key, value);
+    }
+});
+Object.defineProperty(Object.prototype, "serialize", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function (...keys) {
+        return ObjectExt.serialize(this, ...keys);
+    }
+});
+Object.defineProperty(Object.prototype, "deserialize", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function (targetClass, ...keys) {
+        return ObjectExt.deserialize(this, targetClass, ...keys);
     }
 });
 //# sourceMappingURL=object-ext.js.map
