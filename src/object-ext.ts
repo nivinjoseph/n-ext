@@ -73,15 +73,15 @@ class ObjectExt
         return current === undefined ? null : current;
     }
     
-    public static setValue(source: any, key: string, value: any): void
+    public static setValue(target: any, key: string, value: any): void
     {
         if (key == null || ObjectExt.stringIsWhiteSpace(key)) return;
         key = key.trim();
         value = value === undefined ? null : value;
-        if (!ObjectExt.stringContains(key, ".")) source[key] = value;
+        if (!ObjectExt.stringContains(key, ".")) target[key] = value;
         
         let splitted = key.split(".").map(t => t.trim());
-        let current = source;
+        let current = target;
         
         for (let i = 0; i < splitted.length - 1; i++)
         {
@@ -93,7 +93,55 @@ class ObjectExt
         
         current[splitted[splitted.length - 1]] = value;
     }
+
+    public static serialize(source: any, ...keys: Array<string>): object
+    {
+        const keyMaps = keys.map(t =>
+        {
+            if (ObjectExt.stringContains(t, " as "))
+            {
+                const splitted = t.split(" as ");
+                return {
+                    sourceKey: splitted[0].trim(),
+                    targetKey: splitted[1].trim()
+                };
+            }
+            
+            return {
+                sourceKey: t,
+                targetKey: t
+            };
+        });
+
+        const target = {};
+
+        keyMaps.forEach(t =>
+        {
+            const value = ObjectExt.getValue(source, t.sourceKey);
+            ObjectExt.setValue(target, t.targetKey, value);
+        });
+
+        return target;
+    }
+
+    public static deserialize(source: any, targetClass: Function, ...keys: Array<any>): object
+    {
+        const values = keys.map(t =>
+        {
+            if (typeof (t) === "string")
+            {
+                const key = t.trim();
+                return key[0] === ":" ? key.substr(1) : ObjectExt.getValue(source, key);
+            }
+            
+            return t;
+        });
+
+        const target = new (<any>targetClass)(...values);
+        return target;
+    }
     
+
     private static stringIsWhiteSpace(value: string): boolean
     {
         return value.trim().length === 0;
@@ -158,5 +206,25 @@ Object.defineProperty(Object.prototype, "setValue", {
     value: function (key: string, value: any): void
     {
         ObjectExt.setValue(this, key, value);
+    }
+});
+
+Object.defineProperty(Object.prototype, "serialize", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function (...keys: Array<string>): object
+    {
+        return ObjectExt.serialize(this, ...keys);
+    }
+});
+
+Object.defineProperty(Object.prototype, "deserialize", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function (targetClass: Function, ...keys: Array<any>): object
+    {
+        return ObjectExt.deserialize(this, targetClass, ...keys);
     }
 });

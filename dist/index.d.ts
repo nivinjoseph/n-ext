@@ -23,6 +23,8 @@ declare global
         getTypeName(): string;
         getValue(key: string): any;
         setValue(key: string, value: any): void;
+        serialize(...keys: Array<string>): object;
+        deserialize(targetClass: Function, ...keys: Array<any>): object;
     }
 
     interface Array<T>
