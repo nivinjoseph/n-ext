@@ -81,16 +81,24 @@ class ObjectExt {
         });
         return target;
     }
-    static deserialize(source, targetClass, ...keysOrValues) {
-        const values = keysOrValues.map(t => {
-            if (typeof (t) === "string") {
-                const key = t.trim();
-                return key[0] === ":" ? key.substr(1) : ObjectExt.getValue(source, key);
-            }
-            return t;
-        });
-        const target = new targetClass(...values);
-        return target;
+    static deserialize(source, targetClassOrObject, ...keysOrValues) {
+        if (typeof (targetClassOrObject) === "function") {
+            const values = keysOrValues.map(t => {
+                if (typeof (t) === "string") {
+                    const key = t.trim();
+                    return key[0] === ":" ? key.substr(1) : ObjectExt.getValue(source, key);
+                }
+                return t;
+            });
+            return new targetClassOrObject(...values);
+        }
+        else {
+            keysOrValues.forEach(t => {
+                const value = ObjectExt.getValue(source, t);
+                ObjectExt.setValue(targetClassOrObject, t, value);
+            });
+            return targetClassOrObject;
+        }
     }
     static stringIsWhiteSpace(value) {
         return value.trim().length === 0;
@@ -129,7 +137,7 @@ Object.defineProperty(Object.prototype, "setValue", {
 Object.defineProperty(Object.prototype, "serialize", {
     configurable: false,
     enumerable: false,
-    writable: false,
+    writable: true,
     value: function (...keys) {
         return ObjectExt.serialize(this, ...keys);
     }
@@ -138,8 +146,8 @@ Object.defineProperty(Object.prototype, "deserialize", {
     configurable: false,
     enumerable: false,
     writable: false,
-    value: function (targetClass, ...keysOrValues) {
-        return ObjectExt.deserialize(this, targetClass, ...keysOrValues);
+    value: function (targetClassOrObject, ...keysOrValues) {
+        return ObjectExt.deserialize(this, targetClassOrObject, ...keysOrValues);
     }
 });
 //# sourceMappingURL=object-ext.js.map
