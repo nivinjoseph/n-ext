@@ -134,15 +134,15 @@ Object.defineProperty(Object.prototype, "setValue", {
         ObjectExt.setValue(this, key, value);
     }
 });
-Object.defineProperty(Object.prototype, "serialize", {
+Object.defineProperty(Object.prototype, "serializeObject", {
     configurable: false,
     enumerable: false,
-    writable: true,
+    writable: false,
     value: function (...keys) {
         return ObjectExt.serialize(this, ...keys);
     }
 });
-Object.defineProperty(Object.prototype, "deserialize", {
+Object.defineProperty(Object.prototype, "deserializeObject", {
     configurable: false,
     enumerable: false,
     writable: false,
