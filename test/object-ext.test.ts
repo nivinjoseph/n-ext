@@ -426,7 +426,7 @@ suite("ObjectExt", () =>
         {
             const original: Object = new Customer("Nivin", "Joseph", new Address("26 Kennedy rd", "Apt 23"));
 
-            const serialized = original.serialize("firstName", "lastName as lname", "address.line1 as add.l1", "address.line2 as apt");
+            const serialized = original.serializeObject("firstName", "lastName as lname", "address.line1 as add.l1", "address.line2 as apt");
             // console.log("serialized", serialized);
 
             assert.deepStrictEqual(serialized, {
@@ -450,7 +450,7 @@ suite("ObjectExt", () =>
                 apt: "Apt 23"
             };
 
-            const deserialized = serialized.deserialize(Customer, "firstName", "lname", serialized.deserialize(Address, "add.l1", "apt"));
+            const deserialized = serialized.deserializeObject(Customer, "firstName", "lname", serialized.deserializeObject(Address, "add.l1", "apt"));
             // console.log("deserialized", deserialized);
 
             assert.deepStrictEqual(deserialized, new Customer("Nivin", "Joseph", new Address("26 Kennedy rd", "Apt 23")));
