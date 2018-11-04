@@ -124,21 +124,33 @@ class ObjectExt
         return target;
     }
 
-    public static deserialize(source: any, targetClass: Function, ...keysOrValues: Array<any>): object
+    public static deserialize(source: any, targetClassOrObject: Function | object, ...keysOrValues: Array<any>): object
     {
-        const values = keysOrValues.map(t =>
+        if (typeof (targetClassOrObject) === "function")
         {
-            if (typeof (t) === "string")
+            const values = keysOrValues.map(t =>
             {
-                const key = t.trim();
-                return key[0] === ":" ? key.substr(1) : ObjectExt.getValue(source, key);
-            }
-            
-            return t;
-        });
+                if (typeof (t) === "string")
+                {
+                    const key = t.trim();
+                    return key[0] === ":" ? key.substr(1) : ObjectExt.getValue(source, key);
+                }
 
-        const target = new (<any>targetClass)(...values);
-        return target;
+                return t;
+            });
+
+            return new (<any>targetClassOrObject)(...values);
+        }
+        else
+        {
+            keysOrValues.forEach(t =>
+            {
+                const value = ObjectExt.getValue(source, t);
+                ObjectExt.setValue(targetClassOrObject, t, value); 
+            });   
+
+            return targetClassOrObject;
+        }
     }
     
 
@@ -212,7 +224,7 @@ Object.defineProperty(Object.prototype, "setValue", {
 Object.defineProperty(Object.prototype, "serialize", {
     configurable: false,
     enumerable: false,
-    writable: false,
+    writable: true, // for compatibility with uri-js?
     value: function (...keys: Array<string>): object
     {
         return ObjectExt.serialize(this, ...keys);
@@ -223,8 +235,8 @@ Object.defineProperty(Object.prototype, "deserialize", {
     configurable: false,
     enumerable: false,
     writable: false,
-    value: function (targetClass: Function, ...keysOrValues: Array<any>): object
+    value: function (targetClassOrObject: Function | object, ...keysOrValues: Array<any>): object
     {
-        return ObjectExt.deserialize(this, targetClass, ...keysOrValues);
+        return ObjectExt.deserialize(this, targetClassOrObject, ...keysOrValues);
     }
 });
