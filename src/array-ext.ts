@@ -372,7 +372,7 @@ Object.defineProperty(Array.prototype, "count", {
 Object.defineProperty(Array.prototype, "remove", {
     configurable: false,
     enumerable: false,
-    writable: false,
+    writable: true, // for spread.js compatibility
     value: function (value: any): boolean
     {
         return ArrayExt.remove(this, value);
