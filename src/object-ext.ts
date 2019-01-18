@@ -57,7 +57,12 @@ class ObjectExt
     
     public static getValue(source: any, key: string): any
     {
-        if (key == null || ObjectExt.stringIsWhiteSpace(key)) return source;
+        if (!ObjectExt.hasValue(key))
+            return undefined;
+        
+        if (typeof (key) !== "string")
+            return source[key];
+        
         key = key.trim();
         if (!ObjectExt.stringContains(key, "."))
             return source[key] === undefined ? null : source[key];
@@ -75,18 +80,31 @@ class ObjectExt
     
     public static setValue(target: any, key: string, value: any): void
     {
-        if (key == null || ObjectExt.stringIsWhiteSpace(key)) return;
+        if (!ObjectExt.hasValue(key))
+            return;
+        
+        if (typeof (key) !== "string")
+        {
+            target[key] = value;
+            return;
+        }
+        
         key = key.trim();
         value = value === undefined ? null : value;
-        if (!ObjectExt.stringContains(key, ".")) target[key] = value;
+        if (!ObjectExt.stringContains(key, "."))
+        {
+            target[key] = value;
+            return;
+        }
         
-        let splitted = key.split(".").map(t => t.trim());
+        const splitted = key.split(".").map(t => t.trim());
         let current = target;
         
         for (let i = 0; i < splitted.length - 1; i++)
         {
             let next = current[splitted[i]]; 
-            if (next === null || next === undefined) next = {};
+            if (next === null || next === undefined)
+                next = {};
             current[splitted[i]] = next;
             current = next;
         }
@@ -153,6 +171,16 @@ class ObjectExt
         }
     }
     
+    private static hasValue(item: any): boolean
+    {
+        if (item == null)
+            return false;
+        
+        if (typeof (item) === "string" && ObjectExt.stringIsWhiteSpace(item))
+            return false;
+        
+        return true;
+    }
 
     private static stringIsWhiteSpace(value: string): boolean
     {

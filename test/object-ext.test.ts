@@ -199,25 +199,25 @@ suite("ObjectExt", () =>
             target = null;
         });
         
-        test("should return the target object if the key is null", () =>
+        test("should return undefined if the key is null", () =>
         {
             let key: string = null;
             let value = target.getValue(key);
-            assert.strictEqual(value, target);
+            assert.strictEqual(value, undefined);
         });
         
-        test("should return the target object if the key is an empty string", () =>
+        test("should return undefined if the key is an empty string", () =>
         {
             let key = "";
             let value = target.getValue(key);
-            assert.strictEqual(value, target);
+            assert.strictEqual(value, undefined);
         });
         
-        test("should return the target object if the key is a string with just whitespace", () =>
+        test("should return undefined if the key is a string with just whitespace", () =>
         {
             let key = "  ";
             let value = target.getValue(key);
-            assert.strictEqual(value, target);
+            assert.strictEqual(value, undefined);
         });
         
         test("should return null if the key does not exist on the target object", () =>
