@@ -271,7 +271,7 @@ Object.defineProperty(Array.prototype, "count", {
 Object.defineProperty(Array.prototype, "remove", {
     configurable: false,
     enumerable: false,
-    writable: false,
+    writable: true,
     value: function (value) {
         return ArrayExt.remove(this, value);
     }
