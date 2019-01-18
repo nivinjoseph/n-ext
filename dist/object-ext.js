@@ -28,8 +28,10 @@ class ObjectExt {
         return (typeof source);
     }
     static getValue(source, key) {
-        if (key == null || ObjectExt.stringIsWhiteSpace(key))
-            return source;
+        if (!ObjectExt.hasValue(key))
+            return undefined;
+        if (typeof (key) !== "string")
+            return source[key];
         key = key.trim();
         if (!ObjectExt.stringContains(key, "."))
             return source[key] === undefined ? null : source[key];
@@ -43,13 +45,19 @@ class ObjectExt {
         return current === undefined ? null : current;
     }
     static setValue(target, key, value) {
-        if (key == null || ObjectExt.stringIsWhiteSpace(key))
+        if (!ObjectExt.hasValue(key))
             return;
+        if (typeof (key) !== "string") {
+            target[key] = value;
+            return;
+        }
         key = key.trim();
         value = value === undefined ? null : value;
-        if (!ObjectExt.stringContains(key, "."))
+        if (!ObjectExt.stringContains(key, ".")) {
             target[key] = value;
-        let splitted = key.split(".").map(t => t.trim());
+            return;
+        }
+        const splitted = key.split(".").map(t => t.trim());
         let current = target;
         for (let i = 0; i < splitted.length - 1; i++) {
             let next = current[splitted[i]];
@@ -99,6 +107,13 @@ class ObjectExt {
             });
             return targetClassOrObject;
         }
+    }
+    static hasValue(item) {
+        if (item == null)
+            return false;
+        if (typeof (item) === "string" && ObjectExt.stringIsWhiteSpace(item))
+            return false;
+        return true;
     }
     static stringIsWhiteSpace(value) {
         return value.trim().length === 0;
