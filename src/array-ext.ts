@@ -4,7 +4,7 @@ class ArrayExt
     {
         return array.some(t => t === value);
     }
-    
+
     public static orderBy<T>(array: T[]): T[];
     public static orderBy<T>(array: T[], compareFunc: (value: T) => any): T[];
     public static orderBy<T>(array: T[], compareFunc?: (value: T) => any): T[]
@@ -50,24 +50,37 @@ class ArrayExt
 
         return internalArray;
     }
-    
+
+    public static groupBy<T>(array: T[], keyFunc: (value: T) => string): { [index: string]: T[] }
+    {
+        return  array.reduce((acc: { [index: string]: T[] }, t) =>
+        {
+            const key = keyFunc(t);
+            if (!acc[key])
+                acc[key] = [];
+
+            acc[key].push(t);
+            return acc;
+        }, {});
+    }
+
     public static distinct<T>(array: T[]): T[];
     public static distinct<T>(array: T[], compareFunc: (value: T) => any): T[];
     public static distinct<T>(array: T[], compareFunc?: (value: T) => any): T[]
     {
         if (compareFunc == null)
             compareFunc = (value: T) => value;
-        
+
         let internalArray: T[] = [];
-        
+
         for (let i = 0; i < array.length; i++)
         {
             let item = array[i];
             if (internalArray.some(t => compareFunc(t) === compareFunc(item)))
                 continue;
             internalArray.push(item);
-        }    
-        
+        }
+
         return internalArray;
     }
 
@@ -130,7 +143,7 @@ class ArrayExt
             array.pop();
         }
     }
-    
+
     public static equals<T>(array: T[], compareArray: T[]): boolean
     {
         if (array === compareArray)
@@ -155,20 +168,20 @@ class ArrayExt
 
         return true;
     }
-    
+
     public static async forEachAsync<T>(array: T[], asyncFunc: (input: T) => Promise<void>, degreesOfParallelism?: number): Promise<void>
-    {   
+    {
         let taskManager = new TaskManager(array, asyncFunc, degreesOfParallelism, false);
         await taskManager.execute();
     }
-    
+
     public static async mapAsync<T, U>(array: T[], asyncFunc: (input: T) => Promise<U>, degreesOfParallelism?: number): Promise<U[]>
     {
         let taskManager = new TaskManager(array, asyncFunc, degreesOfParallelism, true);
         await taskManager.execute();
         return taskManager.getResults();
     }
-    
+
     public static async reduceAsync<T, U>(array: T[], asyncFunc: (acc: U, input: T) => Promise<U>, accumulator?: U): Promise<U>
     {
         let index = 0;
@@ -177,10 +190,10 @@ class ArrayExt
             accumulator = <any>array[0];
             index = 1;
         }
-        
+
         for (let i = index; i < array.length; i++)
             accumulator = await asyncFunc(accumulator, array[i]);
-        
+
         return accumulator;
     }
 }
@@ -193,24 +206,24 @@ class TaskManager<T>
     private readonly _captureResults: boolean;
     private readonly _tasks: Task<T>[];
     private readonly _results: any[];
-    
-    
+
+
     public constructor(array: T[], taskFunc: (input: T) => Promise<any>, taskCount: number, captureResults: boolean)
     {
         this._array = array;
         this._taskFunc = taskFunc;
         this._taskCount = !taskCount || taskCount <= 0 ? this._array.length : taskCount;
         this._captureResults = captureResults;
-        
+
         this._tasks = [];
         for (let i = 0; i < this._taskCount; i++)
             this._tasks.push(new Task<T>(this, i, this._taskFunc, captureResults));
-        
+
         if (this._captureResults)
             this._results = [];
     }
-    
-    
+
+
     public async execute(): Promise<void>
     {
         for (let i = 0; i < this._array.length; i++)
@@ -219,21 +232,21 @@ class TaskManager<T>
                 this._results.push(null);
             await this.executeTaskForItem(this._array[i], i);
         }
-        
+
         await this.finish();
     }
-    
+
     public addResult(itemIndex: number, result: any): void
     {
         this._results[itemIndex] = result;
     }
-    
+
     public getResults(): any[]
     {
         return this._results;
     }
-    
-    
+
+
     private async executeTaskForItem(item: T, itemIndex: number): Promise<void>
     {
         let availableTask = this._tasks.find(t => t.isFree);
@@ -243,15 +256,15 @@ class TaskManager<T>
             task.free();
             availableTask = task;
         }
-        
+
         availableTask.execute(item, itemIndex);
     }
-    
+
     private finish(): Promise<any>
     {
         return Promise.all(this._tasks.filter(t => !t.isFree).map(t => t.promise));
     }
-}   
+}
 
 class Task<T>
 {
@@ -261,12 +274,12 @@ class Task<T>
     private readonly _taskFunc: (input: T) => Promise<any>;
     private readonly _captureResult: boolean;
     private _promise: Promise<Task<T>>;
-    
-    
+
+
     public get promise(): Promise<Task<T>> { return this._promise; }
     public get isFree(): boolean { return this._promise === null; }
-    
-    
+
+
     public constructor(manager: TaskManager<T>, id: number, taskFunc: (input: T) => Promise<any>, captureResult: boolean)
     {
         this._manager = manager;
@@ -275,8 +288,8 @@ class Task<T>
         this._captureResult = captureResult;
         this._promise = null;
     }
-    
-    
+
+
     public execute(item: T, itemIndex: number): void
     {
         this._promise = new Promise((resolve, reject) =>
@@ -291,12 +304,12 @@ class Task<T>
                 .catch((err) => reject(err));
         });
     }
-    
+
     public free(): void
     {
         this._promise = null;
     }
-}   
+}
 
 Object.defineProperty(Array.prototype, "contains", {
     configurable: false,
@@ -307,7 +320,7 @@ Object.defineProperty(Array.prototype, "contains", {
         return ArrayExt.contains(this, value);
     }
 });
-   
+
 
 Object.defineProperty(Array.prototype, "orderBy", {
     configurable: false,
@@ -326,6 +339,16 @@ Object.defineProperty(Array.prototype, "orderByDesc", {
     value: function (compareFunc?: (value: any) => any): Array<any>
     {
         return ArrayExt.orderByDesc(this, compareFunc);
+    }
+});
+
+Object.defineProperty(Array.prototype, "groupBy", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function (keyFunc: (value: any) => string): {[index: string]: any[]}
+    {
+        return ArrayExt.groupBy(this, keyFunc);
     }
 });
 

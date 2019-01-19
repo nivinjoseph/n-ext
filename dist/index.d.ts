@@ -35,6 +35,7 @@ declare global
         orderBy(): Array<T>;
         orderBy(compareFunc: (value: T) => any): Array<T>;
         orderByDesc(): Array<T>;
+        groupBy(keyFunc: (value: T) => string): { [index: string]: Array<T> }
         orderByDesc(compareFunc: (value: T) => any): Array<T>;
         distinct(): Array<T>;
         distinct(compareFunc: (value: T) => any): Array<T>;

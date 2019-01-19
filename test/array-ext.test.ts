@@ -155,6 +155,29 @@ suite("ArrayExt", () =>
             assert.ok(arrayEqual(ordered, [fourth, third, second, first]));
         });
     });
+    
+    suite("groupBy", () =>
+    {
+        test("given array, should work", () =>
+        {
+            const items = [
+                { Phase: "Phase 1", Step: "Step 1", Task: "Task 1", Value: "5" },
+                { Phase: "Phase 1", Step: "Step 1", Task: "Task 2", Value: "10" },
+                { Phase: "Phase 1", Step: "Step 2", Task: "Task 1", Value: "15" },
+    
+                { Phase: "Phase 2", Step: "Step 1", Task: "Task 1", Value: "25" },
+                { Phase: "Phase 2", Step: "Step 1", Task: "Task 2", Value: "30" },
+                { Phase: "Phase 2", Step: "Step 2", Task: "Task 1", Value: "35" },
+                { Phase: "Phase 2", Step: "Step 2", Task: "Task 2", Value: "40" }
+            ];
+            
+            const grouped = items.groupBy(t => t.Phase);
+            
+            assert.strictEqual(Object.keys(grouped).length, 2);
+            assert.strictEqual(grouped["Phase 1"].length, 3);
+            assert.strictEqual(grouped["Phase 2"].length, 4);
+        });
+    });
 
     suite("distinct", () =>
     {
