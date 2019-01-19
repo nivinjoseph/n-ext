@@ -495,7 +495,7 @@ suite("StringExt", () =>
         {
             let value = "sdjhfbe326t3rguy78hy^T^%R*uq9321we183et++==hgdedrt^%$#@!)(*";
             let encoded = value.hexEncode();
-            console.log(encoded);
+            // console.log(encoded);
             assert.notStrictEqual(encoded, value);
             let decoded = encoded.hexDecode();
             assert.strictEqual(decoded, value);

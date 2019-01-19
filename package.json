@@ -28,14 +28,15 @@
         "url": "https://github.com/nivinjoseph/n-ext/issues"
     },
     "homepage": "https://github.com/nivinjoseph/n-ext#readme",
-    "devDependencies": {},
-    "dependencies": {
+    "devDependencies": {
         "@types/mocha": "^5.2.5",
         "@types/node": "^8.9.5",
-        "buffer": "^5.2.1",
         "mocha": "^5.2.0",
         "ts-node": "^7.0.1",
         "tslint": "^5.11.0",
         "typescript": "^3.1.1"
+    },
+    "dependencies": {
+        "buffer": "^5.2.1"
     }
 }
