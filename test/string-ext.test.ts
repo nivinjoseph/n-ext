@@ -488,4 +488,17 @@ suite("StringExt", () =>
             assert.strictEqual(decoded, value);
         });
     });
+    
+    suite("hexEncode and hexDecode", () =>
+    {
+        test("should successfully encode and decode", () =>
+        {
+            let value = "sdjhfbe326t3rguy78hy^T^%R*uq9321we183et++==hgdedrt^%$#@!)(*";
+            let encoded = value.hexEncode();
+            console.log(encoded);
+            assert.notStrictEqual(encoded, value);
+            let decoded = encoded.hexDecode();
+            assert.strictEqual(decoded, value);
+        });
+    });
 });

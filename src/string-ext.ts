@@ -94,6 +94,16 @@ class StringExt
         return Buffer.from(value, "base64").toString("utf8");
     }
     
+    public static hexEncode(value: string): string
+    {
+        return Buffer.from(value, "utf8").toString("hex");
+    }
+
+    public static hexDecode(value: string): string
+    {
+        return Buffer.from(value, "hex").toString("utf8");
+    }
+    
     
     private static padString(input: string): string
     {
@@ -235,5 +245,25 @@ Object.defineProperty(String.prototype, "base64UrlDecode", {
     value: function (): string
     {
         return StringExt.base64UrlDecode(this.toString());
+    }
+});
+
+Object.defineProperty(String.prototype, "hexEncode", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function (): string
+    {
+        return StringExt.hexEncode(this.toString());
+    }
+});
+
+Object.defineProperty(String.prototype, "hexDecode", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function (): string
+    {
+        return StringExt.hexDecode(this.toString());
     }
 });

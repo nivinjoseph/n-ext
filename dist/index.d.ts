@@ -14,6 +14,8 @@ declare global
         base64Decode(): string;
         base64UrlEncode(): string;
         base64UrlDecode(): string;
+        hexEncode(): string;
+        hexDecode(): string;
     }
 
     interface Object
