@@ -59,6 +59,12 @@ class StringExt {
             .replace(/_/g, "/");
         return buffer_1.Buffer.from(value, "base64").toString("utf8");
     }
+    static hexEncode(value) {
+        return buffer_1.Buffer.from(value, "utf8").toString("hex");
+    }
+    static hexDecode(value) {
+        return buffer_1.Buffer.from(value, "hex").toString("utf8");
+    }
     static padString(input) {
         let segmentLength = 4;
         let stringLength = input.length;
@@ -169,6 +175,22 @@ Object.defineProperty(String.prototype, "base64UrlDecode", {
     writable: false,
     value: function () {
         return StringExt.base64UrlDecode(this.toString());
+    }
+});
+Object.defineProperty(String.prototype, "hexEncode", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function () {
+        return StringExt.hexEncode(this.toString());
+    }
+});
+Object.defineProperty(String.prototype, "hexDecode", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function () {
+        return StringExt.hexDecode(this.toString());
     }
 });
 //# sourceMappingURL=string-ext.js.map
