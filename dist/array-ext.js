@@ -45,6 +45,15 @@ class ArrayExt {
         });
         return internalArray;
     }
+    static groupBy(array, keyFunc) {
+        return array.reduce((acc, t) => {
+            const key = keyFunc(t);
+            if (!acc[key])
+                acc[key] = [];
+            acc[key].push(t);
+            return acc;
+        }, {});
+    }
     static distinct(array, compareFunc) {
         if (compareFunc == null)
             compareFunc = (value) => value;
@@ -234,6 +243,14 @@ Object.defineProperty(Array.prototype, "orderByDesc", {
     writable: false,
     value: function (compareFunc) {
         return ArrayExt.orderByDesc(this, compareFunc);
+    }
+});
+Object.defineProperty(Array.prototype, "groupBy", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function (keyFunc) {
+        return ArrayExt.groupBy(this, keyFunc);
     }
 });
 Object.defineProperty(Array.prototype, "distinct", {
