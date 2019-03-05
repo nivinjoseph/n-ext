@@ -1,6 +1,6 @@
 {
     "name": "@nivinjoseph/n-ext",
-    "version": "1.1.3",
+    "version": "1.1.4",
     "description": "Extensions for core Javascript types",
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
