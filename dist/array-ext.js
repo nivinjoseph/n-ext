@@ -111,7 +111,7 @@ class ArrayExt {
             array.pop();
         }
     }
-    static equals(array, compareArray) {
+    static equals(array, compareArray, compareFunc) {
         if (array === compareArray)
             return true;
         if (array === null || compareArray === null)
@@ -120,10 +120,19 @@ class ArrayExt {
             return false;
         if (array.length !== compareArray.length)
             return false;
-        for (let i = 0; i < array.length; i++) {
-            if (array[i] === compareArray[i])
-                continue;
-            return false;
+        if (compareFunc) {
+            for (let i = 0; i < array.length; i++) {
+                if (compareFunc(array[i], compareArray[i]))
+                    continue;
+                return false;
+            }
+        }
+        else {
+            for (let i = 0; i < array.length; i++) {
+                if (array[i] === compareArray[i])
+                    continue;
+                return false;
+            }
         }
         return true;
     }
@@ -305,8 +314,8 @@ Object.defineProperty(Array.prototype, "equals", {
     configurable: false,
     enumerable: false,
     writable: false,
-    value: function (compareArray) {
-        return ArrayExt.equals(this, compareArray);
+    value: function (compareArray, compareFunc) {
+        return ArrayExt.equals(this, compareArray, compareFunc);
     }
 });
 Object.defineProperty(Array.prototype, "forEachAsync", {
