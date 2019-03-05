@@ -144,7 +144,9 @@ class ArrayExt
         }
     }
 
-    public static equals<T>(array: T[], compareArray: T[]): boolean
+    public static equals<T>(array: T[], compareArray: T[]): boolean;
+    public static equals<T>(array: T[], compareArray: T[], compareFunc: (t1: T, t2: T) => boolean): boolean;
+    public static equals<T>(array: T[], compareArray: T[], compareFunc?: (t1: T, t2: T) => boolean): boolean
     {
         if (array === compareArray)
             return true;
@@ -158,14 +160,27 @@ class ArrayExt
         if (array.length !== compareArray.length)
             return false;
 
-        for (let i = 0; i < array.length; i++)
+        if (compareFunc)
         {
-            if (array[i] === compareArray[i])
-                continue;
+            for (let i = 0; i < array.length; i++)
+            {
+                if (compareFunc(array[i], compareArray[i]))
+                    continue;
 
-            return false;
+                return false;
+            }
         }
+        else
+        {
+            for (let i = 0; i < array.length; i++)
+            {
+                if (array[i] === compareArray[i])
+                    continue;
 
+                return false;
+            }    
+        }
+        
         return true;
     }
 
@@ -416,9 +431,9 @@ Object.defineProperty(Array.prototype, "equals", {
     configurable: false,
     enumerable: false,
     writable: false,
-    value: function (compareArray: Array<any>): boolean
+    value: function (compareArray: Array<any>, compareFunc?: (t1: any, t2: any) => boolean): boolean
     {
-        return ArrayExt.equals(this, compareArray);
+        return ArrayExt.equals(this, compareArray, compareFunc);
     }
 });
 

@@ -45,7 +45,8 @@ declare global
         count(predicate: (value: T) => boolean): number;
         remove(value: T): boolean;
         clear(): void;
-        equals(compareArray: Array<T>): boolean;
+        equals(compareArray: ReadonlyArray<T>): boolean;
+        equals(compareArray: ReadonlyArray<T>, compareFunc: (t1: T, t2: T) => boolean): boolean;
         forEachAsync(asyncFunc: (input: T) => Promise<void>, degreesOfParallelism?: number): Promise<void>;
         mapAsync<U>(asyncFunc: (input: T) => Promise<U>, degreesOfParallelism?: number): Promise<Array<U>>;
         reduceAsync<U>(asyncFunc: (acc: U, input: T) => Promise<U>, accumulator?: U): Promise<U>;
@@ -64,7 +65,8 @@ declare global
         take(count: number): Array<T>;
         count(): number;
         count(predicate: (value: T) => boolean): number;
-        equals(compareArray: Array<T>): boolean;
+        equals(compareArray: ReadonlyArray<T>): boolean;
+        equals(compareArray: ReadonlyArray<T>, compareFunc: (t1: T, t2: T) => boolean): boolean;
         forEachAsync(asyncFunc: (input: T) => Promise<void>, degreesOfParallelism?: number): Promise<void>;
         mapAsync<U>(asyncFunc: (input: T) => Promise<U>, degreesOfParallelism?: number): Promise<Array<U>>;
         reduceAsync<U>(asyncFunc: (acc: U, input: T) => Promise<U>, accumulator?: U): Promise<U>;
