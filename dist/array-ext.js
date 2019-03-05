@@ -46,13 +46,17 @@ class ArrayExt {
         return internalArray;
     }
     static groupBy(array, keyFunc) {
-        return array.reduce((acc, t) => {
+        const result = new Array();
+        array.reduce((acc, t) => {
             const key = keyFunc(t);
-            if (!acc[key])
+            if (!acc[key]) {
                 acc[key] = [];
+                result.push({ key, values: acc[key] });
+            }
             acc[key].push(t);
             return acc;
         }, {});
+        return result;
     }
     static distinct(array, compareFunc) {
         if (compareFunc == null)
