@@ -173,9 +173,9 @@ suite("ArrayExt", () =>
             
             const grouped = items.groupBy(t => t.Phase);
             
-            assert.strictEqual(Object.keys(grouped).length, 2);
-            assert.strictEqual(grouped["Phase 1"].length, 3);
-            assert.strictEqual(grouped["Phase 2"].length, 4);
+            assert.strictEqual(grouped.length, 2);
+            assert.strictEqual(grouped.find(t => t.key === "Phase 1").values.length, 3);
+            assert.strictEqual(grouped.find(t => t.key === "Phase 2").values.length, 4);
         });
     });
 

@@ -51,17 +51,37 @@ class ArrayExt
         return internalArray;
     }
 
-    public static groupBy<T>(array: T[], keyFunc: (value: T) => string): { [index: string]: T[] }
+    // public static groupBy<T>(array: T[], keyFunc: (value: T) => string): { [index: string]: T[] }
+    // {
+    //     return  array.reduce((acc: { [index: string]: T[] }, t) =>
+    //     {
+    //         const key = keyFunc(t);
+    //         if (!acc[key])
+    //             acc[key] = [];
+
+    //         acc[key].push(t);
+    //         return acc;
+    //     }, {});
+    // }
+    
+    public static groupBy<T>(array: T[], keyFunc: (value: T) => string): {key: string, values: T[]}[]
     {
-        return  array.reduce((acc: { [index: string]: T[] }, t) =>
+        const result = new Array<{ key: string, values: T[] }>();
+        
+        array.reduce((acc: { [index: string]: T[] }, t) =>
         {
             const key = keyFunc(t);
             if (!acc[key])
+            {
                 acc[key] = [];
+                result.push({ key, values: acc[key] });
+            }
 
             acc[key].push(t);
             return acc;
         }, {});
+        
+        return result;
     }
 
     public static distinct<T>(array: T[]): T[];
@@ -361,7 +381,7 @@ Object.defineProperty(Array.prototype, "groupBy", {
     configurable: false,
     enumerable: false,
     writable: false,
-    value: function (keyFunc: (value: any) => string): {[index: string]: any[]}
+    value: function (keyFunc: (value: any) => string): {key: string, values: any[]}[]
     {
         return ArrayExt.groupBy(this, keyFunc);
     }
