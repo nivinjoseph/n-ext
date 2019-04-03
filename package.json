@@ -33,8 +33,9 @@
         "@types/node": "^8.9.5",
         "mocha": "^5.2.0",
         "ts-node": "^7.0.1",
-        "tslint": "^5.11.0",
-        "typescript": "^3.1.1"
+        "tslint": "^5.15.0",
+        "typescript": "^3.4.1",
+        "typescript-tslint-plugin": "^0.3.1"
     },
     "dependencies": {
         "buffer": "^5.2.1"

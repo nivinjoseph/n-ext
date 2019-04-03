@@ -16,6 +16,14 @@
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "removeComments": true,
-        "forceConsistentCasingInFileNames": true
+        "forceConsistentCasingInFileNames": true,
+        "incremental": true,
+        "plugins": [
+            {
+                "name": "typescript-tslint-plugin",
+                "configFile": "./tslint.json",
+                "alwaysShowRuleFailuresAsWarnings": false
+            }
+        ]
     }
 }
