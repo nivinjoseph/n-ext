@@ -17,7 +17,15 @@
         "emitDecoratorMetadata": true,
         "removeComments": true,
         "forceConsistentCasingInFileNames": true,
-        "outDir": "."
+        "outDir": ".",
+        "incremental": true,
+        "plugins": [
+            {
+                "name": "typescript-tslint-plugin",
+                "configFile": "./tslint.json",
+                "alwaysShowRuleFailuresAsWarnings": false
+            }
+        ]
     },
     "include": [
         "../src/**/*.ts"
