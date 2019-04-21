@@ -77,7 +77,7 @@ declare global
     {
         percentage(partialValue: number, wholeValue: number): number;
         percentagePartial(percentage: number, wholeValue: number): number;
-        percentageWhole(percentage: number, partialValue: number): number
+        percentageWhole(percentage: number, partialValue: number): number;
     }
 }
 
