@@ -71,7 +71,14 @@ declare global
         forEachAsync(asyncFunc: (input: T) => Promise<void>, degreesOfParallelism?: number): Promise<void>;
         mapAsync<U>(asyncFunc: (input: T) => Promise<U>, degreesOfParallelism?: number): Promise<ReadonlyArray<U>>;
         reduceAsync<U>(asyncFunc: (acc: U, input: T) => Promise<U>, accumulator?: U): Promise<U>;
-    }    
+    }   
+    
+    interface Math
+    {
+        percentage(partialValue: number, wholeValue: number): number;
+        percentagePartial(percentage: number, wholeValue: number): number;
+        percentageWhole(percentage: number, partialValue: number): number
+    }
 }
 
 export { }
