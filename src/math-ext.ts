@@ -35,17 +35,17 @@ class MathExt
 }
 
 
-Math.percentage = function (partialValue: number, wholeValue: number): number
+(<any>Math).percentage = function (partialValue: number, wholeValue: number): number
 {
     return MathExt.percentage(partialValue, wholeValue);
 };
 
-Math.percentagePartial = function (percentage: number, wholeValue: number): number
+(<any>Math).percentagePartial = function (percentage: number, wholeValue: number): number
 {
     return MathExt.percentagePartial(percentage, wholeValue);
 };
 
-Math.percentageWhole = function (percentage: number, partialValue: number): number
+(<any>Math).percentageWhole = function (percentage: number, partialValue: number): number
 {
     return MathExt.percentageWhole(percentage, partialValue);
 };
