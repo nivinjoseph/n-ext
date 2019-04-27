@@ -440,7 +440,7 @@ Object.defineProperty(Array.prototype, "remove", {
 Object.defineProperty(Array.prototype, "clear", {
     configurable: false,
     enumerable: false,
-    writable: false,
+    writable: true, // for spread.js compatibility
     value: function (): void
     {
         return ArrayExt.clear(this);
