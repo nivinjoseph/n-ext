@@ -309,7 +309,7 @@ Object.defineProperty(Array.prototype, "remove", {
 Object.defineProperty(Array.prototype, "clear", {
     configurable: false,
     enumerable: false,
-    writable: false,
+    writable: true,
     value: function () {
         return ArrayExt.clear(this);
     }
