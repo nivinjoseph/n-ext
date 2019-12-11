@@ -74,7 +74,7 @@ class StringExt {
         let position = stringLength;
         let padLength = segmentLength - diff;
         let paddedStringLength = stringLength + padLength;
-        let buffer = new buffer_1.Buffer(paddedStringLength);
+        let buffer = buffer_1.Buffer.alloc(paddedStringLength);
         buffer.write(input);
         while (padLength--)
             buffer.write("=", position++);
