@@ -506,7 +506,7 @@ suite("StringExt", () =>
     {
         suite("basic", () =>
         {
-            test(`Given value "" and format "" when is matchesFormat is called then it should return true`, () =>
+            test(`Given value "" and format "" when matchesFormat is called then it should return true`, () =>
             {
                 const value = "";
                 const format = "";
@@ -514,7 +514,7 @@ suite("StringExt", () =>
                 assert.ok(value.matchesFormat(format));
             });
 
-            test(`Given value "" and format "##" when is matchesFormat is called then it should return false`, () =>
+            test(`Given value "" and format "##" when matchesFormat is called then it should return false`, () =>
             {
                 const value = "";
                 const format = "##";
@@ -522,7 +522,7 @@ suite("StringExt", () =>
                 assert.ok(!value.matchesFormat(format));
             });
             
-            test(`Given value "helloTest" and format "" when is matchesFormat is called then it should return false`, () =>
+            test(`Given value "helloTest" and format "" when matchesFormat is called then it should return false`, () =>
             {
                 const value = "helloTest";
                 const format = "";
@@ -530,7 +530,7 @@ suite("StringExt", () =>
                 assert.ok(!value.matchesFormat(format));
             });
 
-            test(`Given value "1234" and format "####" when is matchesFormat is called then it should return true`, () =>
+            test(`Given value "1234" and format "####" when matchesFormat is called then it should return true`, () =>
             {
                 const value = "1234";
                 const format = "####";
@@ -538,7 +538,7 @@ suite("StringExt", () =>
                 assert.ok(value.matchesFormat(format));
             });
 
-            test(`Given value "abcd" and format "@@@@" when is matchesFormat is called then it should return true`, () =>
+            test(`Given value "abcd" and format "@@@@" when matchesFormat is called then it should return true`, () =>
             {
                 const value = "abcd";
                 const format = "@@@@";
@@ -546,7 +546,7 @@ suite("StringExt", () =>
                 assert.ok(value.matchesFormat(format));
             });
 
-            test(`Given value "a" and format "@" when is matchesFormat is called then it should return true`, () =>
+            test(`Given value "a" and format "@" when matchesFormat is called then it should return true`, () =>
             {
                 const value = "a";
                 const format = "@";
@@ -554,7 +554,7 @@ suite("StringExt", () =>
                 assert.ok(value.matchesFormat(format));
             });
 
-            test(`Given value "1" and format "#" when is matchesFormat is called then it should return true`, () =>
+            test(`Given value "1" and format "#" when matchesFormat is called then it should return true`, () =>
             {
                 const value = "1";
                 const format = "#";
@@ -562,7 +562,7 @@ suite("StringExt", () =>
                 assert.ok(value.matchesFormat(format));
             });
 
-            test(`Given value "aAzZ09" and format "@@@@##" when is matchesFormat is called then it should return true`, () =>
+            test(`Given value "aAzZ09" and format "@@@@##" when matchesFormat is called then it should return true`, () =>
             {
                 const value = "aAzZ09";
                 const format = "@@@@##";
@@ -570,7 +570,7 @@ suite("StringExt", () =>
                 assert.ok(value.matchesFormat(format));
             });
 
-            test(`Given value "123" and format "####" when is matchesFormat is called then it should return false`, () =>
+            test(`Given value "123" and format "####" when matchesFormat is called then it should return false`, () =>
             {
                 const value = "123";
                 const format = "####";
@@ -578,7 +578,7 @@ suite("StringExt", () =>
                 assert.ok(!value.matchesFormat(format));
             });
 
-            test(`Given value "12323456" and format "####" when is matchesFormat is called then it should return false`, () =>
+            test(`Given value "12323456" and format "####" when matchesFormat is called then it should return false`, () =>
             {
                 const value = "12323456";
                 const format = "####";
@@ -586,7 +586,7 @@ suite("StringExt", () =>
                 assert.ok(!value.matchesFormat(format));
             });
 
-            test(`Given value "123a" and format "####" when is matchesFormat is called then it should return false`, () =>
+            test(`Given value "123a" and format "####" when matchesFormat is called then it should return false`, () =>
             {
                 const value = "123a";
                 const format = "####";
@@ -594,7 +594,7 @@ suite("StringExt", () =>
                 assert.ok(!value.matchesFormat(format));
             });
 
-            test(`Given value "qw1" and format "#@#" when is matchesFormat is called then it should return false`, () =>
+            test(`Given value "qw1" and format "#@#" when matchesFormat is called then it should return false`, () =>
             {
                 const value = "qw1";
                 const format = "#@#";
@@ -605,7 +605,7 @@ suite("StringExt", () =>
         
         suite("with constants", () =>
         {
-            test(`Given value "hello1" and format "hello1" when is matchesFormat is called then it should return true`, () =>
+            test(`Given value "hello1" and format "hello1" when matchesFormat is called then it should return true`, () =>
             {
                 const value = "hello1";
                 const format = "hello1";
@@ -613,7 +613,7 @@ suite("StringExt", () =>
                 assert.ok(value.matchesFormat(format));
             });
 
-            test(`Given value "hello3" and format "hello1" when is matchesFormat is called then it should return false`, () =>
+            test(`Given value "hello3" and format "hello1" when matchesFormat is called then it should return false`, () =>
             {
                 const value = "hello3";
                 const format = "hello1";
@@ -621,7 +621,7 @@ suite("StringExt", () =>
                 assert.ok(!value.matchesFormat(format));
             });
             
-            test(`Given value "12(34)" and format "##(##)" when is matchesFormat is called then it should return true`, () =>
+            test(`Given value "12(34)" and format "##(##)" when matchesFormat is called then it should return true`, () =>
             {
                 const value = "12(34)";
                 const format = "##(##)";
@@ -629,7 +629,7 @@ suite("StringExt", () =>
                 assert.ok(value.matchesFormat(format));
             });
 
-            test(`Given value "12(34" and format "##(##)" when is matchesFormat is called then it should return false`, () =>
+            test(`Given value "12(34" and format "##(##)" when matchesFormat is called then it should return false`, () =>
             {
                 const value = "12(34";
                 const format = "##(##)";
@@ -637,7 +637,7 @@ suite("StringExt", () =>
                 assert.ok(!value.matchesFormat(format));
             });
 
-            test(`Given value "12testing" and format "##test@@@" when is matchesFormat is called then it should return true`, () =>
+            test(`Given value "12testing" and format "##test@@@" when matchesFormat is called then it should return true`, () =>
             {
                 const value = "12testing";
                 const format = "##test@@@";
@@ -648,7 +648,7 @@ suite("StringExt", () =>
     
         suite("with escape sequence", () =>
         {
-            test(`Given value "32@co" and format "##\\@@@" when is matchesFormat is called then it should return true`, () =>
+            test(`Given value "32@co" and format "##\\@@@" when matchesFormat is called then it should return true`, () =>
             {
                 const value = "32@co";
                 const format = "##\\@@@";
@@ -656,7 +656,7 @@ suite("StringExt", () =>
                 assert.ok(value.matchesFormat(format));
             });
 
-            test(`Given value "32Aco" and format "##\\@@@" when is matchesFormat is called then it should return false`, () =>
+            test(`Given value "32Aco" and format "##\\@@@" when matchesFormat is called then it should return false`, () =>
             {
                 const value = "32Aco";
                 const format = "##\\@@@";
@@ -664,7 +664,7 @@ suite("StringExt", () =>
                 assert.ok(!value.matchesFormat(format));
             });
 
-            test(`Given value "11\\#2\\@bc" and format "##\\\\\\##\\\\\\@@@" when is matchesFormat is called then it should return true`, () =>
+            test(`Given value "11\\#2\\@bc" and format "##\\\\\\##\\\\\\@@@" when matchesFormat is called then it should return true`, () =>
             {
                 const value = "11\\#2\\@bc";
                 const format = "##\\\\\\##\\\\\\@@@";
@@ -672,7 +672,7 @@ suite("StringExt", () =>
                 assert.ok(value.matchesFormat(format));
             });
 
-            test(`Given value "32\\dco" and format "##\\d@@" when is matchesFormat is called then it should return true`, () =>
+            test(`Given value "32\\dco" and format "##\\d@@" when matchesFormat is called then it should return true`, () =>
             {
                 const value = "32\\dco";
                 const format = "##\\d@@";
@@ -680,7 +680,7 @@ suite("StringExt", () =>
                 assert.ok(value.matchesFormat(format));
             });
             
-            test(`Given value "01\\01\\2020" and format "##\\\\##\\\\####" when is matchesFormat is called then it should return true`, () =>
+            test(`Given value "01\\01\\2020" and format "##\\\\##\\\\####" when matchesFormat is called then it should return true`, () =>
             {
                 const value = "01\\01\\2020";
                 const format = "##\\\\##\\\\####";
@@ -688,7 +688,7 @@ suite("StringExt", () =>
                 assert.ok(value.matchesFormat(format));
             });
             
-            test(`Given value "01\\#1\\2020" and format "##\\\\##\\\\####" when is matchesFormat is called then it should return false`, () =>
+            test(`Given value "01\\#1\\2020" and format "##\\\\##\\\\####" when matchesFormat is called then it should return false`, () =>
             {
                 const value = "01\\#1\\2020";
                 const format = "##\\\\##\\\\####";
@@ -696,7 +696,7 @@ suite("StringExt", () =>
                 assert.ok(!value.matchesFormat(format));
             });
             
-            test(`Given value "01\\31\\20##" and format "##\\\\##\\\\##\\#\\#" when is matchesFormat is called then it should return true`, () =>
+            test(`Given value "01\\31\\20##" and format "##\\\\##\\\\##\\#\\#" when matchesFormat is called then it should return true`, () =>
             {
                 const value = "01\\31\\20##";
                 const format = "##\\\\##\\\\##\\#\\#";
@@ -704,7 +704,7 @@ suite("StringExt", () =>
                 assert.ok(value.matchesFormat(format));
             });
 
-            test(`Given value "01\\31\\2020" and format "##\\\\##\\\\##\\#@" when is matchesFormat is called then it should return false`, () =>
+            test(`Given value "01\\31\\2020" and format "##\\\\##\\\\##\\#@" when matchesFormat is called then it should return false`, () =>
             {
                 const value = "01\\31\\2020";
                 const format = "##\\\\##\\\\##\\#@";
@@ -715,7 +715,23 @@ suite("StringExt", () =>
         
         suite("with *", () =>
         {
-            test(`Given value "Hello World" and format "Hello*" when is matchesFormat is called then it should return true`, () =>
+            test(`Given value "Hello World" and format "*" when matchesFormat is called then it should return true`, () =>
+            {
+                const value = "Hello World";
+                const format = "*";
+
+                assert.ok(value.matchesFormat(format));
+            });
+            
+            test(`Given value "" and format "*" when matchesFormat is called then it should return true`, () =>
+            {
+                const value = "";
+                const format = "*";
+
+                assert.ok(value.matchesFormat(format));
+            });
+            
+            test(`Given value "Hello World" and format "Hello*" when matchesFormat is called then it should return true`, () =>
             {
                 const value = "Hello World";
                 const format = "Hello*";
@@ -723,7 +739,7 @@ suite("StringExt", () =>
                 assert.ok(value.matchesFormat(format));
             });
             
-            test(`Given value "Hello" and format "Hello*" when is matchesFormat is called then it should return true`, () =>
+            test(`Given value "Hello" and format "Hello*" when matchesFormat is called then it should return true`, () =>
             {
                 const value = "Hello";
                 const format = "Hello*";
@@ -731,7 +747,7 @@ suite("StringExt", () =>
                 assert.ok(value.matchesFormat(format));
             });
 
-            test(`Given value "hello World llo" and format "he*llo" when is matchesFormat is called then it should return true`, () =>
+            test(`Given value "hello World llo" and format "he*llo" when matchesFormat is called then it should return true`, () =>
             {
                 const value = "hello World llo";
                 const format = "he*llo";
@@ -739,7 +755,7 @@ suite("StringExt", () =>
                 assert.ok(value.matchesFormat(format));
             });
             
-            test(`Given value "hello" and format "he*llo" when is matchesFormat is called then it should return true`, () =>
+            test(`Given value "hello" and format "he*llo" when matchesFormat is called then it should return true`, () =>
             {
                 const value = "hello";
                 const format = "he*llo";
@@ -747,7 +763,7 @@ suite("StringExt", () =>
                 assert.ok(value.matchesFormat(format));
             });
 
-            test(`Given value "working hello" and format "*hello" when is matchesFormat is called then it should return true`, () =>
+            test(`Given value "working hello" and format "*hello" when matchesFormat is called then it should return true`, () =>
             {
                 const value = "working hello";
                 const format = "*hello";
@@ -755,7 +771,7 @@ suite("StringExt", () =>
                 assert.ok(value.matchesFormat(format));
             }); 
             
-            test(`Given value "hello" and format "*hello" when is matchesFormat is called then it should return true`, () =>
+            test(`Given value "hello" and format "*hello" when matchesFormat is called then it should return true`, () =>
             {
                 const value = "hello";
                 const format = "*hello";
@@ -763,7 +779,7 @@ suite("StringExt", () =>
                 assert.ok(value.matchesFormat(format));
             }); 
             
-            test(`Given value "hello" and format "*@@" when is matchesFormat is called then it should return true`, () =>
+            test(`Given value "hello" and format "*@@" when matchesFormat is called then it should return true`, () =>
             {
                 const value = "hello";
                 const format = "*@@";
@@ -771,7 +787,7 @@ suite("StringExt", () =>
                 assert.ok(value.matchesFormat(format));
             }); 
             
-            test(`Given value "hellos1" and format "*@@" when is matchesFormat is called then it should return false`, () =>
+            test(`Given value "hellos1" and format "*@@" when matchesFormat is called then it should return false`, () =>
             {
                 const value = "hellos1";
                 const format = "*@@";
@@ -779,7 +795,7 @@ suite("StringExt", () =>
                 assert.ok(!value.matchesFormat(format));
             }); 
             
-            test(`Given value "*hello*" and format "\\**\\*" when is matchesFormat is called then it should return true`, () =>
+            test(`Given value "*hello*" and format "\\**\\*" when matchesFormat is called then it should return true`, () =>
             {
                 const value = "*hello*";
                 const format = "\\**\\*";
@@ -787,7 +803,7 @@ suite("StringExt", () =>
                 assert.ok(value.matchesFormat(format));
             }); 
             
-            test(`Given value "**" and format "\\**\\*" when is matchesFormat is called then it should return true`, () =>
+            test(`Given value "**" and format "\\**\\*" when matchesFormat is called then it should return true`, () =>
             {
                 const value = "**";
                 const format = "\\**\\*";
@@ -795,7 +811,7 @@ suite("StringExt", () =>
                 assert.ok(value.matchesFormat(format));
             });
 
-            test(`Given value "*hello" and format "\\**\\*" when is matchesFormat is called then it should return false`, () =>
+            test(`Given value "*hello" and format "\\**\\*" when matchesFormat is called then it should return false`, () =>
             {
                 const value = "*hellos1";
                 const format = "\\**\\*";
