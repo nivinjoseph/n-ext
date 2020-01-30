@@ -502,7 +502,7 @@ suite("StringExt", () =>
         });
     });
 
-    suite.only("matchesFormat", () =>
+    suite("matchesFormat", () =>
     {
         suite("basic", () =>
         {
