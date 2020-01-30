@@ -174,8 +174,6 @@ class StringExt
         
         return token === char;
     }
-
-    
     
     private static padString(input: string): string
     {
