@@ -107,7 +107,7 @@ class StringExt
     public static matchesFormat(primary: string, format: string): boolean
     {
         if (primary.isEmptyOrWhiteSpace())
-            return format === "*" || format.isEmptyOrWhiteSpace();
+            return format === "*";
 
         const formatTokens = new Array<string>();
         let index = 0;
@@ -344,6 +344,9 @@ Object.defineProperty(String.prototype, "matchesFormat", {
     writable: false,
     value: function (format: string): boolean
     {
-        return StringExt.matchesFormat(this.toString(), format);
+        if (format == null || typeof format !== "string" || format.trim() === "")
+            throw new Error("format must be a valid string");
+        
+        return StringExt.matchesFormat(this.toString(), format.trim());
     }
 });
