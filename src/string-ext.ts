@@ -106,9 +106,9 @@ class StringExt
 
     public static matchesFormat(primary: string, format: string): boolean
     {
-        if (primary.isEmptyOrWhiteSpace())
-            return format === "*";
-
+        if (format === "*")
+            return true;
+        
         const formatTokens = new Array<string>();
         let index = 0;
         while (index < format.length)
