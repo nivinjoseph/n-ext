@@ -134,11 +134,11 @@ class StringExt
                 throw new Error("Invalid format, only 1 wildcard allowed");   
             
             const indexOfWildCard = formatTokens.indexOf("*");
-            const firstHalf = formatTokens.take(indexOfWildCard);
-            const secondHalf = formatTokens.skip(indexOfWildCard + 1);
+            const beforeWildcard = formatTokens.take(indexOfWildCard);
+            const afterWildcard = formatTokens.skip(indexOfWildCard + 1);
             
-            return StringExt.matchesFormatNoWildCard(primary.substring(0, firstHalf.length), firstHalf) && 
-                StringExt.matchesFormatNoWildCard(primary.substring(primary.length - secondHalf.length), secondHalf); 
+            return StringExt.matchesFormatNoWildCard(primary.substring(0, beforeWildcard.length), beforeWildcard) && 
+                StringExt.matchesFormatNoWildCard(primary.substring(primary.length - afterWildcard.length), afterWildcard); 
         }
 
         return StringExt.matchesFormatNoWildCard(primary, formatTokens);
