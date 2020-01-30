@@ -103,6 +103,78 @@ class StringExt
     {
         return Buffer.from(value, "hex").toString("utf8");
     }
+
+    public static matchesFormat(primary: string, format: string): boolean
+    {
+        if (primary.isEmptyOrWhiteSpace())
+            return format.isEmptyOrWhiteSpace();
+
+        const formatTokens = new Array<string>();
+        let index = 0;
+        while (index < format.length)
+        {
+            const char = format.charAt(index);
+            if (char === "\\")
+            {
+                const nextChar = format.charAt(index + 1);
+                if (nextChar === "#" || nextChar === "@" || nextChar === "*" || nextChar === "\\")
+                {
+                    formatTokens.push(`\\${nextChar}`);
+                    index += 2;
+                    continue;
+                }
+            }
+            formatTokens.push(char);
+            index++;
+        }
+        
+        if (formatTokens.contains("*"))
+        {
+            if (formatTokens.count(t => t === "*") > 1)
+                throw new Error("Invalid format, only 1 wildcard allowed");   
+            
+            const indexOfWildCard = formatTokens.indexOf("*");
+            const firstHalf = formatTokens.take(indexOfWildCard);
+            const secondHalf = formatTokens.skip(indexOfWildCard + 1);
+            
+            return StringExt.matchesFormatNoWildCard(primary.substring(0, firstHalf.length), firstHalf) && 
+                StringExt.matchesFormatNoWildCard(primary.substring(primary.length - secondHalf.length), secondHalf); 
+        }
+
+        return StringExt.matchesFormatNoWildCard(primary, formatTokens);
+    }
+
+    
+    private static matchesFormatNoWildCard(primary: string, formatTokens: ReadonlyArray<string>): boolean
+    {
+        if (formatTokens.length !== primary.length)
+            return false;
+
+        for (let i = 0; i < formatTokens.length; i++)
+        {
+            if (!StringExt.charMatchesFormatToken(primary[i], formatTokens[i]))
+                return false;
+        }
+
+        return true;
+    }
+    
+    private static charMatchesFormatToken(char: string, token: string)
+    {
+        const charCode = char.charCodeAt(0);
+        
+        if (token === "@")
+            return (charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122); // "A"-"Z" = 65-90 "a"-"z" = 97-122 
+        
+        if (token === "#")
+            return charCode >= 48 && charCode <= 57;  // "0"-"9" = 48-57
+
+        if (token.length === 2)  // tokens for system chars are '\@' '\#' '\*' '\\'
+            return token[1] === char;
+        
+        return token === char;
+    }
+
     
     
     private static padString(input: string): string
@@ -265,5 +337,15 @@ Object.defineProperty(String.prototype, "hexDecode", {
     value: function (): string
     {
         return StringExt.hexDecode(this.toString());
+    }
+});
+
+Object.defineProperty(String.prototype, "matchesFormat", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function (format: string): boolean
+    {
+        return StringExt.matchesFormat(this.toString(), format);
     }
 });
