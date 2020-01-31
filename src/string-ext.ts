@@ -106,20 +106,21 @@ class StringExt
 
     public static matchesFormat(primary: string, format: string): boolean
     {
-        if (format === "*")
+        if (format === SystemFormatSymbol.wildcard)
             return true;
         
+        const allSystemFormatSymbols = Object.keys(SystemFormatSymbol).map(t => (SystemFormatSymbol as any)[t]);
         const formatTokens = new Array<string>();
         let index = 0;
         while (index < format.length)
         {
             const char = format.charAt(index);
-            if (char === "\\")
+            if (char === SystemFormatSymbol.escape)
             {
                 const nextChar = format.charAt(index + 1);
-                if (nextChar === "#" || nextChar === "@" || nextChar === "*" || nextChar === "\\")
+                if (allSystemFormatSymbols.contains(nextChar))
                 {
-                    formatTokens.push(`\\${nextChar}`);
+                    formatTokens.push(`${SystemFormatSymbol.escape}${nextChar}`);
                     index += 2;
                     continue;
                 }
@@ -128,51 +129,53 @@ class StringExt
             index++;
         }
         
-        if (formatTokens.contains("*"))
-        {
-            if (formatTokens.count(t => t === "*") > 1)
-                throw new Error("Invalid format, only 1 wildcard allowed");   
+        if (formatTokens.count(t => t === SystemFormatSymbol.wildcard) > 1)
+            throw new Error("Invalid format, only 1 wildcard allowed");  
             
-            const indexOfWildCard = formatTokens.indexOf("*");
+        return StringExt.stringMatchesFormatTokens(primary, formatTokens);
+    }
+    
+    private static stringMatchesFormatTokens(primary: string, formatTokens: ReadonlyArray<string>): boolean
+    {
+        if (formatTokens.contains(SystemFormatSymbol.wildcard))
+        {
+            const indexOfWildCard = formatTokens.indexOf(SystemFormatSymbol.wildcard);
             const beforeWildcard = formatTokens.take(indexOfWildCard);
             const afterWildcard = formatTokens.skip(indexOfWildCard + 1);
             
-            return StringExt.matchesFormatNoWildCard(primary.substring(0, beforeWildcard.length), beforeWildcard) && 
-                StringExt.matchesFormatNoWildCard(primary.substring(primary.length - afterWildcard.length), afterWildcard); 
+            return StringExt.stringMatchesFormatTokens(primary.substring(0, beforeWildcard.length), beforeWildcard) &&
+                StringExt.stringMatchesFormatTokens(primary.substring(primary.length - afterWildcard.length), afterWildcard); 
         }
-
-        return StringExt.matchesFormatNoWildCard(primary, formatTokens);
-    }
-
-    
-    private static matchesFormatNoWildCard(primary: string, formatTokens: ReadonlyArray<string>): boolean
-    {
+        
         if (formatTokens.length !== primary.length)
             return false;
-
+            
         for (let i = 0; i < formatTokens.length; i++)
-        {
-            if (!StringExt.charMatchesFormatToken(primary[i], formatTokens[i]))
-                return false;
+        {    
+            const char = primary[i];
+            const token = formatTokens[i];
+            
+            if (token === SystemFormatSymbol.alphabet)
+            {
+                const charCode = char.charCodeAt(0);
+                if (!(charCode >= 65 && charCode <= 90) && !(charCode >= 97 && charCode <= 122)) // "A"-"Z" = 65-90 "a"-"z" = 97-122 
+                    return false;
+            }
+            else if (token === SystemFormatSymbol.number)
+            {
+                const charCode = char.charCodeAt(0);
+                if (!(charCode >= 48 && charCode <= 57)) // "0"-"9" = 48-57
+                    return false;
+            }
+            else
+            {
+                const expectedChar = token.length === 2 ? token[1] : token; // tokens for system chars are '\@' '\#' '\*' '\\'     
+                if (char !== expectedChar)
+                    return false;
+            }
         }
-
+        
         return true;
-    }
-    
-    private static charMatchesFormatToken(char: string, token: string)
-    {
-        const charCode = char.charCodeAt(0);
-        
-        if (token === "@")
-            return (charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122); // "A"-"Z" = 65-90 "a"-"z" = 97-122 
-        
-        if (token === "#")
-            return charCode >= 48 && charCode <= 57;  // "0"-"9" = 48-57
-
-        if (token.length === 2)  // tokens for system chars are '\@' '\#' '\*' '\\'
-            return token[1] === char;
-        
-        return token === char;
     }
     
     private static padString(input: string): string
@@ -195,6 +198,14 @@ class StringExt
 
         return buffer.toString();
     }
+}
+
+enum SystemFormatSymbol
+{
+    wildcard = "*",
+    number = "#", 
+    alphabet = "@",
+    escape = "\\"
 }
 
 
