@@ -118,7 +118,7 @@ class StringExt
             if (char === SystemFormatSymbol.escape)
             {
                 const nextChar = format.charAt(index + 1);
-                if (allSystemFormatSymbols.contains(nextChar))
+                if (allSystemFormatSymbols.indexOf(nextChar) !== -1)
                 {
                     formatTokens.push(`${SystemFormatSymbol.escape}${nextChar}`);
                     index += 2;
@@ -129,7 +129,7 @@ class StringExt
             index++;
         }
         
-        if (formatTokens.count(t => t === SystemFormatSymbol.wildcard) > 1)
+        if (formatTokens.filter(t => t === SystemFormatSymbol.wildcard).length > 1)
             throw new Error("Invalid format, only 1 wildcard allowed");  
             
         return StringExt.stringMatchesFormatTokens(primary, formatTokens);
@@ -137,11 +137,11 @@ class StringExt
     
     private static stringMatchesFormatTokens(primary: string, formatTokens: ReadonlyArray<string>): boolean
     {
-        if (formatTokens.contains(SystemFormatSymbol.wildcard))
+        if (formatTokens.indexOf(SystemFormatSymbol.wildcard) !== -1)
         {
             const indexOfWildCard = formatTokens.indexOf(SystemFormatSymbol.wildcard);
-            const beforeWildcard = formatTokens.take(indexOfWildCard);
-            const afterWildcard = formatTokens.skip(indexOfWildCard + 1);
+            const beforeWildcard = formatTokens.slice(0, indexOfWildCard);
+            const afterWildcard = formatTokens.slice(indexOfWildCard + 1);
             
             return StringExt.stringMatchesFormatTokens(primary.substring(0, beforeWildcard.length), beforeWildcard) &&
                 StringExt.stringMatchesFormatTokens(primary.substring(primary.length - afterWildcard.length), afterWildcard); 
