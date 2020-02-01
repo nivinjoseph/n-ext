@@ -355,7 +355,7 @@ Object.defineProperty(String.prototype, "matchesFormat", {
     writable: false,
     value: function (format: string): boolean
     {
-        if (format == null || typeof format !== "string" || format.isEmptyOrWhiteSpace())
+        if (format == null || typeof format !== "string" || StringExt.isEmptyOrWhiteSpace(format))
             throw new Error("format must be a valid string");
         
         return StringExt.matchesFormat(this.toString(), format.trim());
