@@ -16,6 +16,7 @@ declare global
         base64UrlDecode(): string;
         hexEncode(): string;
         hexDecode(): string;
+        matchesFormat(format: string): boolean;
     }
 
     interface Object

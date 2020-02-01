@@ -103,7 +103,80 @@ class StringExt
     {
         return Buffer.from(value, "hex").toString("utf8");
     }
+
+    public static matchesFormat(primary: string, format: string): boolean
+    {
+        if (format === SystemFormatSymbol.wildcard)
+            return true;
+        
+        const allSystemFormatSymbols = Object.keys(SystemFormatSymbol).map(t => (SystemFormatSymbol as any)[t]);
+        const formatTokens = new Array<string>();
+        let index = 0;
+        while (index < format.length)
+        {
+            const char = format.charAt(index);
+            if (char === SystemFormatSymbol.escape)
+            {
+                const nextChar = format.charAt(index + 1);
+                if (allSystemFormatSymbols.contains(nextChar))
+                {
+                    formatTokens.push(`${SystemFormatSymbol.escape}${nextChar}`);
+                    index += 2;
+                    continue;
+                }
+            }
+            formatTokens.push(char);
+            index++;
+        }
+        
+        if (formatTokens.count(t => t === SystemFormatSymbol.wildcard) > 1)
+            throw new Error("Invalid format, only 1 wildcard allowed");  
+            
+        return StringExt.stringMatchesFormatTokens(primary, formatTokens);
+    }
     
+    private static stringMatchesFormatTokens(primary: string, formatTokens: ReadonlyArray<string>): boolean
+    {
+        if (formatTokens.contains(SystemFormatSymbol.wildcard))
+        {
+            const indexOfWildCard = formatTokens.indexOf(SystemFormatSymbol.wildcard);
+            const beforeWildcard = formatTokens.take(indexOfWildCard);
+            const afterWildcard = formatTokens.skip(indexOfWildCard + 1);
+            
+            return StringExt.stringMatchesFormatTokens(primary.substring(0, beforeWildcard.length), beforeWildcard) &&
+                StringExt.stringMatchesFormatTokens(primary.substring(primary.length - afterWildcard.length), afterWildcard); 
+        }
+        
+        if (formatTokens.length !== primary.length)
+            return false;
+            
+        for (let i = 0; i < formatTokens.length; i++)
+        {    
+            const char = primary[i];
+            const token = formatTokens[i];
+            
+            if (token === SystemFormatSymbol.alphabet)
+            {
+                const charCode = char.charCodeAt(0);
+                if (!(charCode >= 65 && charCode <= 90) && !(charCode >= 97 && charCode <= 122)) // "A"-"Z" = 65-90 "a"-"z" = 97-122 
+                    return false;
+            }
+            else if (token === SystemFormatSymbol.number)
+            {
+                const charCode = char.charCodeAt(0);
+                if (!(charCode >= 48 && charCode <= 57)) // "0"-"9" = 48-57
+                    return false;
+            }
+            else
+            {
+                const expectedChar = token.length === 2 ? token[1] : token; // tokens for system chars are '\@' '\#' '\*' '\\'     
+                if (char !== expectedChar)
+                    return false;
+            }
+        }
+        
+        return true;
+    }
     
     private static padString(input: string): string
     {
@@ -125,6 +198,14 @@ class StringExt
 
         return buffer.toString();
     }
+}
+
+enum SystemFormatSymbol
+{
+    wildcard = "*",
+    number = "#", 
+    alphabet = "@",
+    escape = "\\"
 }
 
 
@@ -265,5 +346,18 @@ Object.defineProperty(String.prototype, "hexDecode", {
     value: function (): string
     {
         return StringExt.hexDecode(this.toString());
+    }
+});
+
+Object.defineProperty(String.prototype, "matchesFormat", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function (format: string): boolean
+    {
+        if (format == null || typeof format !== "string" || StringExt.isEmptyOrWhiteSpace(format))
+            throw new Error("format must be a valid string");
+        
+        return StringExt.matchesFormat(this.toString(), format.trim());
     }
 });
