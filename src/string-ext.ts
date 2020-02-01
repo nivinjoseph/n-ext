@@ -109,7 +109,7 @@ class StringExt
         if (format === SystemFormatSymbol.wildcard)
             return true;
         
-        const allSystemFormatSymbols = Object.keys(SystemFormatSymbol).map(t => (SystemFormatSymbol as any)[t]);
+        const allSystemFormatSymbols = Object.entries(SystemFormatSymbol).map(t => t[1] as string);
         const formatTokens = new Array<string>();
         let index = 0;
         while (index < format.length)
