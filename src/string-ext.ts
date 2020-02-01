@@ -118,7 +118,7 @@ class StringExt
             if (char === SystemFormatSymbol.escape)
             {
                 const nextChar = format.charAt(index + 1);
-                if (allSystemFormatSymbols.indexOf(nextChar) !== -1)
+                if (allSystemFormatSymbols.includes(nextChar))
                 {
                     formatTokens.push(`${SystemFormatSymbol.escape}${nextChar}`);
                     index += 2;
@@ -137,7 +137,7 @@ class StringExt
     
     private static stringMatchesFormatTokens(primary: string, formatTokens: ReadonlyArray<string>): boolean
     {
-        if (formatTokens.indexOf(SystemFormatSymbol.wildcard) !== -1)
+        if (formatTokens.includes(SystemFormatSymbol.wildcard))
         {
             const indexOfWildCard = formatTokens.indexOf(SystemFormatSymbol.wildcard);
             const beforeWildcard = formatTokens.slice(0, indexOfWildCard);
