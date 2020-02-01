@@ -65,6 +65,60 @@ class StringExt {
     static hexDecode(value) {
         return buffer_1.Buffer.from(value, "hex").toString("utf8");
     }
+    static matchesFormat(primary, format) {
+        if (format === SystemFormatSymbol.wildcard)
+            return true;
+        const allSystemFormatSymbols = Object.entries(SystemFormatSymbol).map(t => t[1]);
+        const formatTokens = new Array();
+        let index = 0;
+        while (index < format.length) {
+            const char = format.charAt(index);
+            if (char === SystemFormatSymbol.escape) {
+                const nextChar = format.charAt(index + 1);
+                if (allSystemFormatSymbols.indexOf(nextChar) !== -1) {
+                    formatTokens.push(`${SystemFormatSymbol.escape}${nextChar}`);
+                    index += 2;
+                    continue;
+                }
+            }
+            formatTokens.push(char);
+            index++;
+        }
+        if (formatTokens.filter(t => t === SystemFormatSymbol.wildcard).length > 1)
+            throw new Error("Invalid format, only 1 wildcard allowed");
+        return StringExt.stringMatchesFormatTokens(primary, formatTokens);
+    }
+    static stringMatchesFormatTokens(primary, formatTokens) {
+        if (formatTokens.indexOf(SystemFormatSymbol.wildcard) !== -1) {
+            const indexOfWildCard = formatTokens.indexOf(SystemFormatSymbol.wildcard);
+            const beforeWildcard = formatTokens.slice(0, indexOfWildCard);
+            const afterWildcard = formatTokens.slice(indexOfWildCard + 1);
+            return StringExt.stringMatchesFormatTokens(primary.substring(0, beforeWildcard.length), beforeWildcard) &&
+                StringExt.stringMatchesFormatTokens(primary.substring(primary.length - afterWildcard.length), afterWildcard);
+        }
+        if (formatTokens.length !== primary.length)
+            return false;
+        for (let i = 0; i < formatTokens.length; i++) {
+            const char = primary[i];
+            const token = formatTokens[i];
+            if (token === SystemFormatSymbol.alphabet) {
+                const charCode = char.charCodeAt(0);
+                if (!(charCode >= 65 && charCode <= 90) && !(charCode >= 97 && charCode <= 122))
+                    return false;
+            }
+            else if (token === SystemFormatSymbol.number) {
+                const charCode = char.charCodeAt(0);
+                if (!(charCode >= 48 && charCode <= 57))
+                    return false;
+            }
+            else {
+                const expectedChar = token.length === 2 ? token[1] : token;
+                if (char !== expectedChar)
+                    return false;
+            }
+        }
+        return true;
+    }
     static padString(input) {
         let segmentLength = 4;
         let stringLength = input.length;
@@ -81,6 +135,13 @@ class StringExt {
         return buffer.toString();
     }
 }
+var SystemFormatSymbol;
+(function (SystemFormatSymbol) {
+    SystemFormatSymbol["wildcard"] = "*";
+    SystemFormatSymbol["number"] = "#";
+    SystemFormatSymbol["alphabet"] = "@";
+    SystemFormatSymbol["escape"] = "\\";
+})(SystemFormatSymbol || (SystemFormatSymbol = {}));
 Object.defineProperty(String.prototype, "isEmptyOrWhiteSpace", {
     configurable: false,
     enumerable: false,
@@ -191,6 +252,16 @@ Object.defineProperty(String.prototype, "hexDecode", {
     writable: false,
     value: function () {
         return StringExt.hexDecode(this.toString());
+    }
+});
+Object.defineProperty(String.prototype, "matchesFormat", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function (format) {
+        if (format == null || typeof format !== "string" || StringExt.isEmptyOrWhiteSpace(format))
+            throw new Error("format must be a valid string");
+        return StringExt.matchesFormat(this.toString(), format.trim());
     }
 });
 //# sourceMappingURL=string-ext.js.map
