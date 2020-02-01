@@ -75,7 +75,7 @@ class StringExt {
             const char = format.charAt(index);
             if (char === SystemFormatSymbol.escape) {
                 const nextChar = format.charAt(index + 1);
-                if (allSystemFormatSymbols.indexOf(nextChar) !== -1) {
+                if (allSystemFormatSymbols.includes(nextChar)) {
                     formatTokens.push(`${SystemFormatSymbol.escape}${nextChar}`);
                     index += 2;
                     continue;
@@ -89,7 +89,7 @@ class StringExt {
         return StringExt.stringMatchesFormatTokens(primary, formatTokens);
     }
     static stringMatchesFormatTokens(primary, formatTokens) {
-        if (formatTokens.indexOf(SystemFormatSymbol.wildcard) !== -1) {
+        if (formatTokens.includes(SystemFormatSymbol.wildcard)) {
             const indexOfWildCard = formatTokens.indexOf(SystemFormatSymbol.wildcard);
             const beforeWildcard = formatTokens.slice(0, indexOfWildCard);
             const afterWildcard = formatTokens.slice(indexOfWildCard + 1);
