@@ -16,6 +16,11 @@ declare global
         base64UrlDecode(): string;
         hexEncode(): string;
         hexDecode(): string;
+        /**
+         * @param format ```wildcard = *, number = #, alphabet = @, escape = \```
+         * @description Only one wildcard is allowed
+         * @example ```(###)-###-####```, ```*.xls```, ```*\@company.com```
+         */
         matchesFormat(format: string): boolean;
     }
 
