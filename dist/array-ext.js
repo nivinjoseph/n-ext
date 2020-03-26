@@ -243,6 +243,14 @@ Object.defineProperty(Array.prototype, "contains", {
         return ArrayExt.contains(this, value);
     }
 });
+Object.defineProperty(Array.prototype, "where", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function (filterFunc) {
+        return this.filter(filterFunc);
+    }
+});
 Object.defineProperty(Array.prototype, "orderBy", {
     configurable: false,
     enumerable: false,
