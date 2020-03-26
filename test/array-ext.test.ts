@@ -71,6 +71,30 @@ suite("ArrayExt", () =>
             assert.strictEqual(result, false);
         });
     });
+    
+    suite("where", () =>
+    {
+        test("Given a collection, when the predicate does not match any values, then no values should be returned", () =>
+        {
+            const target = [1, 2, 3];
+            const result = target.where(t => t > 3);
+            assert.ok(arrayEqual(result, []));
+        });
+        
+        test("Given a collection, when the predicate matches all the values, then all the values should be returned", () =>
+        {
+            const target = [1, 2, 3];
+            const result = target.where(t => t <= 3);
+            assert.ok(arrayEqual(result, [1, 2, 3]));
+        });
+        
+        test("Given a collection, when the predicate matches some of the values, then only the matched values should be returned", () =>
+        {
+            const target = [1, 2, 3];
+            const result = target.where(t => t === 2);
+            assert.ok(arrayEqual(result, [2]));
+        });
+    });
 
     suite("orderBy", () =>
     {

@@ -356,6 +356,16 @@ Object.defineProperty(Array.prototype, "contains", {
     }
 });
 
+Object.defineProperty(Array.prototype, "where", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function (filterFunc: (value: any) => boolean): Array<any>
+    {
+        return (<Array<any>>this).filter(filterFunc);
+    }
+});
+
 
 Object.defineProperty(Array.prototype, "orderBy", {
     configurable: false,
