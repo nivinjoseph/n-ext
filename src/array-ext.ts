@@ -346,6 +346,24 @@ class Task<T>
     }
 }
 
+Object.defineProperty(Array.prototype, "isEmpty", {
+    configurable: false,
+    enumerable: false,
+    get: function ()
+    {
+        return this.length === 0;
+    }
+});
+
+Object.defineProperty(Array.prototype, "isNotEmpty", {
+    configurable: false,
+    enumerable: false,
+    get: function ()
+    {
+        return this.length > 0;
+    }
+});
+
 Object.defineProperty(Array.prototype, "contains", {
     configurable: false,
     enumerable: false,
@@ -494,23 +512,5 @@ Object.defineProperty(Array.prototype, "reduceAsync", {
     value: function (asyncFunc: (acc: any, input: any) => Promise<any>, accumulator?: any): Promise<any>
     {
         return ArrayExt.reduceAsync(this, asyncFunc, accumulator);
-    }
-});
-
-Object.defineProperty(Array.prototype, "isEmpty", {
-    configurable: false,
-    enumerable: false,
-    get: function ()
-    {
-        return this.length === 0;
-    }
-});
-
-Object.defineProperty(Array.prototype, "isNotEmpty", {
-    configurable: false,
-    enumerable: false,
-    get: function ()
-    {
-        return this.length > 0;
     }
 });

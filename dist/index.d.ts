@@ -37,6 +37,8 @@ declare global
 
     interface Array<T>
     {
+        readonly isEmpty: boolean;
+        readonly isNotEmpty: boolean;
         contains(value: T): boolean;
         where(filterFunc: (value: T) => boolean): Array<T>;
         orderBy(): Array<T>;
@@ -57,12 +59,12 @@ declare global
         forEachAsync(asyncFunc: (input: T) => Promise<void>, degreesOfParallelism?: number): Promise<void>;
         mapAsync<U>(asyncFunc: (input: T) => Promise<U>, degreesOfParallelism?: number): Promise<Array<U>>;
         reduceAsync<U>(asyncFunc: (acc: U, input: T) => Promise<U>, accumulator?: U): Promise<U>;
-        readonly isEmpty: boolean;
-        readonly isNotEmpty: boolean;
     }
     
     interface ReadonlyArray<T>
     {
+        readonly isEmpty: boolean;
+        readonly isNotEmpty: boolean;
         contains(value: T): boolean;
         where(filterFunc: (value: T) => boolean): Array<T>;
         orderBy(): Array<T>;
