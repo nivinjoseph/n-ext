@@ -571,4 +571,38 @@ suite("ArrayExt", () =>
             assert.ok((after - before) > 1200);
         });
     });
+    
+    suite("isEmpty", () =>
+    {
+        test("Given an empty array, When isEmpty is accessed, Then the return value should be true", () =>
+        {
+            const target = new Array<any>();
+            
+            assert.strictEqual(target.isEmpty, true);
+        });
+        
+        test("Given a non-empty array, When isEmpty is accessed, Then the return value should be false", () =>
+        {
+            const target = [1, 2];
+
+            assert.strictEqual(target.isEmpty, false);
+        });
+    });
+    
+    suite("isNotEmpty", () =>
+    {
+        test("Given an empty array, When isNotEmpty is accessed, Then the return value should be false", () =>
+        {
+            const target = new Array<any>();
+
+            assert.strictEqual(target.isNotEmpty, false);
+        });
+        
+        test("Given a non-empty array, When isNotEmpty is accessed, Then the return value should be true", () =>
+        {
+            const target = [1, 2];
+
+            assert.strictEqual(target.isNotEmpty, true);
+        });
+    });
 });

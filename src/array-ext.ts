@@ -496,3 +496,21 @@ Object.defineProperty(Array.prototype, "reduceAsync", {
         return ArrayExt.reduceAsync(this, asyncFunc, accumulator);
     }
 });
+
+Object.defineProperty(Array.prototype, "isEmpty", {
+    configurable: false,
+    enumerable: false,
+    get: function ()
+    {
+        return this.length === 0;
+    }
+});
+
+Object.defineProperty(Array.prototype, "isNotEmpty", {
+    configurable: false,
+    enumerable: false,
+    get: function ()
+    {
+        return this.length > 0;
+    }
+});

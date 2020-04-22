@@ -57,6 +57,8 @@ declare global
         forEachAsync(asyncFunc: (input: T) => Promise<void>, degreesOfParallelism?: number): Promise<void>;
         mapAsync<U>(asyncFunc: (input: T) => Promise<U>, degreesOfParallelism?: number): Promise<Array<U>>;
         reduceAsync<U>(asyncFunc: (acc: U, input: T) => Promise<U>, accumulator?: U): Promise<U>;
+        readonly isEmpty: boolean;
+        readonly isNotEmpty: boolean;
     }
     
     interface ReadonlyArray<T>
