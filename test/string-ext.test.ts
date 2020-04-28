@@ -34,6 +34,37 @@ suite("StringExt", () =>
         });
     });
     
+    suite("isNotEmptyOrWhiteSpace", () =>
+    {
+        test("should return false when called on an empty string", () =>
+        {
+            let target = "";
+            let result = target.isNotEmptyOrWhiteSpace();
+            assert.strictEqual(result, false);
+        });
+
+        test("should return false when called on a non-empty string with space characters", () =>
+        {
+            let target = "   ";
+            let result = target.isNotEmptyOrWhiteSpace();
+            assert.strictEqual(result, false);
+        });
+
+        test("should return true when called on a non-empty string", () =>
+        {
+            let target = "foo";
+            let result = target.isNotEmptyOrWhiteSpace();
+            assert.strictEqual(result, true);
+        });
+
+        test("should return true when called on a non-empty string with space and regular characters", () =>
+        {
+            let target = "  foo bar  ";
+            let result = target.isNotEmptyOrWhiteSpace();
+            assert.strictEqual(result, true);
+        });
+    });
+    
     suite("contains", () =>
     {
         test("should return true if argument is a substring of the target string", () =>

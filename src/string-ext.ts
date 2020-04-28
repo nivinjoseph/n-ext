@@ -219,6 +219,16 @@ Object.defineProperty(String.prototype, "isEmptyOrWhiteSpace", {
     }
 });
 
+Object.defineProperty(String.prototype, "isNotEmptyOrWhiteSpace", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function (): boolean
+    {
+        return !StringExt.isEmptyOrWhiteSpace(this.toString());
+    }
+});
+
 Object.defineProperty(String.prototype, "contains", {
     configurable: false,
     enumerable: false,

@@ -3,6 +3,7 @@ declare global
     interface String
     {
         isEmptyOrWhiteSpace(): boolean;
+        isNotEmptyOrWhiteSpace(): boolean;
         contains(value: string): boolean;
         startsWith(value: string): boolean;
         endsWith(value: string): boolean;
