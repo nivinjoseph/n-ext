@@ -106,27 +106,32 @@ class ArrayExt
 
     public static skip<T>(array: T[], count: number): T[]
     {
-        if (count < 0) count = 0;
+        if (count <= 0) count = 0;
 
-        let result = new Array<T>();
-        for (let i = count; i < array.length; i++)
-        {
-            result.push(array[i]);
-        }
-        return result;
+        // let result = new Array<T>();
+        // for (let i = count; i < array.length; i++)
+        // {
+        //     result.push(array[i]);
+        // }
+        // return result;
+        
+        return array.slice(count);
     }
 
     public static take<T>(array: T[], count: number): T[]
     {
-        if (count < 0) count = 0;
+        if (count <= 0) count = 0;
         else if (count > array.length) count = array.length;
 
-        let result = new Array<T>();
-        for (let i = 0; i < count; i++)
-        {
-            result.push(array[i]);
-        }
-        return result;
+        // let result = new Array<T>();
+        // for (let i = 0; i < count; i++)
+        // {
+        //     result.push(array[i]);
+        // }
+        // return result;
+        
+        if (count === 0) return [];
+        return array.slice(0, count);
     }
 
     public static count<T>(array: T[]): number;

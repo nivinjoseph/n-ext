@@ -327,6 +327,12 @@ suite("ArrayExt", () =>
             assert.ok(arrayEqual(taken, numbers));
         });
         
+        test("should return all array elements if number taken from target is == array.length", () =>
+        {
+            let taken = numbers.take(numbers.length);
+            assert.ok(arrayEqual(taken, numbers));
+        });
+        
         test("should return array of elements taken when target elements are strings", () =>
         {
             let taken = strings.take(2);
