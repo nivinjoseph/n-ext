@@ -37,6 +37,10 @@ class StringExt {
         return result;
     }
     static replaceAll(primary, searchValue, replaceValue) {
+        // let matchOperatorsRe = /[|\\{}()[\]^$+*?.]/g;
+        // let result = primary.replace(matchOperatorsRe, "\\$&");
+        // let searchRe = new RegExp(searchValue, ignoreCase ? "gi" : "g");
+        // return result.replace(searchRe, replaceValue);
         while (primary.indexOf(searchValue) !== -1)
             primary = primary.replace(searchValue, replaceValue);
         return primary;
@@ -103,16 +107,16 @@ class StringExt {
             const token = formatTokens[i];
             if (token === SystemFormatSymbol.alphabet) {
                 const charCode = char.charCodeAt(0);
-                if (!(charCode >= 65 && charCode <= 90) && !(charCode >= 97 && charCode <= 122))
+                if (!(charCode >= 65 && charCode <= 90) && !(charCode >= 97 && charCode <= 122)) // "A"-"Z" = 65-90 "a"-"z" = 97-122 
                     return false;
             }
             else if (token === SystemFormatSymbol.number) {
                 const charCode = char.charCodeAt(0);
-                if (!(charCode >= 48 && charCode <= 57))
+                if (!(charCode >= 48 && charCode <= 57)) // "0"-"9" = 48-57
                     return false;
             }
             else {
-                const expectedChar = token.length === 2 ? token[1] : token;
+                const expectedChar = token.length === 2 ? token[1] : token; // tokens for system chars are '\@' '\#' '\*' '\\'     
                 if (char !== expectedChar)
                     return false;
             }
