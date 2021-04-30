@@ -10,7 +10,7 @@
         "ts-build": "npm run ts-compile && npm run ts-lint",
         "ts-build-dist": "npm run ts-build && tsc -p ./dist",
         "pretest": "npm run ts-build",
-        "test": "mocha --reporter spec --ui tdd --require ts-node/register './test/**/*.test.js' || true",
+        "test": "mocha --timeout 10000000 --reporter spec --ui tdd --require ts-node/register './test/**/*.test.js' || true",
         "pretest-ci": "npm run pretest",
         "test-ci": "mocha --reporter spec --ui tdd --require ts-node/register './test/**/*.test.js'",
         "publish-package": "npm run ts-build-dist && git add . && git commit -m 'preparing to publish new version' && npm version patch && git push && npm publish --access=public"
@@ -29,15 +29,15 @@
     },
     "homepage": "https://github.com/nivinjoseph/n-ext#readme",
     "devDependencies": {
-        "@types/mocha": "^7.0.2",
-        "@types/node": "^12.12.17",
-        "mocha": "^7.1.1",
-        "ts-node": "^8.9.0",
+        "@types/mocha": "^8.2.2",
+        "@types/node": "^14.14.43",
+        "mocha": "^8.3.2",
+        "ts-node": "^9.1.1",
         "tslint": "^6.1.1",
-        "typescript": "^3.8.3",
+        "typescript": "^4.2.4",
         "typescript-tslint-plugin": "^0.5.5"
     },
     "dependencies": {
-        "buffer": "^5.6.0"
+        "buffer": "^6.0.3"
     }
 }

@@ -481,11 +481,12 @@ suite("ArrayExt", () =>
             };
             
             let before = Date.now();
-            await target.forEachAsync(asyncFunc, 2);
+            await target.forEachAsync(asyncFunc, 5);
             let after = Date.now();
             
             assert.strictEqual(target.length, result.length);
-            assert.ok(arrayEqual(result, target));
+            // console.log(result);
+            assert.ok(arrayEqual(result.orderBy(), target));
             assert.ok((after - before) < 650);
         });
     });
@@ -494,7 +495,7 @@ suite("ArrayExt", () =>
     {
         test("should successfully execute", async () =>
         {
-            let target = [1, 2, 3, 4, 5, 6];
+            let target = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
             let asyncFunc = (num: number) =>
             {
                 // @ts-ignore
@@ -508,12 +509,13 @@ suite("ArrayExt", () =>
             };
 
             let before = Date.now();
-            let result = await target.mapAsync(asyncFunc, 3);
+            let result = await target.mapAsync(asyncFunc, 5);
             let after = Date.now();
 
             assert.strictEqual(target.length, result.length);
-            assert.ok(arrayEqual(result, [1, 4, 9, 16, 25, 36]));
-            assert.ok((after - before) < 650);
+            console.log(result);
+            assert.ok(arrayEqual(result, [1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144, 169]));
+            console.log(after - before);
         });
     });
     

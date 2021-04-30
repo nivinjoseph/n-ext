@@ -209,17 +209,35 @@ class ArrayExt
         return true;
     }
 
+    // public static async forEachAsync<T>(array: T[], asyncFunc: (input: T) => Promise<void>, degreesOfParallelism?: number): Promise<void>
+    // {
+    //     let taskManager = new TaskManager(array, asyncFunc, degreesOfParallelism, false);
+    //     await taskManager.execute();
+    // }
+    
     public static async forEachAsync<T>(array: T[], asyncFunc: (input: T) => Promise<void>, degreesOfParallelism?: number): Promise<void>
     {
-        let taskManager = new TaskManager(array, asyncFunc, degreesOfParallelism, false);
-        await taskManager.execute();
+        if (array.length === 0)
+            return;
+        
+        const bte = new BatchTaskExec(array, asyncFunc, false, degreesOfParallelism);
+        await bte.process();
     }
 
+    // public static async mapAsync<T, U>(array: T[], asyncFunc: (input: T) => Promise<U>, degreesOfParallelism?: number): Promise<U[]>
+    // {
+    //     let taskManager = new TaskManager(array, asyncFunc, degreesOfParallelism, true);
+    //     await taskManager.execute();
+    //     return taskManager.getResults();
+    // }
+    
     public static async mapAsync<T, U>(array: T[], asyncFunc: (input: T) => Promise<U>, degreesOfParallelism?: number): Promise<U[]>
     {
-        let taskManager = new TaskManager(array, asyncFunc, degreesOfParallelism, true);
-        await taskManager.execute();
-        return taskManager.getResults();
+        if (array.length === 0)
+            return new Array<U>();
+
+        const bte = new BatchTaskExec(array, asyncFunc, true, degreesOfParallelism);
+        return await bte.process();
     }
 
     public static async reduceAsync<T, U>(array: T[], asyncFunc: (acc: U, input: T) => Promise<U>, accumulator?: U): Promise<U>
@@ -235,6 +253,221 @@ class ArrayExt
             accumulator = await asyncFunc(accumulator, array[i]);
 
         return accumulator;
+    }
+}
+
+class TaskExec<T, TResult>
+{
+    private readonly _array: T[];
+    private readonly _taskFunc: (input: T) => Promise<TResult>;
+    private readonly _captureResults: boolean;
+    private readonly _results = new Array<TResult>();
+    private _executionPromise: Promise<Array<TResult>> | null = null;
+    
+    
+    public constructor(array: T[], taskFunc: (input: T) => Promise<TResult>, captureResults: boolean)
+    {
+        this._array = array;
+        this._taskFunc = taskFunc;
+        this._captureResults = captureResults;
+    }
+    
+    
+    public execute(): Promise<Array<TResult>>
+    {
+        if (this._executionPromise != null)
+            return this._executionPromise;
+        
+        this._executionPromise = this._execute().then(() => this._results);
+        return this._executionPromise;
+    }
+    
+    private async _execute(): Promise<void>
+    {
+        for (const item of this._array)
+        {
+            const result = await this._taskFunc(item);
+            if (this._captureResults)
+                this._results.push(result);
+        }
+    }
+}
+
+class BatchTaskExec<T, TResult>
+{
+    private readonly _array: T[];
+    private readonly _taskFunc: (input: T) => Promise<TResult>;
+    private readonly _captureResults: boolean;
+    private readonly _taskCount: number;
+
+
+    public constructor(array: T[], taskFunc: (input: T) => Promise<TResult>, captureResults: boolean, taskCount: number)
+    {
+        this._array = array;
+        this._taskFunc = taskFunc;
+        this._captureResults = captureResults;
+        
+        taskCount = taskCount ?? array.length;
+        taskCount = Math.max(taskCount, 1);
+        taskCount = Math.min(taskCount, array.length);
+        this._taskCount = taskCount;
+    }
+
+    // BROKEN
+    // public async process(): Promise<Array<TResult>>
+    // {
+    //     if (this._taskCount === this._array.length)
+    //         return await Promise.all(this._array.map(t => this._taskFunc(t)));
+        
+    //     const batchSize = Math.floor(this._array.length / this._taskCount);
+    //     console.log("BATCH SIZE", batchSize);
+    //     const promises = new Array<Promise<TResult[]>>();
+        
+    //     for (let i = 0; i < this._taskCount; i++)
+    //     {
+    //         const isLast = i === (this._taskCount - 1);
+    //         const taskExec = new TaskExec(this._array.skip(i * batchSize).take(isLast ? this._array.length : batchSize),
+    //             this._taskFunc, this._captureResults);
+            
+    //         promises.push(taskExec.execute());
+    //     }
+        
+    //     const results = await Promise.all(promises);
+        
+    //     if (!this._captureResults)
+    //         return new Array<TResult>();
+        
+    //     return results.reduce((acc, items) =>
+    //     {
+    //         acc.push(...items);
+    //         return acc;
+    //     }, new Array<TResult>());
+    // }
+    
+    // Round robin
+    // public async process(): Promise<Array<TResult>>
+    // {
+    //     if (this._taskCount === this._array.length)
+    //         return await Promise.all(this._array.map(t => this._taskFunc(t)));
+        
+    //     const pools = new Array<Array<T>>();
+    //     for (let i = 0; i < this._taskCount; i++)
+    //         pools.push([]);
+        
+    //     let poolIndex = 0;
+    //     for (let i = 0; i < this._array.length; i++)
+    //     {
+    //         if (poolIndex >= pools.length)
+    //             poolIndex = 0;
+            
+    //         const pool = pools[poolIndex];
+    //         pool.push(this._array[i]);
+    //         poolIndex++;
+    //     }
+        
+    //     const promises = new Array<Promise<TResult[]>>();
+        
+    //     for (let i = 0; i < this._taskCount; i++)
+    //     {
+    //         const taskExec = new TaskExec(pools[i], this._taskFunc, this._captureResults);
+
+    //         promises.push(taskExec.execute());
+    //     }
+
+    //     const results = await Promise.all(promises);
+
+    //     if (!this._captureResults)
+    //         return new Array<TResult>();
+        
+    //     const maxLength = Math.max(...results.map(t => t.length));
+    //     const finalResults = new Array<TResult>();
+    //     for (let i = 0; i < maxLength; i++)
+    //     {
+    //         for (let j = 0; j < pools.length; j++)
+    //         {
+    //             const value = results[j][i];
+    //             if (value !== undefined)
+    //                 finalResults.push(value);
+    //         }
+    //     }
+    //     return finalResults;
+    // }
+    
+    // Remainder Round Robin
+    public async process(): Promise<Array<TResult>>
+    {
+        if (this._taskCount === this._array.length)
+            return await Promise.all(this._array.map(t => this._taskFunc(t)));
+
+        const remainder = this._array.length % this._taskCount;
+        const batchSize = (this._array.length - remainder) / this._taskCount;
+        
+        // console.log("BATCH SIZE", batchSize);
+        // console.log("REMAINDER", remainder);
+        
+        const promises = new Array<Promise<TResult[]>>();
+        
+        const hasRemainder = remainder > 0;
+        
+        const pools = new Array<Array<T>>();
+        for (let i = 0; i < this._taskCount; i++)
+            pools.push(this._array.skip(i * batchSize).take(batchSize));
+        
+        if (hasRemainder)
+        {
+            const baseLength = this._array.length - remainder;
+            let arrayIndex, poolIndex;
+            for (arrayIndex = baseLength, poolIndex = 0; arrayIndex < this._array.length; arrayIndex++, poolIndex++)
+            {
+                pools[poolIndex].push(this._array[arrayIndex]);
+            }
+        }
+        
+        // console.log("POOLS", pools);
+
+        for (let i = 0; i < this._taskCount; i++)
+        {
+            const taskExec = new TaskExec(pools[i], this._taskFunc, this._captureResults);
+            promises.push(taskExec.execute());
+        }
+
+        const results = await Promise.all(promises);
+
+        if (!this._captureResults)
+            return new Array<TResult>();
+        
+        
+        if (hasRemainder)
+        {
+            const remaining = new Array<TResult>();
+            const baseLength = this._array.length - remainder;
+            let arrayIndex, poolIndex;
+            for (arrayIndex = baseLength, poolIndex = 0; arrayIndex < this._array.length; arrayIndex++, poolIndex++)
+            {
+                pools[poolIndex].push(this._array[arrayIndex]);
+                
+                const poolResults = results[poolIndex];
+                remaining.push(poolResults[poolResults.length - 1]);
+                poolResults.splice(results[poolIndex].length - 1, 1);
+            }
+            
+            const actualResults = results.reduce((acc, items) =>
+            {
+                acc.push(...items);
+                return acc;
+            }, new Array<TResult>());
+            
+            actualResults.push(...remaining);
+            return actualResults;
+        }
+        else
+        {
+            return results.reduce((acc, items) =>
+            {
+                acc.push(...items);
+                return acc;
+            }, new Array<TResult>());
+        }
     }
 }
 
