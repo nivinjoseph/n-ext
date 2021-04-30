@@ -295,13 +295,13 @@ class TaskExec<T, TResult>
 
 class BatchTaskExec<T, TResult>
 {
-    private readonly _array: T[];
+    private readonly _array: Array<T>;
     private readonly _taskFunc: (input: T) => Promise<TResult>;
     private readonly _captureResults: boolean;
     private readonly _taskCount: number;
 
 
-    public constructor(array: T[], taskFunc: (input: T) => Promise<TResult>, captureResults: boolean, taskCount: number)
+    public constructor(array: Array<T>, taskFunc: (input: T) => Promise<TResult>, captureResults: boolean, taskCount: number)
     {
         this._array = array;
         this._taskFunc = taskFunc;
@@ -411,7 +411,7 @@ class BatchTaskExec<T, TResult>
         
         const pools = new Array<Array<T>>();
         for (let i = 0; i < this._taskCount; i++)
-            pools.push(this._array.skip(i * batchSize).take(batchSize));
+            pools.push(ArrayExt.take(ArrayExt.skip(this._array, i * batchSize), batchSize));
         
         if (hasRemainder)
         {
@@ -435,7 +435,6 @@ class BatchTaskExec<T, TResult>
 
         if (!this._captureResults)
             return new Array<TResult>();
-        
         
         if (hasRemainder)
         {
