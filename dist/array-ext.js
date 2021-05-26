@@ -71,16 +71,41 @@ class ArrayExt {
         return result;
     }
     static distinct(array, compareFunc) {
-        if (compareFunc == null)
-            compareFunc = (value) => value;
-        let internalArray = [];
-        for (let i = 0; i < array.length; i++) {
-            let item = array[i];
-            if (internalArray.some(t => compareFunc(t) === compareFunc(item)))
-                continue;
-            internalArray.push(item);
+        // if (compareFunc == null)
+        //     compareFunc = (value: T) => value;
+        // let internalArray: T[] = [];
+        // for (let i = 0; i < array.length; i++)
+        // {
+        //     let item = array[i];
+        //     if (internalArray.some(t => compareFunc(t) === compareFunc(item)))
+        //         continue;
+        //     internalArray.push(item);
+        // }
+        // return internalArray;
+        if (compareFunc == null) {
+            const set = new Set();
+            let item;
+            for (let i = 0; i < array.length; i++) {
+                item = array[i];
+                set.add(item);
+            }
+            return [...set];
         }
-        return internalArray;
+        else {
+            const set = new Set();
+            const internalArray = [];
+            let item;
+            let distinguished;
+            for (let i = 0; i < array.length; i++) {
+                item = array[i];
+                distinguished = compareFunc(item);
+                if (!set.has(distinguished)) {
+                    set.add(distinguished);
+                    internalArray.push(item);
+                }
+            }
+            return internalArray;
+        }
     }
     static skip(array, count) {
         if (count <= 0)
