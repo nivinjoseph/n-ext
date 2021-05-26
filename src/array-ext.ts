@@ -88,20 +88,54 @@ class ArrayExt
     public static distinct<T>(array: T[], compareFunc: (value: T) => any): T[];
     public static distinct<T>(array: T[], compareFunc?: (value: T) => any): T[]
     {
+        // if (compareFunc == null)
+        //     compareFunc = (value: T) => value;
+
+        // let internalArray: T[] = [];
+
+        // for (let i = 0; i < array.length; i++)
+        // {
+        //     let item = array[i];
+        //     if (internalArray.some(t => compareFunc(t) === compareFunc(item)))
+        //         continue;
+        //     internalArray.push(item);
+        // }
+
+        // return internalArray;
+        
+        
+        
         if (compareFunc == null)
-            compareFunc = (value: T) => value;
-
-        let internalArray: T[] = [];
-
-        for (let i = 0; i < array.length; i++)
         {
-            let item = array[i];
-            if (internalArray.some(t => compareFunc(t) === compareFunc(item)))
-                continue;
-            internalArray.push(item);
+            const set = new Set<T>();            
+            let item: T;
+            for (let i = 0; i < array.length; i++)
+            {
+                item = array[i];
+                set.add(item);
+            }
+            
+            return [...set];
         }
-
-        return internalArray;
+        else
+        {
+            const set = new Set();
+            const internalArray: T[] = [];
+            let item: T;
+            let distinguished: any;
+            for (let i = 0; i < array.length; i++)
+            {
+                item = array[i];
+                distinguished = compareFunc(item);
+                if (!set.has(distinguished))
+                {
+                    set.add(distinguished);
+                    internalArray.push(item);
+                }
+            }
+            
+            return internalArray;
+        }
     }
 
     public static skip<T>(array: T[], count: number): T[]
