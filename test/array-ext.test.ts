@@ -230,6 +230,24 @@ suite("ArrayExt", () =>
             assert.strictEqual(distinct.length, 2);
             assert.ok(arrayEqual(distinct, [duplicates[0], duplicates[1]]));
         });
+        
+        test.skip("Performance", () =>
+        {
+            const collection = new Array<string>();
+            for (let i = 0; i < 16777216; i++)
+            {
+                collection.push(`abc${i}`);
+            }
+            
+            const start = Date.now();
+            const distinct = collection.distinct();
+            const end = Date.now();
+            const diff = end - start;
+            
+            console.log("diff ms =>", diff);
+            
+            assert.strictEqual(distinct.length, collection.length);
+        });
     });
     
     suite("skip", () =>

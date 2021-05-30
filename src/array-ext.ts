@@ -104,38 +104,30 @@ class ArrayExt
         // return internalArray;
         
         
+        // BECAUSE WE USE SETS
+        const setLimit = 16777216;
+        if (array.length > setLimit)
+            throw new Error(`Array has ${array.length} items (exceeds set limit of ${setLimit}). Calling distinct is prohibited.`);
         
         if (compareFunc == null)
+            return [...new Set(array)];
+        
+        const set = new Set();
+        const internalArray: T[] = [];
+        let item: T;
+        let distinguished: any;
+        for (let i = 0; i < array.length; i++)
         {
-            const set = new Set<T>();            
-            let item: T;
-            for (let i = 0; i < array.length; i++)
+            item = array[i];
+            distinguished = compareFunc(item);
+            if (!set.has(distinguished))
             {
-                item = array[i];
-                set.add(item);
+                set.add(distinguished);
+                internalArray.push(item);
             }
-            
-            return [...set];
         }
-        else
-        {
-            const set = new Set();
-            const internalArray: T[] = [];
-            let item: T;
-            let distinguished: any;
-            for (let i = 0; i < array.length; i++)
-            {
-                item = array[i];
-                distinguished = compareFunc(item);
-                if (!set.has(distinguished))
-                {
-                    set.add(distinguished);
-                    internalArray.push(item);
-                }
-            }
-            
-            return internalArray;
-        }
+
+        return internalArray;
     }
 
     public static skip<T>(array: T[], count: number): T[]
