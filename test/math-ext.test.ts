@@ -4,18 +4,49 @@ import "../src/math-ext";
 
 suite("MathExt", () =>
 {
-    test("percentage", () =>
+    suite("percentage", () =>
     {
-        Assert.strictEqual(Math.percentage(10, 200), 5);
+        test("percentage", () =>
+        {
+            Assert.strictEqual(Math.percentage(10, 200), 5);
+        });
+
+        test("percentagePartial", () =>
+        {
+            Assert.strictEqual(Math.percentagePartial(5, 200), 10);
+        });
+
+        test("percentageWhole", () =>
+        {
+            Assert.strictEqual(Math.percentageWhole(5, 10), 200);
+        });
     });
     
-    test("percentagePartial", () =>
+    suite("median", () =>
     {
-        Assert.strictEqual(Math.percentagePartial(5, 200), 10);
-    });
-    
-    test("percentageWhole", () =>
-    {
-        Assert.strictEqual(Math.percentageWhole(5, 10), 200);
+        test("median empty", () =>
+        {
+            Assert.strictEqual(Math.median([]), null);
+        });
+        
+        test("median nulls", () =>
+        {
+            Assert.strictEqual(Math.median([null, undefined, null, null]), null);
+        });
+        
+        test("median one", () =>
+        {
+            Assert.strictEqual(Math.median([5]), 5);
+        });
+        
+        test("median odd", () =>
+        {
+            Assert.strictEqual(Math.median([1, 6, 3, 3, 9, 7, 8]), 6);
+        });
+        
+        test("median even", () =>
+        {
+            Assert.strictEqual(Math.median([4, 1, 2, 3, 9, 5, 8, 6]), 4.5);
+        });
     });
 });

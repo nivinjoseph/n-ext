@@ -32,6 +32,52 @@ class MathExt
 
         return (partialValue / percentage) * 100;
     }
+    
+    public static median(values: ReadonlyArray<number>): number | null
+    {
+        const sorted = MathExt._sortNumbersEliminateNulls(values);
+        
+        if (sorted.isEmpty)
+            return null;
+        
+        if (sorted.length === 1)
+            return sorted[0];
+
+        if ((sorted.length % 2) === 0)
+        {
+            const midish = sorted.length / 2;
+
+            const first = sorted[midish - 1];
+            const second = sorted[midish];
+
+            return (first + second) / 2;
+        }
+        else
+        {
+            const mid = Math.floor(sorted.length / 2);
+
+            return sorted[mid];
+        }
+    }
+    
+    private static _sortNumbersEliminateNulls(values: ReadonlyArray<number>): Array<number>
+    {
+        let internalArray: number[] = [];
+        for (let i = 0; i < values.length; i++)
+        {
+            if (values[i] != null)
+                internalArray.push(values[i]);
+        }
+
+        internalArray.sort((a, b) =>
+        {
+            if (a < b) return -1;
+            if (a > b) return 1;
+            return 0;
+        });
+
+        return internalArray;
+    }
 }
 
 
@@ -48,4 +94,9 @@ class MathExt
 (<any>Math).percentageWhole = function (percentage: number, partialValue: number): number
 {
     return MathExt.percentageWhole(percentage, partialValue);
+};
+
+(<any>Math).median = function (values: ReadonlyArray<number>): number | null
+{
+    return MathExt.median(values);
 };

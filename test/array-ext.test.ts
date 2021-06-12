@@ -4,6 +4,7 @@ import "../src/array-ext";
 suite("ArrayExt", () =>    
 {
     let numbers: number[];
+    let largeNumbers: number[];
     let strings: string[];
     let empty: any[];
     let single: number[];
@@ -18,6 +19,7 @@ suite("ArrayExt", () =>
     setup(() =>
     {
         numbers = [2, 3, 1, 7];
+        largeNumbers = [0, 9, 17, 1, 12, 100, 2, 8, 25, 5];
         strings = ["charlie", "alpha", "india", "bravo"];
         empty = [];
         single = [1]; 
@@ -121,8 +123,8 @@ suite("ArrayExt", () =>
     
         test("should return array of numbers in ascending order", () => 
         {
-            let ordered = numbers.orderBy();
-            assert.ok(arrayEqual(ordered, [1, 2, 3, 7]));
+            let ordered = largeNumbers.orderBy();
+            assert.ok(arrayEqual(ordered, [0, 1, 2, 5, 8, 9, 12, 17, 25, 100]));
         });
 
         test("should return array of strings in ascending order", () =>
