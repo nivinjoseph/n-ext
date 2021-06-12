@@ -37,7 +37,7 @@ class MathExt
     {
         const sorted = MathExt._sortNumbersEliminateNulls(values);
         
-        if (sorted.isEmpty)
+        if (sorted.length === 0)
             return null;
         
         if (sorted.length === 1)
