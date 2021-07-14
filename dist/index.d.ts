@@ -4,9 +4,9 @@ declare global
     {
         isEmptyOrWhiteSpace(): boolean;
         isNotEmptyOrWhiteSpace(): boolean;
-        contains(value: string): boolean;
-        startsWith(value: string): boolean;
-        endsWith(value: string): boolean;
+        contains(search: string): boolean; // native implementation includes
+        // startsWith(value: string): boolean; // native implementation exists
+        // endsWith(value: string): boolean; // native implementation exists
         extractNumbers(): string;
         extractCharacters(): string;
         format(...params: any[]): string;

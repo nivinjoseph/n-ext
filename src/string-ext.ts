@@ -8,22 +8,24 @@ class StringExt
         return value.trim().length === 0;
     }
 
-    public static contains(primary: string, sub: string): boolean
+    public static contains(primary: string, search: string): boolean
     {
-        return primary.indexOf(sub) !== -1;
+        // return primary.indexOf(sub) !== -1;
+        
+        return primary.includes(search);
     }
 
-    public static startsWith(primary: string, sub: string): boolean
-    {
-        return primary.indexOf(sub) === 0;
-    }
+    // public static startsWith(primary: string, sub: string): boolean
+    // {
+    //     return primary.indexOf(sub) === 0;
+    // }
 
-    public static endsWith(primary: string, sub: string): boolean
-    {
-        let index = primary.lastIndexOf(sub);
-        if (index === -1) return false;
-        return (index + sub.length) === primary.length;
-    }
+    // public static endsWith(primary: string, sub: string): boolean
+    // {
+    //     let index = primary.lastIndexOf(sub);
+    //     if (index === -1) return false;
+    //     return (index + sub.length) === primary.length;
+    // }
 
     public static extractNumbers(value: string): string
     {
@@ -233,31 +235,31 @@ Object.defineProperty(String.prototype, "contains", {
     configurable: false,
     enumerable: false,
     writable: false,
-    value: function (sub: string): boolean
+    value: function (search: string): boolean
     {
-        return StringExt.contains(this.toString(), sub);
+        return StringExt.contains(this.toString(), search);
     }
 });
 
-Object.defineProperty(String.prototype, "startsWith", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (sub: string): boolean
-    {
-        return StringExt.startsWith(this.toString(), sub);
-    }
-});
+// Object.defineProperty(String.prototype, "startsWith", {
+//     configurable: false,
+//     enumerable: false,
+//     writable: false,
+//     value: function (sub: string): boolean
+//     {
+//         return StringExt.startsWith(this.toString(), sub);
+//     }
+// });
 
-Object.defineProperty(String.prototype, "endsWith", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (sub: string): boolean
-    {
-        return StringExt.endsWith(this.toString(), sub);
-    }
-});
+// Object.defineProperty(String.prototype, "endsWith", {
+//     configurable: false,
+//     enumerable: false,
+//     writable: false,
+//     value: function (sub: string): boolean
+//     {
+//         return StringExt.endsWith(this.toString(), sub);
+//     }
+// });
 
 Object.defineProperty(String.prototype, "extractNumbers", {
     configurable: false,
