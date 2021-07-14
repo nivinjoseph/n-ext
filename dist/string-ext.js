@@ -5,18 +5,20 @@ class StringExt {
     static isEmptyOrWhiteSpace(value) {
         return value.trim().length === 0;
     }
-    static contains(primary, sub) {
-        return primary.indexOf(sub) !== -1;
+    static contains(primary, search) {
+        // return primary.indexOf(sub) !== -1;
+        return primary.includes(search);
     }
-    static startsWith(primary, sub) {
-        return primary.indexOf(sub) === 0;
-    }
-    static endsWith(primary, sub) {
-        let index = primary.lastIndexOf(sub);
-        if (index === -1)
-            return false;
-        return (index + sub.length) === primary.length;
-    }
+    // public static startsWith(primary: string, sub: string): boolean
+    // {
+    //     return primary.indexOf(sub) === 0;
+    // }
+    // public static endsWith(primary: string, sub: string): boolean
+    // {
+    //     let index = primary.lastIndexOf(sub);
+    //     if (index === -1) return false;
+    //     return (index + sub.length) === primary.length;
+    // }
     static extractNumbers(value) {
         return value.replace(/[^0-9]/g, "");
     }
@@ -166,26 +168,28 @@ Object.defineProperty(String.prototype, "contains", {
     configurable: false,
     enumerable: false,
     writable: false,
-    value: function (sub) {
-        return StringExt.contains(this.toString(), sub);
+    value: function (search) {
+        return StringExt.contains(this.toString(), search);
     }
 });
-Object.defineProperty(String.prototype, "startsWith", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (sub) {
-        return StringExt.startsWith(this.toString(), sub);
-    }
-});
-Object.defineProperty(String.prototype, "endsWith", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (sub) {
-        return StringExt.endsWith(this.toString(), sub);
-    }
-});
+// Object.defineProperty(String.prototype, "startsWith", {
+//     configurable: false,
+//     enumerable: false,
+//     writable: false,
+//     value: function (sub: string): boolean
+//     {
+//         return StringExt.startsWith(this.toString(), sub);
+//     }
+// });
+// Object.defineProperty(String.prototype, "endsWith", {
+//     configurable: false,
+//     enumerable: false,
+//     writable: false,
+//     value: function (sub: string): boolean
+//     {
+//         return StringExt.endsWith(this.toString(), sub);
+//     }
+// });
 Object.defineProperty(String.prototype, "extractNumbers", {
     configurable: false,
     enumerable: false,
