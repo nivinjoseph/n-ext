@@ -1,12 +1,39 @@
 class ArrayExt
 {
+    /**
+     * 
+     * Returns true if the `array` contains a specific value.
+     * 
+     * @param array - The array being checked for containing a specific value.
+     * @param value - The value being checked for.
+     */
     public static contains<T>(array: T[], value: T): boolean
     {
         return array.some(t => t === value);
     }
 
+    /**
+     * 
+     * Returns the array ordered by ascending order given an `array`.
+     * 
+     * @param array - The array being checked for reordering.
+     */
     public static orderBy<T>(array: T[]): T[];
+    /**
+     * 
+     * Returns the array ordered by ascending order given an `array` while applying a compareFunc each value.
+     * 
+     * @param array - The array being checked for reordering.
+     * @param compareFunc - The compareFunc being applied to each index in the array.
+     */
     public static orderBy<T>(array: T[], compareFunc: (value: T) => any): T[];
+    /**
+     * 
+     * Returns the array ordered by ascending order given an `array` while applying a `compareFunc` each value.
+     * 
+     * @param array - The array being checked for reordering.
+     * @param compareFunc - The compareFunc being applied to each index in the array.
+     */
     public static orderBy<T>(array: T[], compareFunc?: (value: T) => any): T[]
     {
         let internalArray: T[] = [];
@@ -28,8 +55,28 @@ class ArrayExt
         return internalArray;
     }
 
+    /**
+     * 
+     * Returns the array ordered by descending order given an `array`.
+     * 
+     * @param array - The array being checked for reordering.
+     */
     public static orderByDesc<T>(array: T[]): T[];
+    /**
+     * 
+     * Returns the array ordered by descending order given an `array` while applying a `compareFunc` each value.
+     * 
+     * @param array - The array being checked for reordering.
+     * @param compareFunc - The compareFunc being applied to each index in the array.
+     */
     public static orderByDesc<T>(array: T[], compareFunc: (value: T) => any): T[];
+    /**
+     * 
+     * Returns the array ordered by descending order given an `array` while applying a `compareFunc` each value.
+     * 
+     * @param array - The array being checked for reordering.
+     * @param compareFunc - The compareFunc being applied to each index in the array.
+     */
     public static orderByDesc<T>(array: T[], compareFunc?: (value: T) => any): T[]
     {
         let internalArray: T[] = [];
@@ -64,6 +111,13 @@ class ArrayExt
     //     }, {});
     // }
     
+    /**
+     * 
+     * Returns an array of objects which is grouped `array` by its specific `keyFunc`.
+     * 
+     * @param array - The array being checked for grouping.
+     * @param keyFunc - The callback which contains the keys to be grouped.
+     */
     public static groupBy<T>(array: T[], keyFunc: (value: T) => string): {key: string, values: T[]}[]
     {
         const result = new Array<{ key: string, values: T[] }>();
@@ -84,8 +138,26 @@ class ArrayExt
         return result;
     }
 
+    /**
+     * 
+     * Returns an array with only distinctive values given an `array`.
+     * 
+     * @param array - The array being checked for distinction.
+     */
     public static distinct<T>(array: T[]): T[];
+    /**
+     * 
+     * Returns an array with only distinctive values given an `array` and while applying a `compareFunc` to each value.
+     * 
+     * @param array - The array being checked for distinction.
+     */
     public static distinct<T>(array: T[], compareFunc: (value: T) => any): T[];
+    /**
+     * 
+     * Returns an array with only distinctive values given an `array` and while applying a `compareFunc` to each value.
+     * 
+     * @param array - The array being checked for distinction.
+     */
     public static distinct<T>(array: T[], compareFunc?: (value: T) => any): T[]
     {
         // if (compareFunc == null)
@@ -130,6 +202,13 @@ class ArrayExt
         return internalArray;
     }
 
+    /**
+     * 
+     * Returns an array given an `array` which does not include the initial elements specified by `count`.
+     * 
+     * @param array - The array.
+     * @param count - The number of index to skip.
+     */
     public static skip<T>(array: T[], count: number): T[]
     {
         if (count <= 0) count = 0;
@@ -144,6 +223,13 @@ class ArrayExt
         return array.slice(count);
     }
 
+    /**
+     * 
+     * Returns an array given an `array` which includes the initial elements up till `count`.
+     * 
+     * @param array - The array.
+     * @param count - The number of index to include.
+     */
     public static take<T>(array: T[], count: number): T[]
     {
         if (count <= 0) count = 0;
@@ -159,9 +245,29 @@ class ArrayExt
         if (count === 0) return [];
         return array.slice(0, count);
     }
-
+    
+    /**
+     * 
+     * Returns the number of element in an `array`.
+     * 
+     * @param array - The array being checked.
+     */
     public static count<T>(array: T[]): number;
+    /**
+     * 
+     * Returns the number of element in an `array` which satisfy the `predicate` callback.
+     * 
+     * @param array - The array being checked.
+     * @param predicate - The predicate callback to check each value.
+     */
     public static count<T>(array: T[], predicate: (value: T) => boolean): number;
+    /**
+     * 
+     * Returns the number of element in an `array` which satisfy the `predicate` callback.
+     * 
+     * @param array - The array being checked.
+     * @param predicate - The predicate callback to check each value.
+     */
     public static count<T>(array: T[], predicate?: (value: T) => boolean): number
     {
         if (predicate == null)
@@ -178,6 +284,13 @@ class ArrayExt
         }
     }
 
+    /**
+     * 
+     * Removes a `value` from a given `array`. Returns false if the index is invalid or negative, else returns true.
+     * 
+     * @param array - The array getting a value removed.
+     * @param value - The specified value being removed from an array.
+     */
     public static remove<T>(array: T[], value: T): boolean
     {
         let index = array.indexOf(value);
@@ -187,6 +300,12 @@ class ArrayExt
         return true;
     }
 
+    /**
+     * 
+     * Removes all elements from an `array`.
+     * 
+     * @param array - The array being cleared.
+     */
     public static clear<T>(array: T[]): void
     {
         while (array.length > 0)
@@ -195,8 +314,31 @@ class ArrayExt
         }
     }
 
+    /**
+     * 
+     * Returns true if the `array` equals the `compareArray` for all indices, else false.
+     * 
+     * @param array - The array being checked.
+     * @param compareArray - The comparison array being checked for equality.
+     */
     public static equals<T>(array: T[], compareArray: T[]): boolean;
+    /**
+     * 
+     * Returns true if the `array` equals the `compareArray` while applying a `compareFunc` to each index, else false.
+     * 
+     * @param array - The array being check.
+     * @param compareArray - The comparison array being checked for equality.
+     * @param compareFunc - The comparison callback which compares a transformed value from both array index. `t1` is the value from `array`. `t2` is the value from the `compareArray`.
+     */
     public static equals<T>(array: T[], compareArray: T[], compareFunc: (t1: T, t2: T) => boolean): boolean;
+    /**
+     * 
+     * Returns true if the `array` equals the `compareArray` while applying a `compareFunc` to each index, else false.
+     * 
+     * @param array - The array being check.
+     * @param compareArray - The comparison array being checked for equality.
+     * @param compareFunc - The comparison callback which compares a transformed value from both array index. `t1` is the value from `array`. `t2` is the value from the `compareArray`.
+     */
     public static equals<T>(array: T[], compareArray: T[], compareFunc?: (t1: T, t2: T) => boolean): boolean
     {
         if (array === compareArray)
@@ -241,6 +383,7 @@ class ArrayExt
     //     await taskManager.execute();
     // }
     
+    // FIXME: Add Docs
     public static async forEachAsync<T>(array: T[], asyncFunc: (input: T) => Promise<void>, degreesOfParallelism?: number): Promise<void>
     {
         if (array.length === 0)
@@ -257,6 +400,7 @@ class ArrayExt
     //     return taskManager.getResults();
     // }
     
+    // FIXME: Add Docs
     public static async mapAsync<T, U>(array: T[], asyncFunc: (input: T) => Promise<U>, degreesOfParallelism?: number): Promise<U[]>
     {
         if (array.length === 0)
@@ -266,6 +410,7 @@ class ArrayExt
         return await bte.process();
     }
 
+    // FIXME: Add Docs
     public static async reduceAsync<T, U>(array: T[], asyncFunc: (acc: U, input: T) => Promise<U>, accumulator?: U): Promise<U>
     {
         let index = 0;

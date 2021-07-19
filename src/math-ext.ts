@@ -1,5 +1,12 @@
 class MathExt
 {
+    /**
+     * 
+     * Returns a percentage value of `partialValue` compared to `wholeValue`.
+     * 
+     * @param partialValue - The partial value.
+     * @param wholeValue - The whole value.
+     */
     public static percentage(partialValue: number, wholeValue: number): number
     {
         if (partialValue == null || typeof partialValue !== "number" || partialValue < 0)
@@ -11,6 +18,13 @@ class MathExt
         return (partialValue / wholeValue) * 100;
     }
     
+    /**
+     * 
+     * Returns the partial value given a `percentage` and the `wholeValue`.
+     * 
+     * @param percentage - The percentage calculated for a partial value.
+     * @param wholeValue - The whole value.
+     */
     public static percentagePartial(percentage: number, wholeValue: number): number
     {
         if (percentage == null || typeof percentage !== "number" || percentage < 0)
@@ -22,6 +36,13 @@ class MathExt
         return (percentage * wholeValue) / 100;
     }
     
+    /**
+     * 
+     * Returns the whole value given a `percentage` and the `partialValue`.
+     * 
+     * @param percentage - The percentage calculated for a whole value. 
+     * @param partialValue - The partial value.
+     */
     public static percentageWhole(percentage: number, partialValue: number): number
     {
         if (percentage == null || typeof percentage !== "number" || percentage < 0)
@@ -33,6 +54,12 @@ class MathExt
         return (partialValue / percentage) * 100;
     }
     
+    /**
+     * 
+     * Returns the median value, if none return null.
+     * 
+     * @param values - The readonly array being checked.
+     */
     public static median(values: ReadonlyArray<number>): number | null
     {
         const sorted = MathExt._sortNumbersEliminateNulls(values);

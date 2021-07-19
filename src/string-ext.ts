@@ -3,11 +3,24 @@ import { Buffer } from "buffer";
 
 class StringExt
 {
+    /**
+     * 
+     * Returns true if the `value` is empty or whitespace.
+     * 
+     * @param value - The string being checked.
+     */
     public static isEmptyOrWhiteSpace(value: string): boolean
     {
         return value.trim().length === 0;
     }
 
+    /**
+     * 
+     * Returns true if `primary` string contains `search` substring.
+     * 
+     * @param primary - The string being checked.
+     * @param search - The search substring.
+     */
     public static contains(primary: string, search: string): boolean
     {
         // return primary.indexOf(sub) !== -1;
@@ -27,16 +40,35 @@ class StringExt
     //     return (index + sub.length) === primary.length;
     // }
 
+    /**
+     * 
+     * Returns `value` with all numbers replaced with whitespace.
+     * 
+     * @param value - The string being checked.
+     */
     public static extractNumbers(value: string): string
     {
         return value.replace(/[^0-9]/g, "");
     }
     
+    /**
+     * 
+     * Returns `value` with all alphabetical characters replaced with whitespace.
+     * 
+     * @param value - The string being checked.
+     */
     public static extractCharacters(value: string): string
     {
         return value.replace(/[^a-zA-Z ]/g, "");
     }
 
+    /**
+     * 
+     * Returns the formatted string given a string format, `formatString` and an array, `params` to replace the string format.
+     * 
+     * @param formatString - A string that matches a certain format. The string retains it's original syntax except the inclusion of `{value}` where `value` is the array index will be replaced `param`'s array index value
+     * @param params - The array which will replace the certain parts of `formatString`.
+     */
     public static format(formatString: string, ...params: any[]): string
     {
         let result = formatString.toString();
@@ -54,6 +86,14 @@ class StringExt
         return result;
     }
     
+    /**
+     * 
+     * Returns a string given a `primary` string with all `searchValue` replaced by `replaceValue`.
+     * 
+     * @param primary - The string being checked.
+     * @param searchValue - The searchValue which is checked on `primary`.
+     * @param replaceValue - The replacement value to replace the `searchValue`
+     */
     public static replaceAll(primary: string, searchValue: string, replaceValue: string): string
     {
         // let matchOperatorsRe = /[|\\{}()[\]^$+*?.]/g;
@@ -69,16 +109,34 @@ class StringExt
         return primary;
     }
     
+    /**
+     * 
+     * Returns a base64 encoded string given a `value`.
+     * 
+     * @param value - The value to base64 encode.
+     */
     public static base64Encode(value: string): string
     {
         return Buffer.from(value, "utf8").toString("base64");
     }
     
+    /**
+     * 
+     * Returns a base64 decoded string given a `value`.
+     * 
+     * @param value - The base64 encoded value.
+     */
     public static base64Decode(value: string): string
     {
         return Buffer.from(value, "base64").toString("utf8");
     }
     
+    /**
+     * 
+     * Returns a base64 encoded string given a `value` which is a URL.
+     * 
+     * @param value - The URL value to base64 encode.
+     */
     public static base64UrlEncode(value: string): string
     {
         return Buffer.from(value, "utf8").toString("base64")
@@ -87,6 +145,12 @@ class StringExt
             .replace(/\//g, "_");
     }
     
+    /**
+     * 
+     * Returns a base64 decoded string given a `value` which contains a URL.
+     * 
+     * @param value - The base64 encoded value containing a URL.
+     */
     public static base64UrlDecode(value: string): string
     {
         value = StringExt.padString(value)
@@ -96,16 +160,29 @@ class StringExt
         return Buffer.from(value, "base64").toString("utf8");
     }
     
+    /**
+     * 
+     * Returns a hex encode string of a given `value`
+     * 
+     * @param value - The value to hex encode.
+     */
     public static hexEncode(value: string): string
     {
         return Buffer.from(value, "utf8").toString("hex");
     }
 
+    /**
+     * 
+     * Returns a hex decoded string of a given hex encoded `value`
+     * 
+     * @param value - The hex encoded value to hex decode.
+     */
     public static hexDecode(value: string): string
     {
         return Buffer.from(value, "hex").toString("utf8");
     }
 
+    // FIXME: Add Docs
     public static matchesFormat(primary: string, format: string): boolean
     {
         if (format === SystemFormatSymbol.wildcard)
