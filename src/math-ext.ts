@@ -33,6 +33,17 @@ class MathExt
         return (partialValue / percentage) * 100;
     }
     
+    public static clamp(value: number, min: number, max: number): number
+    {
+        if (value < min)
+            return min;
+        
+        if (value > max)
+            return max;
+        
+        return value;
+    }
+    
     public static median(values: ReadonlyArray<number>): number | null
     {
         const sorted = MathExt._sortNumbersEliminateNulls(values);
@@ -94,6 +105,11 @@ class MathExt
 (<any>Math).percentageWhole = function (percentage: number, partialValue: number): number
 {
     return MathExt.percentageWhole(percentage, partialValue);
+};
+
+(<any>Math).clamp = function (value: number, min: number, max: number): number
+{
+    return MathExt.clamp(value, min, max);
 };
 
 (<any>Math).median = function (values: ReadonlyArray<number>): number | null
