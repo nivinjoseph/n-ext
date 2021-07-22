@@ -383,7 +383,14 @@ class ArrayExt
     //     await taskManager.execute();
     // }
     
-    // FIXME: Add Docs
+    /**
+     * 
+     * Returns a promise and provides a asynchronous callback, `asyncFunc` that provides the same functionality as `Array.prototype.forEach()`.
+     * 
+     * @param array - The array being iterated.
+     * @param asyncFunc - The asynchronous `forEach` callback. 
+     * @param degreesOfParallelism - Optional: The amount of calls executed in parallel. Defaults to all.
+     */
     public static async forEachAsync<T>(array: T[], asyncFunc: (input: T) => Promise<void>, degreesOfParallelism?: number): Promise<void>
     {
         if (array.length === 0)
@@ -400,7 +407,14 @@ class ArrayExt
     //     return taskManager.getResults();
     // }
     
-    // FIXME: Add Docs
+    /**
+     * 
+     * Returns a promise and provides a asynchronous callback, `asyncFunc` that provides the same functionality as `Array.prototype.map()`.
+     * 
+     * @param array - The array being iterated.
+     * @param asyncFunc - The asynchronous `map` callback. 
+     * @param degreesOfParallelism - Optional: The amount of calls executed in parallel. Defaults to all.
+     */
     public static async mapAsync<T, U>(array: T[], asyncFunc: (input: T) => Promise<U>, degreesOfParallelism?: number): Promise<U[]>
     {
         if (array.length === 0)
@@ -410,7 +424,14 @@ class ArrayExt
         return await bte.process();
     }
 
-    // FIXME: Add Docs
+    /**
+     * 
+     * Returns a promise and provides a asynchronous callback, `asyncFunc` that provides the same functionality as `Array.prototype.reduce()`.
+     * 
+     * @param array - The array being iterated.
+     * @param asyncFunc - The asynchronous `reduce` callback. 
+     * @param degreesOfParallelism - Optional: The amount of calls executed in parallel. Defaults to all.
+     */
     public static async reduceAsync<T, U>(array: T[], asyncFunc: (acc: U, input: T) => Promise<U>, accumulator?: U): Promise<U>
     {
         let index = 0;

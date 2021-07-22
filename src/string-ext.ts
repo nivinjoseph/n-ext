@@ -182,7 +182,17 @@ class StringExt
         return Buffer.from(value, "hex").toString("utf8");
     }
 
-    // FIXME: Add Docs
+    /**
+     * 
+     * Returns true if `primary` matches the format, `format` else, returns false. The `format` uses the follow syntax. 
+     * `@` represents an alphabetical character.
+     * `#` represents a numerical character.
+     * `\` represents an escape character.
+     * `*` represents a wildcard, (any length alphanumeric character).
+     * 
+     * @param primary - The string being checked for format.
+     * @param format - The format of the string to check for.
+     */
     public static matchesFormat(primary: string, format: string): boolean
     {
         if (format === SystemFormatSymbol.wildcard)
