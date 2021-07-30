@@ -22,6 +22,24 @@ suite("MathExt", () =>
         });
     });
     
+    suite("clamp", () =>
+    {
+        test("below range", () =>
+        {
+            Assert.strictEqual(Math.clamp(5, 6, 10), 6);
+        });
+
+        test("within range", () =>
+        {
+            Assert.strictEqual(Math.clamp(8, 6, 10), 8);
+        });
+
+        test("above range", () =>
+        {
+            Assert.strictEqual(Math.clamp(14, 6, 10), 10);
+        });
+    });
+    
     suite("median", () =>
     {
         test("median empty", () =>

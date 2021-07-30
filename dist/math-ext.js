@@ -21,6 +21,13 @@ class MathExt {
             throw new Error("Argument partialValue must be a valid non-negative number.");
         return (partialValue / percentage) * 100;
     }
+    static clamp(value, min, max) {
+        if (value < min)
+            return min;
+        if (value > max)
+            return max;
+        return value;
+    }
     static median(values) {
         const sorted = MathExt._sortNumbersEliminateNulls(values);
         if (sorted.length === 0)
@@ -62,6 +69,9 @@ Math.percentagePartial = function (percentage, wholeValue) {
 };
 Math.percentageWhole = function (percentage, partialValue) {
     return MathExt.percentageWhole(percentage, partialValue);
+};
+Math.clamp = function (value, min, max) {
+    return MathExt.clamp(value, min, max);
 };
 Math.median = function (values) {
     return MathExt.median(values);

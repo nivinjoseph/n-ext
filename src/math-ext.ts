@@ -56,6 +56,25 @@ class MathExt
     
     /**
      * 
+     * Returns `min` if the `value` is less than `min`, returns `max` if the `value` greater than `max`, else returns the `value`.
+     * 
+     * @param value - The value being compared.
+     * @param min - The minimum value.
+     * @param max - The maximum value.
+     */
+    public static clamp(value: number, min: number, max: number): number
+    {
+        if (value < min)
+            return min;
+        
+        if (value > max)
+            return max;
+        
+        return value;
+    }
+    
+    /**
+     * 
      * Returns the median value, if none return null.
      * 
      * @param values - The readonly array being checked.
@@ -121,6 +140,11 @@ class MathExt
 (<any>Math).percentageWhole = function (percentage: number, partialValue: number): number
 {
     return MathExt.percentageWhole(percentage, partialValue);
+};
+
+(<any>Math).clamp = function (value: number, min: number, max: number): number
+{
+    return MathExt.clamp(value, min, max);
 };
 
 (<any>Math).median = function (values: ReadonlyArray<number>): number | null
