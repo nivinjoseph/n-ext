@@ -133,7 +133,12 @@ class ObjectExt
         current[splitted[splitted.length - 1]] = value;
     }
 
-    // FIXME: Add Docs
+    /**
+     * 
+     * Returns a serialize object given the `keys`.
+     * 
+     * @param keys - The array of keys.
+     */
     public static serialize(source: any, ...keys: Array<string>): object
     {
         const keyMaps = keys.map(t =>
@@ -164,7 +169,6 @@ class ObjectExt
         return target;
     }
 
-    // FIXME: Add Docs
     public static deserialize(source: any, targetClassOrObject: Function | object, ...keysOrValues: Array<any>): object
     {
         if (typeof (targetClassOrObject) === "function")
