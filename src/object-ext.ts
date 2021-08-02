@@ -90,6 +90,8 @@ class ObjectExt
         }
         
         key = key.trim();
+        ObjectExt.ensureKeySafe(key);
+        
         value = value === undefined ? null : value;
         if (!ObjectExt.stringContains(key, "."))
         {
@@ -98,6 +100,7 @@ class ObjectExt
         }
         
         const splitted = key.split(".").map(t => t.trim());
+        splitted.forEach(t => ObjectExt.ensureKeySafe(t));
         let current = target;
         
         for (let i = 0; i < splitted.length - 1; i++)
@@ -119,12 +122,14 @@ class ObjectExt
             if (ObjectExt.stringContains(t, " as "))
             {
                 const splitted = t.split(" as ");
+                splitted.forEach(u => ObjectExt.ensureKeySafe(u));
                 return {
                     sourceKey: splitted[0].trim(),
                     targetKey: splitted[1].trim()
                 };
             }
             
+            ObjectExt.ensureKeySafe(t);
             return {
                 sourceKey: t,
                 targetKey: t
@@ -180,6 +185,13 @@ class ObjectExt
             return false;
         
         return true;
+    }
+    
+    private static ensureKeySafe(key: string): void
+    {
+        const dangerous = ["constructor", "prototype", "__proto__"];
+        if (dangerous.some(t => t === key))
+            throw new Error(`Dangerous key '${key}' detected`);
     }
 
     private static stringIsWhiteSpace(value: string): boolean
