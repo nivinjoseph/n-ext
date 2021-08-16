@@ -159,7 +159,7 @@ class ArrayExt
         if (count === 0) return [];
         return array.slice(0, count);
     }
-    
+
     public static count<T>(array: T[]): number;
     public static count<T>(array: T[], predicate: (value: T) => boolean): number;
     public static count<T>(array: T[], predicate?: (value: T) => boolean): number
@@ -265,7 +265,7 @@ class ArrayExt
         const bte = new BatchTaskExec(array, asyncFunc, true, degreesOfParallelism);
         return await bte.process();
     }
-    
+
     public static async reduceAsync<T, U>(array: T[], asyncFunc: (acc: U, input: T) => Promise<U>, accumulator?: U): Promise<U>
     {
         let index = 0;
