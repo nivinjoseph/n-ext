@@ -139,14 +139,13 @@ declare global
          */ 
         setValue(key: string, value: any): void;
         /**
-         * 
-         * Returns a serialize object given the `keys`.
-         * 
-         * @param keys - The array of keys.
+         * @deprecated
          */
-        serializeObject(...keys: Array<string>): object;
-        // FIXME: What are these params?
-        deserializeObject(targetClassOrObject: Function | object, ...keysOrValues: Array<any>): object;
+        serializeObject(...keys: Array<string>): object; // FIXME: Skeleton Code
+        /**
+         * @deprecated
+         */
+        deserializeObject(targetClassOrObject: Function | object, ...keysOrValues: Array<any>): object; // FIXME: Skeleton Code
     }
 
     interface Array<T>
