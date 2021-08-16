@@ -21,12 +21,6 @@ class ObjectExt
     //     Object.assign(target, source);
     // }
     
-    /**
-     * 
-     * Returns the type name of the `source`.
-     * 
-     * @param source - The source value.
-     */
     public static getTypeName(source: any): string 
     {
         let getName = (funcDef: string) =>
@@ -61,13 +55,6 @@ class ObjectExt
         return (typeof source);
     }
     
-    /**
-     * 
-     * Returns a value from a `source` given a `key`.
-     * 
-     * @param source - The source value.
-     * @param key - The key.
-     */
     public static getValue(source: any, key: string): any
     {
         if (!ObjectExt.hasValue(key))
@@ -91,14 +78,6 @@ class ObjectExt
         return current === undefined ? null : current;
     }
     
-    /**
-     * 
-     * Sets a `value` on an array given a `target` and the specific `key` to set the value to.
-     * 
-     * @param target 
-     * @param key 
-     * @param value 
-     */ 
     public static setValue(target: any, key: string, value: any): void
     {
         if (!ObjectExt.hasValue(key))
@@ -133,12 +112,6 @@ class ObjectExt
         current[splitted[splitted.length - 1]] = value;
     }
 
-    /**
-     * 
-     * Returns a serialize object given the `keys`.
-     * 
-     * @param keys - The array of keys.
-     */
     public static serialize(source: any, ...keys: Array<string>): object
     {
         const keyMaps = keys.map(t =>
@@ -198,12 +171,6 @@ class ObjectExt
         }
     }
     
-    /**
-     * 
-     * Returns true if `item` has a value, else false.
-     * 
-     * @param item - The item being checked.
-     */
     private static hasValue(item: any): boolean
     {
         if (item == null)
