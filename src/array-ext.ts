@@ -63,11 +63,11 @@ class ArrayExt
     //         return acc;
     //     }, {});
     // }
-    
-    public static groupBy<T>(array: T[], keyFunc: (value: T) => string): {key: string, values: T[]}[]
+
+    public static groupBy<T>(array: T[], keyFunc: (value: T) => string): { key: string, values: T[] }[]
     {
         const result = new Array<{ key: string, values: T[] }>();
-        
+
         array.reduce((acc: { [index: string]: T[] }, t) =>
         {
             const key = keyFunc(t);
@@ -80,7 +80,7 @@ class ArrayExt
             acc[key].push(t);
             return acc;
         }, {});
-        
+
         return result;
     }
 
@@ -102,16 +102,16 @@ class ArrayExt
         // }
 
         // return internalArray;
-        
-        
+
+
         // BECAUSE WE USE SETS
         const setLimit = 16777216;
         if (array.length > setLimit)
             throw new Error(`Array has ${array.length} items (exceeds set limit of ${setLimit}). Calling distinct is prohibited.`);
-        
+
         if (compareFunc == null)
             return [...new Set(array)];
-        
+
         const set = new Set();
         const internalArray: T[] = [];
         let item: T;
@@ -140,7 +140,7 @@ class ArrayExt
         //     result.push(array[i]);
         // }
         // return result;
-        
+
         return array.slice(count);
     }
 
@@ -155,7 +155,7 @@ class ArrayExt
         //     result.push(array[i]);
         // }
         // return result;
-        
+
         if (count === 0) return [];
         return array.slice(0, count);
     }
@@ -229,9 +229,9 @@ class ArrayExt
                     continue;
 
                 return false;
-            }    
+            }
         }
-        
+
         return true;
     }
 
@@ -240,12 +240,12 @@ class ArrayExt
     //     let taskManager = new TaskManager(array, asyncFunc, degreesOfParallelism, false);
     //     await taskManager.execute();
     // }
-    
+
     public static async forEachAsync<T>(array: T[], asyncFunc: (input: T) => Promise<void>, degreesOfParallelism?: number): Promise<void>
     {
         if (array.length === 0)
             return;
-        
+
         const bte = new BatchTaskExec(array, asyncFunc, false, degreesOfParallelism);
         await bte.process();
     }
@@ -256,7 +256,7 @@ class ArrayExt
     //     await taskManager.execute();
     //     return taskManager.getResults();
     // }
-    
+
     public static async mapAsync<T, U>(array: T[], asyncFunc: (input: T) => Promise<U>, degreesOfParallelism?: number): Promise<U[]>
     {
         if (array.length === 0)
@@ -289,25 +289,25 @@ class TaskExec<T, TResult>
     private readonly _captureResults: boolean;
     private readonly _results = new Array<TResult>();
     private _executionPromise: Promise<Array<TResult>> | null = null;
-    
-    
+
+
     public constructor(array: T[], taskFunc: (input: T) => Promise<TResult>, captureResults: boolean)
     {
         this._array = array;
         this._taskFunc = taskFunc;
         this._captureResults = captureResults;
     }
-    
-    
+
+
     public execute(): Promise<Array<TResult>>
     {
         if (this._executionPromise != null)
             return this._executionPromise;
-        
+
         this._executionPromise = this._execute().then(() => this._results);
         return this._executionPromise;
     }
-    
+
     private async _execute(): Promise<void>
     {
         for (const item of this._array)
@@ -332,7 +332,7 @@ class BatchTaskExec<T, TResult>
         this._array = array;
         this._taskFunc = taskFunc;
         this._captureResults = captureResults;
-        
+
         taskCount = taskCount ?? array.length;
         taskCount = Math.max(taskCount, 1);
         taskCount = Math.min(taskCount, array.length);
@@ -344,55 +344,55 @@ class BatchTaskExec<T, TResult>
     // {
     //     if (this._taskCount === this._array.length)
     //         return await Promise.all(this._array.map(t => this._taskFunc(t)));
-        
+
     //     const batchSize = Math.floor(this._array.length / this._taskCount);
     //     console.log("BATCH SIZE", batchSize);
     //     const promises = new Array<Promise<TResult[]>>();
-        
+
     //     for (let i = 0; i < this._taskCount; i++)
     //     {
     //         const isLast = i === (this._taskCount - 1);
     //         const taskExec = new TaskExec(this._array.skip(i * batchSize).take(isLast ? this._array.length : batchSize),
     //             this._taskFunc, this._captureResults);
-            
+
     //         promises.push(taskExec.execute());
     //     }
-        
+
     //     const results = await Promise.all(promises);
-        
+
     //     if (!this._captureResults)
     //         return new Array<TResult>();
-        
+
     //     return results.reduce((acc, items) =>
     //     {
     //         acc.push(...items);
     //         return acc;
     //     }, new Array<TResult>());
     // }
-    
+
     // Round robin
     // public async process(): Promise<Array<TResult>>
     // {
     //     if (this._taskCount === this._array.length)
     //         return await Promise.all(this._array.map(t => this._taskFunc(t)));
-        
+
     //     const pools = new Array<Array<T>>();
     //     for (let i = 0; i < this._taskCount; i++)
     //         pools.push([]);
-        
+
     //     let poolIndex = 0;
     //     for (let i = 0; i < this._array.length; i++)
     //     {
     //         if (poolIndex >= pools.length)
     //             poolIndex = 0;
-            
+
     //         const pool = pools[poolIndex];
     //         pool.push(this._array[i]);
     //         poolIndex++;
     //     }
-        
+
     //     const promises = new Array<Promise<TResult[]>>();
-        
+
     //     for (let i = 0; i < this._taskCount; i++)
     //     {
     //         const taskExec = new TaskExec(pools[i], this._taskFunc, this._captureResults);
@@ -404,7 +404,7 @@ class BatchTaskExec<T, TResult>
 
     //     if (!this._captureResults)
     //         return new Array<TResult>();
-        
+
     //     const maxLength = Math.max(...results.map(t => t.length));
     //     const finalResults = new Array<TResult>();
     //     for (let i = 0; i < maxLength; i++)
@@ -418,7 +418,7 @@ class BatchTaskExec<T, TResult>
     //     }
     //     return finalResults;
     // }
-    
+
     // Remainder Round Robin
     public async process(): Promise<Array<TResult>>
     {
@@ -427,18 +427,18 @@ class BatchTaskExec<T, TResult>
 
         const remainder = this._array.length % this._taskCount;
         const batchSize = (this._array.length - remainder) / this._taskCount;
-        
+
         // console.log("BATCH SIZE", batchSize);
         // console.log("REMAINDER", remainder);
-        
+
         const promises = new Array<Promise<TResult[]>>();
-        
+
         const hasRemainder = remainder > 0;
-        
+
         const pools = new Array<Array<T>>();
         for (let i = 0; i < this._taskCount; i++)
             pools.push(ArrayExt.take(ArrayExt.skip(this._array, i * batchSize), batchSize));
-        
+
         if (hasRemainder)
         {
             const baseLength = this._array.length - remainder;
@@ -448,7 +448,7 @@ class BatchTaskExec<T, TResult>
                 pools[poolIndex].push(this._array[arrayIndex]);
             }
         }
-        
+
         // console.log("POOLS", pools);
 
         for (let i = 0; i < this._taskCount; i++)
@@ -461,7 +461,7 @@ class BatchTaskExec<T, TResult>
 
         if (!this._captureResults)
             return new Array<TResult>();
-        
+
         if (hasRemainder)
         {
             const remaining = new Array<TResult>();
@@ -470,18 +470,18 @@ class BatchTaskExec<T, TResult>
             for (arrayIndex = baseLength, poolIndex = 0; arrayIndex < this._array.length; arrayIndex++, poolIndex++)
             {
                 pools[poolIndex].push(this._array[arrayIndex]);
-                
+
                 const poolResults = results[poolIndex];
                 remaining.push(poolResults[poolResults.length - 1]);
                 poolResults.splice(results[poolIndex].length - 1, 1);
             }
-            
+
             const actualResults = results.reduce((acc, items) =>
             {
                 acc.push(...items);
                 return acc;
             }, new Array<TResult>());
-            
+
             actualResults.push(...remaining);
             return actualResults;
         }
@@ -627,6 +627,30 @@ Object.defineProperty(Array.prototype, "isNotEmpty", {
     }
 });
 
+Object.defineProperty(Array.prototype, "first", {
+    configurable: false,
+    enumerable: false,
+    get: function ()
+    {
+        if (this.length === 0)
+            throw new Error("Invalid Operation: Array is empty");
+
+        return this[0];
+    }
+});
+
+Object.defineProperty(Array.prototype, "last", {
+    configurable: false,
+    enumerable: false,
+    get: function ()
+    {
+        if (this.length === 0)
+            throw new Error("Invalid Operation: Array is empty");
+
+        return this[this.length - 1];
+    }
+});
+
 Object.defineProperty(Array.prototype, "contains", {
     configurable: false,
     enumerable: false,
@@ -672,7 +696,7 @@ Object.defineProperty(Array.prototype, "groupBy", {
     configurable: false,
     enumerable: false,
     writable: false,
-    value: function (keyFunc: (value: any) => string): {key: string, values: any[]}[]
+    value: function (keyFunc: (value: any) => string): { key: string, values: any[] }[]
     {
         return ArrayExt.groupBy(this, keyFunc);
     }
