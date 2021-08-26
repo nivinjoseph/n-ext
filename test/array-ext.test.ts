@@ -634,7 +634,7 @@ suite("ArrayExt", () =>
         });
     });
 
-    suite.only("first", () =>
+    suite("first", () =>
     {
         test("Given an array that is not empty, When first is accessed, Then the return value should be the first element", () =>
         {
@@ -651,7 +651,7 @@ suite("ArrayExt", () =>
         });
     });
 
-    suite.only("last", () =>
+    suite("last", () =>
     {
         test("Given an array that is not empty, When last is accessed, Then the return value should be the last element of the array", () =>
         {

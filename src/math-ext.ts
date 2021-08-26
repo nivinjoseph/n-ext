@@ -92,27 +92,37 @@ class MathExt
 }
 
 
-(<any>Math).percentage = function (partialValue: number, wholeValue: number): number
+function defineMathExtProperties(): void
 {
-    return MathExt.percentage(partialValue, wholeValue);
-};
+    if (Math.percentage === undefined)
+        Math.percentage = function (partialValue: number, wholeValue: number): number
+        {
+            return MathExt.percentage(partialValue, wholeValue);
+        };
 
-(<any>Math).percentagePartial = function (percentage: number, wholeValue: number): number
-{
-    return MathExt.percentagePartial(percentage, wholeValue);
-};
+    if (Math.percentagePartial === undefined)
+        Math.percentagePartial = function (percentage: number, wholeValue: number): number
+        {
+            return MathExt.percentagePartial(percentage, wholeValue);
+        };
 
-(<any>Math).percentageWhole = function (percentage: number, partialValue: number): number
-{
-    return MathExt.percentageWhole(percentage, partialValue);
-};
+    if (Math.percentageWhole === undefined)
+        Math.percentageWhole = function (percentage: number, partialValue: number): number
+        {
+            return MathExt.percentageWhole(percentage, partialValue);
+        };
 
-(<any>Math).clamp = function (value: number, min: number, max: number): number
-{
-    return MathExt.clamp(value, min, max);
-};
+    if (Math.clamp === undefined)
+        Math.clamp = function (value: number, min: number, max: number): number
+        {
+            return MathExt.clamp(value, min, max);
+        };
 
-(<any>Math).median = function (values: ReadonlyArray<number>): number | null
-{
-    return MathExt.median(values);
-};
+    if (Math.median === undefined)
+        Math.median = function (values: ReadonlyArray<number>): number | null
+        {
+            return MathExt.median(values);
+        };
+}
+
+defineMathExtProperties();

@@ -609,195 +609,219 @@ class Task<T>
     }
 }
 
-Object.defineProperty(Array.prototype, "isEmpty", {
-    configurable: false,
-    enumerable: false,
-    get: function ()
-    {
-        return this.length === 0;
-    }
-});
+function defineArrayExtProperties(): void
+{
+    if (Array.prototype["isEmpty"] === undefined)
+        Object.defineProperty(Array.prototype, "isEmpty", {
+            configurable: false,
+            enumerable: false,
+            get: function ()
+            {
+                return this.length === 0;
+            }
+        });
 
-Object.defineProperty(Array.prototype, "isNotEmpty", {
-    configurable: false,
-    enumerable: false,
-    get: function ()
-    {
-        return this.length > 0;
-    }
-});
+    if (Array.prototype["isNotEmpty"] === undefined)
+        Object.defineProperty(Array.prototype, "isNotEmpty", {
+            configurable: false,
+            enumerable: false,
+            get: function ()
+            {
+                return this.length > 0;
+            }
+        });
 
-Object.defineProperty(Array.prototype, "first", {
-    configurable: false,
-    enumerable: false,
-    get: function ()
-    {
-        if (this.length === 0)
-            throw new Error("Invalid Operation: Array is empty");
+    if (Array.prototype["first"] === undefined)
+        Object.defineProperty(Array.prototype, "first", {
+            configurable: false,
+            enumerable: false,
+            get: function ()
+            {
+                if (this.length === 0)
+                    throw new Error("Invalid Operation: Array is empty");
 
-        return this[0];
-    }
-});
+                return this[0];
+            }
+        });
 
-Object.defineProperty(Array.prototype, "last", {
-    configurable: false,
-    enumerable: false,
-    get: function ()
-    {
-        if (this.length === 0)
-            throw new Error("Invalid Operation: Array is empty");
+    if (Array.prototype["last"] === undefined)
+        Object.defineProperty(Array.prototype, "last", {
+            configurable: false,
+            enumerable: false,
+            get: function ()
+            {
+                if (this.length === 0)
+                    throw new Error("Invalid Operation: Array is empty");
 
-        return this[this.length - 1];
-    }
-});
+                return this[this.length - 1];
+            }
+        });
 
-Object.defineProperty(Array.prototype, "contains", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (value: any): boolean
-    {
-        return ArrayExt.contains(this, value);
-    }
-});
+    if (Array.prototype["contains"] === undefined)
+        Object.defineProperty(Array.prototype, "contains", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (value: any): boolean
+            {
+                return ArrayExt.contains(this, value);
+            }
+        });
 
-Object.defineProperty(Array.prototype, "where", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (filterFunc: (value: any) => boolean): Array<any>
-    {
-        return (<Array<any>>this).filter(filterFunc);
-    }
-});
+    if (Array.prototype["where"] === undefined)
+        Object.defineProperty(Array.prototype, "where", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (filterFunc: (value: any) => boolean): Array<any>
+            {
+                return (<Array<any>>this).filter(filterFunc);
+            }
+        });
 
 
-Object.defineProperty(Array.prototype, "orderBy", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (compareFunc?: (value: any) => any): Array<any>
-    {
-        return ArrayExt.orderBy(this, compareFunc);
-    }
-});
+    if (Array.prototype["orderBy"] === undefined)
+        Object.defineProperty(Array.prototype, "orderBy", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (compareFunc?: (value: any) => any): Array<any>
+            {
+                return ArrayExt.orderBy(this, compareFunc);
+            }
+        });
 
-Object.defineProperty(Array.prototype, "orderByDesc", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (compareFunc?: (value: any) => any): Array<any>
-    {
-        return ArrayExt.orderByDesc(this, compareFunc);
-    }
-});
+    if (Array.prototype["orderByDesc"] === undefined)
+        Object.defineProperty(Array.prototype, "orderByDesc", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (compareFunc?: (value: any) => any): Array<any>
+            {
+                return ArrayExt.orderByDesc(this, compareFunc);
+            }
+        });
 
-Object.defineProperty(Array.prototype, "groupBy", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (keyFunc: (value: any) => string): { key: string, values: any[] }[]
-    {
-        return ArrayExt.groupBy(this, keyFunc);
-    }
-});
+    if (Array.prototype["groupBy"] === undefined)
+        Object.defineProperty(Array.prototype, "groupBy", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (keyFunc: (value: any) => string): { key: string, values: any[] }[]
+            {
+                return ArrayExt.groupBy(this, keyFunc);
+            }
+        });
 
-Object.defineProperty(Array.prototype, "distinct", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (compareFunc?: (value: any) => any): Array<any>
-    {
-        return ArrayExt.distinct(this, compareFunc);
-    }
-});
+    if (Array.prototype["distinct"] === undefined)
+        Object.defineProperty(Array.prototype, "distinct", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (compareFunc?: (value: any) => any): Array<any>
+            {
+                return ArrayExt.distinct(this, compareFunc);
+            }
+        });
 
-Object.defineProperty(Array.prototype, "skip", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (count: number): Array<any>
-    {
-        return ArrayExt.skip(this, count);
-    }
-});
+    if (Array.prototype["skip"] === undefined)
+        Object.defineProperty(Array.prototype, "skip", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (count: number): Array<any>
+            {
+                return ArrayExt.skip(this, count);
+            }
+        });
 
-Object.defineProperty(Array.prototype, "take", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (count: number): Array<any>
-    {
-        return ArrayExt.take(this, count);
-    }
-});
+    if (Array.prototype["take"] === undefined)
+        Object.defineProperty(Array.prototype, "take", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (count: number): Array<any>
+            {
+                return ArrayExt.take(this, count);
+            }
+        });
 
-Object.defineProperty(Array.prototype, "count", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (predicate?: (value: any) => boolean): number
-    {
-        return ArrayExt.count(this, predicate);
-    }
-});
+    if (Array.prototype["count"] === undefined)
+        Object.defineProperty(Array.prototype, "count", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (predicate?: (value: any) => boolean): number
+            {
+                return ArrayExt.count(this, predicate);
+            }
+        });
 
-Object.defineProperty(Array.prototype, "remove", {
-    configurable: false,
-    enumerable: false,
-    writable: true, // for spread.js compatibility
-    value: function (value: any): boolean
-    {
-        return ArrayExt.remove(this, value);
-    }
-});
+    if (Array.prototype["remove"] === undefined)
+        Object.defineProperty(Array.prototype, "remove", {
+            configurable: false,
+            enumerable: false,
+            writable: true, // for spread.js compatibility
+            value: function (value: any): boolean
+            {
+                return ArrayExt.remove(this, value);
+            }
+        });
 
-Object.defineProperty(Array.prototype, "clear", {
-    configurable: false,
-    enumerable: false,
-    writable: true, // for spread.js compatibility
-    value: function (): void
-    {
-        return ArrayExt.clear(this);
-    }
-});
+    if (Array.prototype["clear"] === undefined)
+        Object.defineProperty(Array.prototype, "clear", {
+            configurable: false,
+            enumerable: false,
+            writable: true, // for spread.js compatibility
+            value: function (): void
+            {
+                return ArrayExt.clear(this);
+            }
+        });
 
-Object.defineProperty(Array.prototype, "equals", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (compareArray: Array<any>, compareFunc?: (t1: any, t2: any) => boolean): boolean
-    {
-        return ArrayExt.equals(this, compareArray, compareFunc);
-    }
-});
+    if (Array.prototype["equals"] === undefined)
+        Object.defineProperty(Array.prototype, "equals", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (compareArray: Array<any>, compareFunc?: (t1: any, t2: any) => boolean): boolean
+            {
+                return ArrayExt.equals(this, compareArray, compareFunc);
+            }
+        });
 
-Object.defineProperty(Array.prototype, "forEachAsync", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (asyncFunc: (input: any) => Promise<void>, degreesOfParallelism?: number): Promise<void>
-    {
-        return ArrayExt.forEachAsync(this, asyncFunc, degreesOfParallelism);
-    }
-});
+    if (Array.prototype["forEachAsync"] === undefined)
+        Object.defineProperty(Array.prototype, "forEachAsync", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (asyncFunc: (input: any) => Promise<void>, degreesOfParallelism?: number): Promise<void>
+            {
+                return ArrayExt.forEachAsync(this, asyncFunc, degreesOfParallelism);
+            }
+        });
 
-Object.defineProperty(Array.prototype, "mapAsync", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (asyncFunc: (input: any) => Promise<any>, degreesOfParallelism?: number): Promise<any[]>
-    {
-        return ArrayExt.mapAsync(this, asyncFunc, degreesOfParallelism);
-    }
-});
+    if (Array.prototype["mapAsync"] === undefined)
+        Object.defineProperty(Array.prototype, "mapAsync", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (asyncFunc: (input: any) => Promise<any>, degreesOfParallelism?: number): Promise<any[]>
+            {
+                return ArrayExt.mapAsync(this, asyncFunc, degreesOfParallelism);
+            }
+        });
 
-Object.defineProperty(Array.prototype, "reduceAsync", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (asyncFunc: (acc: any, input: any) => Promise<any>, accumulator?: any): Promise<any>
-    {
-        return ArrayExt.reduceAsync(this, asyncFunc, accumulator);
-    }
-});
+    if (Array.prototype["reduceAsync"] === undefined)
+        Object.defineProperty(Array.prototype, "reduceAsync", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (asyncFunc: (acc: any, input: any) => Promise<any>, accumulator?: any): Promise<any>
+            {
+                return ArrayExt.reduceAsync(this, asyncFunc, accumulator);
+            }
+        });
+}
+
+defineArrayExtProperties();

@@ -211,72 +211,82 @@ class ObjectExt
 }
 
 
-// Object.defineProperty(Object.prototype, "mapToObject", {
-//     configurable: false,
-//     enumerable: false,
-//     writable: false,
-//     value: function (factoryFunc: () => any): any
-//     {
-//         return ObjectExt.mapToObject(this, factoryFunc);
-//     }
-// });
+function defineObjectExtProperties(): void
+{
+    // Object.defineProperty(Object.prototype, "mapToObject", {
+    //     configurable: false,
+    //     enumerable: false,
+    //     writable: false,
+    //     value: function (factoryFunc: () => any): any
+    //     {
+    //         return ObjectExt.mapToObject(this, factoryFunc);
+    //     }
+    // });
 
-// Object.defineProperty(Object.prototype, "merge", {
-//     configurable: false,
-//     enumerable: false,
-//     writable: false,
-//     value: function (value: object): void
-//     {
-//         ObjectExt.merge(this, value);
-//     }
-// });
+    // Object.defineProperty(Object.prototype, "merge", {
+    //     configurable: false,
+    //     enumerable: false,
+    //     writable: false,
+    //     value: function (value: object): void
+    //     {
+    //         ObjectExt.merge(this, value);
+    //     }
+    // });
 
-Object.defineProperty(Object.prototype, "getTypeName", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (): string
-    {
-        return ObjectExt.getTypeName(this);
-    }
-});
+    if (Object.prototype["getTypeName"] === undefined)
+        Object.defineProperty(Object.prototype, "getTypeName", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (): string
+            {
+                return ObjectExt.getTypeName(this);
+            }
+        });
 
-Object.defineProperty(Object.prototype, "getValue", {
-    configurable: false,
-    enumerable: false,
-    writable: true,  // for webpack compatibility
-    value: function (key: string): any
-    {
-        return ObjectExt.getValue(this, key);
-    }
-});
+    if (Object.prototype["getValue"] === undefined)
+        Object.defineProperty(Object.prototype, "getValue", {
+            configurable: false,
+            enumerable: false,
+            writable: true,  // for webpack compatibility
+            value: function (key: string): any
+            {
+                return ObjectExt.getValue(this, key);
+            }
+        });
 
-Object.defineProperty(Object.prototype, "setValue", {
-    configurable: false,
-    enumerable: false,
-    writable: true, // for webpack compatibility
-    value: function (key: string, value: any): void
-    {
-        ObjectExt.setValue(this, key, value);
-    }
-});
+    if (Object.prototype["setValue"] === undefined)
+        Object.defineProperty(Object.prototype, "setValue", {
+            configurable: false,
+            enumerable: false,
+            writable: true, // for webpack compatibility
+            value: function (key: string, value: any): void
+            {
+                ObjectExt.setValue(this, key, value);
+            }
+        });
 
-Object.defineProperty(Object.prototype, "serializeObject", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (...keys: Array<string>): object
-    {
-        return ObjectExt.serialize(this, ...keys);
-    }
-});
+    if (Object.prototype["serializeObject"] === undefined)
+        Object.defineProperty(Object.prototype, "serializeObject", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (...keys: Array<string>): object
+            {
+                return ObjectExt.serialize(this, ...keys);
+            }
+        });
 
-Object.defineProperty(Object.prototype, "deserializeObject", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (targetClassOrObject: Function | object, ...keysOrValues: Array<any>): object
-    {
-        return ObjectExt.deserialize(this, targetClassOrObject, ...keysOrValues);
-    }
-});
+    if (Object.prototype["deserializeObject"] === undefined)
+        Object.defineProperty(Object.prototype, "deserializeObject", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (targetClassOrObject: Function | object, ...keysOrValues: Array<any>): object
+            {
+                return ObjectExt.deserialize(this, targetClassOrObject, ...keysOrValues);
+            }
+        });
+}
+
+defineObjectExtProperties();
