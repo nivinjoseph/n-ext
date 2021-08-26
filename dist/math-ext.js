@@ -61,19 +61,27 @@ class MathExt {
         return internalArray;
     }
 }
-Math.percentage = function (partialValue, wholeValue) {
-    return MathExt.percentage(partialValue, wholeValue);
-};
-Math.percentagePartial = function (percentage, wholeValue) {
-    return MathExt.percentagePartial(percentage, wholeValue);
-};
-Math.percentageWhole = function (percentage, partialValue) {
-    return MathExt.percentageWhole(percentage, partialValue);
-};
-Math.clamp = function (value, min, max) {
-    return MathExt.clamp(value, min, max);
-};
-Math.median = function (values) {
-    return MathExt.median(values);
-};
+function defineMathExtProperties() {
+    if (Math.percentage === undefined)
+        Math.percentage = function (partialValue, wholeValue) {
+            return MathExt.percentage(partialValue, wholeValue);
+        };
+    if (Math.percentagePartial === undefined)
+        Math.percentagePartial = function (percentage, wholeValue) {
+            return MathExt.percentagePartial(percentage, wholeValue);
+        };
+    if (Math.percentageWhole === undefined)
+        Math.percentageWhole = function (percentage, partialValue) {
+            return MathExt.percentageWhole(percentage, partialValue);
+        };
+    if (Math.clamp === undefined)
+        Math.clamp = function (value, min, max) {
+            return MathExt.clamp(value, min, max);
+        };
+    if (Math.median === undefined)
+        Math.median = function (values) {
+            return MathExt.median(values);
+        };
+}
+defineMathExtProperties();
 //# sourceMappingURL=math-ext.js.map

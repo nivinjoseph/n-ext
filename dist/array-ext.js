@@ -438,156 +438,197 @@ class Task {
         this._promise = null;
     }
 }
-Object.defineProperty(Array.prototype, "isEmpty", {
-    configurable: false,
-    enumerable: false,
-    get: function () {
-        return this.length === 0;
-    }
-});
-Object.defineProperty(Array.prototype, "isNotEmpty", {
-    configurable: false,
-    enumerable: false,
-    get: function () {
-        return this.length > 0;
-    }
-});
-Object.defineProperty(Array.prototype, "first", {
-    configurable: false,
-    enumerable: false,
-    get: function () {
-        if (this.length === 0)
-            throw new Error("Invalid Operation: Array is empty");
-        return this[0];
-    }
-});
-Object.defineProperty(Array.prototype, "last", {
-    configurable: false,
-    enumerable: false,
-    get: function () {
-        if (this.length === 0)
-            throw new Error("Invalid Operation: Array is empty");
-        return this[this.length - 1];
-    }
-});
-Object.defineProperty(Array.prototype, "contains", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (value) {
-        return ArrayExt.contains(this, value);
-    }
-});
-Object.defineProperty(Array.prototype, "where", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (filterFunc) {
-        return this.filter(filterFunc);
-    }
-});
-Object.defineProperty(Array.prototype, "orderBy", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (compareFunc) {
-        return ArrayExt.orderBy(this, compareFunc);
-    }
-});
-Object.defineProperty(Array.prototype, "orderByDesc", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (compareFunc) {
-        return ArrayExt.orderByDesc(this, compareFunc);
-    }
-});
-Object.defineProperty(Array.prototype, "groupBy", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (keyFunc) {
-        return ArrayExt.groupBy(this, keyFunc);
-    }
-});
-Object.defineProperty(Array.prototype, "distinct", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (compareFunc) {
-        return ArrayExt.distinct(this, compareFunc);
-    }
-});
-Object.defineProperty(Array.prototype, "skip", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (count) {
-        return ArrayExt.skip(this, count);
-    }
-});
-Object.defineProperty(Array.prototype, "take", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (count) {
-        return ArrayExt.take(this, count);
-    }
-});
-Object.defineProperty(Array.prototype, "count", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (predicate) {
-        return ArrayExt.count(this, predicate);
-    }
-});
-Object.defineProperty(Array.prototype, "remove", {
-    configurable: false,
-    enumerable: false,
-    writable: true,
-    value: function (value) {
-        return ArrayExt.remove(this, value);
-    }
-});
-Object.defineProperty(Array.prototype, "clear", {
-    configurable: false,
-    enumerable: false,
-    writable: true,
-    value: function () {
-        return ArrayExt.clear(this);
-    }
-});
-Object.defineProperty(Array.prototype, "equals", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (compareArray, compareFunc) {
-        return ArrayExt.equals(this, compareArray, compareFunc);
-    }
-});
-Object.defineProperty(Array.prototype, "forEachAsync", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (asyncFunc, degreesOfParallelism) {
-        return ArrayExt.forEachAsync(this, asyncFunc, degreesOfParallelism);
-    }
-});
-Object.defineProperty(Array.prototype, "mapAsync", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (asyncFunc, degreesOfParallelism) {
-        return ArrayExt.mapAsync(this, asyncFunc, degreesOfParallelism);
-    }
-});
-Object.defineProperty(Array.prototype, "reduceAsync", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (asyncFunc, accumulator) {
-        return ArrayExt.reduceAsync(this, asyncFunc, accumulator);
-    }
-});
+function defineArrayExtProperties() {
+    // @ts-ignore
+    if (Array.prototype["isEmpty"] === undefined)
+        Object.defineProperty(Array.prototype, "isEmpty", {
+            configurable: false,
+            enumerable: false,
+            get: function () {
+                return this.length === 0;
+            }
+        });
+    // @ts-ignore
+    if (Array.prototype["isNotEmpty"] === undefined)
+        Object.defineProperty(Array.prototype, "isNotEmpty", {
+            configurable: false,
+            enumerable: false,
+            get: function () {
+                return this.length > 0;
+            }
+        });
+    // @ts-ignore
+    if (Array.prototype["first"] === undefined)
+        Object.defineProperty(Array.prototype, "first", {
+            configurable: false,
+            enumerable: false,
+            get: function () {
+                if (this.length === 0)
+                    throw new Error("Invalid Operation: Array is empty");
+                return this[0];
+            }
+        });
+    // @ts-ignore
+    if (Array.prototype["last"] === undefined)
+        Object.defineProperty(Array.prototype, "last", {
+            configurable: false,
+            enumerable: false,
+            get: function () {
+                if (this.length === 0)
+                    throw new Error("Invalid Operation: Array is empty");
+                return this[this.length - 1];
+            }
+        });
+    // @ts-ignore
+    if (Array.prototype["contains"] === undefined)
+        Object.defineProperty(Array.prototype, "contains", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (value) {
+                return ArrayExt.contains(this, value);
+            }
+        });
+    // @ts-ignore
+    if (Array.prototype["where"] === undefined)
+        Object.defineProperty(Array.prototype, "where", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (filterFunc) {
+                return this.filter(filterFunc);
+            }
+        });
+    // @ts-ignore
+    if (Array.prototype["orderBy"] === undefined)
+        Object.defineProperty(Array.prototype, "orderBy", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (compareFunc) {
+                return ArrayExt.orderBy(this, compareFunc);
+            }
+        });
+    // @ts-ignore
+    if (Array.prototype["orderByDesc"] === undefined)
+        Object.defineProperty(Array.prototype, "orderByDesc", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (compareFunc) {
+                return ArrayExt.orderByDesc(this, compareFunc);
+            }
+        });
+    // @ts-ignore
+    if (Array.prototype["groupBy"] === undefined)
+        Object.defineProperty(Array.prototype, "groupBy", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (keyFunc) {
+                return ArrayExt.groupBy(this, keyFunc);
+            }
+        });
+    // @ts-ignore
+    if (Array.prototype["distinct"] === undefined)
+        Object.defineProperty(Array.prototype, "distinct", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (compareFunc) {
+                return ArrayExt.distinct(this, compareFunc);
+            }
+        });
+    // @ts-ignore
+    if (Array.prototype["skip"] === undefined)
+        Object.defineProperty(Array.prototype, "skip", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (count) {
+                return ArrayExt.skip(this, count);
+            }
+        });
+    // @ts-ignore
+    if (Array.prototype["take"] === undefined)
+        Object.defineProperty(Array.prototype, "take", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (count) {
+                return ArrayExt.take(this, count);
+            }
+        });
+    // @ts-ignore
+    if (Array.prototype["count"] === undefined)
+        Object.defineProperty(Array.prototype, "count", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (predicate) {
+                return ArrayExt.count(this, predicate);
+            }
+        });
+    // @ts-ignore
+    if (Array.prototype["remove"] === undefined)
+        Object.defineProperty(Array.prototype, "remove", {
+            configurable: false,
+            enumerable: false,
+            writable: true,
+            value: function (value) {
+                return ArrayExt.remove(this, value);
+            }
+        });
+    // @ts-ignore
+    if (Array.prototype["clear"] === undefined)
+        Object.defineProperty(Array.prototype, "clear", {
+            configurable: false,
+            enumerable: false,
+            writable: true,
+            value: function () {
+                return ArrayExt.clear(this);
+            }
+        });
+    // @ts-ignore
+    if (Array.prototype["equals"] === undefined)
+        Object.defineProperty(Array.prototype, "equals", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (compareArray, compareFunc) {
+                return ArrayExt.equals(this, compareArray, compareFunc);
+            }
+        });
+    // @ts-ignore
+    if (Array.prototype["forEachAsync"] === undefined)
+        Object.defineProperty(Array.prototype, "forEachAsync", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (asyncFunc, degreesOfParallelism) {
+                return ArrayExt.forEachAsync(this, asyncFunc, degreesOfParallelism);
+            }
+        });
+    // @ts-ignore
+    if (Array.prototype["mapAsync"] === undefined)
+        Object.defineProperty(Array.prototype, "mapAsync", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (asyncFunc, degreesOfParallelism) {
+                return ArrayExt.mapAsync(this, asyncFunc, degreesOfParallelism);
+            }
+        });
+    // @ts-ignore
+    if (Array.prototype["reduceAsync"] === undefined)
+        Object.defineProperty(Array.prototype, "reduceAsync", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (asyncFunc, accumulator) {
+                return ArrayExt.reduceAsync(this, asyncFunc, accumulator);
+            }
+        });
+}
+defineArrayExtProperties();
 //# sourceMappingURL=array-ext.js.map
