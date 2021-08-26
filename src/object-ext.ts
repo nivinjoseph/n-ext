@@ -233,6 +233,7 @@ function defineObjectExtProperties(): void
     //     }
     // });
 
+    // @ts-ignore
     if (Object.prototype["getTypeName"] === undefined)
         Object.defineProperty(Object.prototype, "getTypeName", {
             configurable: false,
@@ -244,6 +245,7 @@ function defineObjectExtProperties(): void
             }
         });
 
+    // @ts-ignore
     if (Object.prototype["getValue"] === undefined)
         Object.defineProperty(Object.prototype, "getValue", {
             configurable: false,
@@ -255,6 +257,7 @@ function defineObjectExtProperties(): void
             }
         });
 
+    // @ts-ignore
     if (Object.prototype["setValue"] === undefined)
         Object.defineProperty(Object.prototype, "setValue", {
             configurable: false,
@@ -266,6 +269,7 @@ function defineObjectExtProperties(): void
             }
         });
 
+    // @ts-ignore
     if (Object.prototype["serializeObject"] === undefined)
         Object.defineProperty(Object.prototype, "serializeObject", {
             configurable: false,
@@ -277,6 +281,7 @@ function defineObjectExtProperties(): void
             }
         });
 
+    // @ts-ignore
     if (Object.prototype["deserializeObject"] === undefined)
         Object.defineProperty(Object.prototype, "deserializeObject", {
             configurable: false,

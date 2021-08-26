@@ -213,6 +213,7 @@ enum SystemFormatSymbol
 
 function defineStringExtProperties(): void
 {
+    // @ts-ignore
     if (String.prototype["isEmptyOrWhiteSpace"] === undefined)
         Object.defineProperty(String.prototype, "isEmptyOrWhiteSpace", {
             configurable: false,
@@ -224,6 +225,7 @@ function defineStringExtProperties(): void
             }
         });
 
+    // @ts-ignore
     if (String.prototype["isNotEmptyOrWhiteSpace"] === undefined)
         Object.defineProperty(String.prototype, "isNotEmptyOrWhiteSpace", {
             configurable: false,
@@ -235,6 +237,7 @@ function defineStringExtProperties(): void
             }
         });
 
+    // @ts-ignore
     if (String.prototype["contains"] === undefined)
         Object.defineProperty(String.prototype, "contains", {
             configurable: false,
@@ -266,6 +269,7 @@ function defineStringExtProperties(): void
     //     }
     // });
 
+    // @ts-ignore
     if (String.prototype["extractNumbers"] === undefined)
         Object.defineProperty(String.prototype, "extractNumbers", {
             configurable: false,
@@ -277,6 +281,7 @@ function defineStringExtProperties(): void
             }
         });
 
+    // @ts-ignore
     if (String.prototype["extractCharacters"] === undefined)
         Object.defineProperty(String.prototype, "extractCharacters", {
             configurable: false,
@@ -288,6 +293,7 @@ function defineStringExtProperties(): void
             }
         });
 
+    // @ts-ignore
     if (String.prototype["format"] === undefined)
         Object.defineProperty(String.prototype, "format", {
             configurable: false,
@@ -299,6 +305,7 @@ function defineStringExtProperties(): void
             }
         });
 
+    // @ts-ignore
     if (String.prototype["replaceAll"] === undefined)
         Object.defineProperty(String.prototype, "replaceAll", {
             configurable: false,
@@ -310,6 +317,7 @@ function defineStringExtProperties(): void
             }
         });
 
+    // @ts-ignore
     if (String.prototype["base64Encode"] === undefined)
         Object.defineProperty(String.prototype, "base64Encode", {
             configurable: false,
@@ -321,6 +329,7 @@ function defineStringExtProperties(): void
             }
         });
 
+    // @ts-ignore
     if (String.prototype["base64Decode"] === undefined)
         Object.defineProperty(String.prototype, "base64Decode", {
             configurable: false,
@@ -332,6 +341,7 @@ function defineStringExtProperties(): void
             }
         });
 
+    // @ts-ignore
     if (String.prototype["base64UrlEncode"] === undefined)
         Object.defineProperty(String.prototype, "base64UrlEncode", {
             configurable: false,
@@ -343,6 +353,7 @@ function defineStringExtProperties(): void
             }
         });
 
+    // @ts-ignore
     if (String.prototype["base64UrlDecode"] === undefined)
         Object.defineProperty(String.prototype, "base64UrlDecode", {
             configurable: false,
@@ -354,6 +365,7 @@ function defineStringExtProperties(): void
             }
         });
 
+    // @ts-ignore
     if (String.prototype["hexEncode"] === undefined)
         Object.defineProperty(String.prototype, "hexEncode", {
             configurable: false,
@@ -365,6 +377,7 @@ function defineStringExtProperties(): void
             }
         });
 
+    // @ts-ignore
     if (String.prototype["hexDecode"] === undefined)
         Object.defineProperty(String.prototype, "hexDecode", {
             configurable: false,
@@ -376,6 +389,7 @@ function defineStringExtProperties(): void
             }
         });
 
+    // @ts-ignore
     if (String.prototype["matchesFormat"] === undefined)
         Object.defineProperty(String.prototype, "matchesFormat", {
             configurable: false,

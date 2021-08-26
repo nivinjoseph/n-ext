@@ -611,6 +611,7 @@ class Task<T>
 
 function defineArrayExtProperties(): void
 {
+    // @ts-ignore
     if (Array.prototype["isEmpty"] === undefined)
         Object.defineProperty(Array.prototype, "isEmpty", {
             configurable: false,
@@ -621,6 +622,7 @@ function defineArrayExtProperties(): void
             }
         });
 
+    // @ts-ignore
     if (Array.prototype["isNotEmpty"] === undefined)
         Object.defineProperty(Array.prototype, "isNotEmpty", {
             configurable: false,
@@ -631,6 +633,7 @@ function defineArrayExtProperties(): void
             }
         });
 
+    // @ts-ignore
     if (Array.prototype["first"] === undefined)
         Object.defineProperty(Array.prototype, "first", {
             configurable: false,
@@ -644,6 +647,7 @@ function defineArrayExtProperties(): void
             }
         });
 
+    // @ts-ignore
     if (Array.prototype["last"] === undefined)
         Object.defineProperty(Array.prototype, "last", {
             configurable: false,
@@ -657,6 +661,7 @@ function defineArrayExtProperties(): void
             }
         });
 
+    // @ts-ignore
     if (Array.prototype["contains"] === undefined)
         Object.defineProperty(Array.prototype, "contains", {
             configurable: false,
@@ -668,6 +673,7 @@ function defineArrayExtProperties(): void
             }
         });
 
+    // @ts-ignore
     if (Array.prototype["where"] === undefined)
         Object.defineProperty(Array.prototype, "where", {
             configurable: false,
@@ -679,7 +685,7 @@ function defineArrayExtProperties(): void
             }
         });
 
-
+    // @ts-ignore
     if (Array.prototype["orderBy"] === undefined)
         Object.defineProperty(Array.prototype, "orderBy", {
             configurable: false,
@@ -691,6 +697,7 @@ function defineArrayExtProperties(): void
             }
         });
 
+    // @ts-ignore
     if (Array.prototype["orderByDesc"] === undefined)
         Object.defineProperty(Array.prototype, "orderByDesc", {
             configurable: false,
@@ -702,6 +709,7 @@ function defineArrayExtProperties(): void
             }
         });
 
+    // @ts-ignore
     if (Array.prototype["groupBy"] === undefined)
         Object.defineProperty(Array.prototype, "groupBy", {
             configurable: false,
@@ -713,6 +721,7 @@ function defineArrayExtProperties(): void
             }
         });
 
+    // @ts-ignore
     if (Array.prototype["distinct"] === undefined)
         Object.defineProperty(Array.prototype, "distinct", {
             configurable: false,
@@ -724,6 +733,7 @@ function defineArrayExtProperties(): void
             }
         });
 
+    // @ts-ignore
     if (Array.prototype["skip"] === undefined)
         Object.defineProperty(Array.prototype, "skip", {
             configurable: false,
@@ -735,6 +745,7 @@ function defineArrayExtProperties(): void
             }
         });
 
+    // @ts-ignore
     if (Array.prototype["take"] === undefined)
         Object.defineProperty(Array.prototype, "take", {
             configurable: false,
@@ -746,6 +757,7 @@ function defineArrayExtProperties(): void
             }
         });
 
+    // @ts-ignore
     if (Array.prototype["count"] === undefined)
         Object.defineProperty(Array.prototype, "count", {
             configurable: false,
@@ -757,6 +769,7 @@ function defineArrayExtProperties(): void
             }
         });
 
+    // @ts-ignore
     if (Array.prototype["remove"] === undefined)
         Object.defineProperty(Array.prototype, "remove", {
             configurable: false,
@@ -768,6 +781,7 @@ function defineArrayExtProperties(): void
             }
         });
 
+    // @ts-ignore
     if (Array.prototype["clear"] === undefined)
         Object.defineProperty(Array.prototype, "clear", {
             configurable: false,
@@ -779,6 +793,7 @@ function defineArrayExtProperties(): void
             }
         });
 
+    // @ts-ignore
     if (Array.prototype["equals"] === undefined)
         Object.defineProperty(Array.prototype, "equals", {
             configurable: false,
@@ -790,6 +805,7 @@ function defineArrayExtProperties(): void
             }
         });
 
+    // @ts-ignore
     if (Array.prototype["forEachAsync"] === undefined)
         Object.defineProperty(Array.prototype, "forEachAsync", {
             configurable: false,
@@ -801,6 +817,7 @@ function defineArrayExtProperties(): void
             }
         });
 
+    // @ts-ignore
     if (Array.prototype["mapAsync"] === undefined)
         Object.defineProperty(Array.prototype, "mapAsync", {
             configurable: false,
@@ -812,6 +829,7 @@ function defineArrayExtProperties(): void
             }
         });
 
+    // @ts-ignore
     if (Array.prototype["reduceAsync"] === undefined)
         Object.defineProperty(Array.prototype, "reduceAsync", {
             configurable: false,
