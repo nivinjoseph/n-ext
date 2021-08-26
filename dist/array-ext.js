@@ -452,6 +452,24 @@ Object.defineProperty(Array.prototype, "isNotEmpty", {
         return this.length > 0;
     }
 });
+Object.defineProperty(Array.prototype, "first", {
+    configurable: false,
+    enumerable: false,
+    get: function () {
+        if (this.length === 0)
+            throw new Error("Invalid Operation: Array is empty");
+        return this[0];
+    }
+});
+Object.defineProperty(Array.prototype, "last", {
+    configurable: false,
+    enumerable: false,
+    get: function () {
+        if (this.length === 0)
+            throw new Error("Invalid Operation: Array is empty");
+        return this[this.length - 1];
+    }
+});
 Object.defineProperty(Array.prototype, "contains", {
     configurable: false,
     enumerable: false,
