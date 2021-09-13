@@ -88,9 +88,6 @@ class MathExt
         if (count === 1)
             return [start];
 
-        if (count === 2)
-            return [start, end];
-
         const step = (end - start) / (count - 1);
 
         const space = new Array<number>();

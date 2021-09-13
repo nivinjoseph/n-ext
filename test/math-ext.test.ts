@@ -68,7 +68,7 @@ suite("MathExt", () =>
         });
     });
 
-    suite.only("linerSpace", () =>
+    suite("linerSpace", () =>
     {
         const assertValueCloseEnough = (actual: number, expected: number) =>
         {
