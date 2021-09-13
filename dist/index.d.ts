@@ -40,6 +40,8 @@ declare global
     {
         readonly isEmpty: boolean;
         readonly isNotEmpty: boolean;
+        readonly first: T;
+        readonly last: T;
         contains(value: T): boolean;
         where(filterFunc: (value: T) => boolean): Array<T>;
         orderBy(): Array<T>;
@@ -61,11 +63,13 @@ declare global
         mapAsync<U>(asyncFunc: (input: T) => Promise<U>, degreesOfParallelism?: number): Promise<Array<U>>;
         reduceAsync<U>(asyncFunc: (acc: U, input: T) => Promise<U>, accumulator?: U): Promise<U>;
     }
-    
+
     interface ReadonlyArray<T>
     {
         readonly isEmpty: boolean;
         readonly isNotEmpty: boolean;
+        readonly first: T;
+        readonly last: T;
         contains(value: T): boolean;
         where(filterFunc: (value: T) => boolean): Array<T>;
         orderBy(): Array<T>;
@@ -84,8 +88,8 @@ declare global
         forEachAsync(asyncFunc: (input: T) => Promise<void>, degreesOfParallelism?: number): Promise<void>;
         mapAsync<U>(asyncFunc: (input: T) => Promise<U>, degreesOfParallelism?: number): Promise<Array<U>>;
         reduceAsync<U>(asyncFunc: (acc: U, input: T) => Promise<U>, accumulator?: U): Promise<U>;
-    }   
-    
+    }
+
     interface Math
     {
         percentage(partialValue: number, wholeValue: number): number;

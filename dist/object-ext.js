@@ -151,62 +151,75 @@ class ObjectExt {
         return primary.indexOf(sub) === 0;
     }
 }
-// Object.defineProperty(Object.prototype, "mapToObject", {
-//     configurable: false,
-//     enumerable: false,
-//     writable: false,
-//     value: function (factoryFunc: () => any): any
-//     {
-//         return ObjectExt.mapToObject(this, factoryFunc);
-//     }
-// });
-// Object.defineProperty(Object.prototype, "merge", {
-//     configurable: false,
-//     enumerable: false,
-//     writable: false,
-//     value: function (value: object): void
-//     {
-//         ObjectExt.merge(this, value);
-//     }
-// });
-Object.defineProperty(Object.prototype, "getTypeName", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function () {
-        return ObjectExt.getTypeName(this);
-    }
-});
-Object.defineProperty(Object.prototype, "getValue", {
-    configurable: false,
-    enumerable: false,
-    writable: true,
-    value: function (key) {
-        return ObjectExt.getValue(this, key);
-    }
-});
-Object.defineProperty(Object.prototype, "setValue", {
-    configurable: false,
-    enumerable: false,
-    writable: true,
-    value: function (key, value) {
-        ObjectExt.setValue(this, key, value);
-    }
-});
-Object.defineProperty(Object.prototype, "serializeObject", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (...keys) {
-        return ObjectExt.serialize(this, ...keys);
-    }
-});
-Object.defineProperty(Object.prototype, "deserializeObject", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (targetClassOrObject, ...keysOrValues) {
-        return ObjectExt.deserialize(this, targetClassOrObject, ...keysOrValues);
-    }
-});
+function defineObjectExtProperties() {
+    // Object.defineProperty(Object.prototype, "mapToObject", {
+    //     configurable: false,
+    //     enumerable: false,
+    //     writable: false,
+    //     value: function (factoryFunc: () => any): any
+    //     {
+    //         return ObjectExt.mapToObject(this, factoryFunc);
+    //     }
+    // });
+    // Object.defineProperty(Object.prototype, "merge", {
+    //     configurable: false,
+    //     enumerable: false,
+    //     writable: false,
+    //     value: function (value: object): void
+    //     {
+    //         ObjectExt.merge(this, value);
+    //     }
+    // });
+    // @ts-ignore
+    if (Object.prototype["getTypeName"] === undefined)
+        Object.defineProperty(Object.prototype, "getTypeName", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function () {
+                return ObjectExt.getTypeName(this);
+            }
+        });
+    // @ts-ignore
+    if (Object.prototype["getValue"] === undefined)
+        Object.defineProperty(Object.prototype, "getValue", {
+            configurable: false,
+            enumerable: false,
+            writable: true,
+            value: function (key) {
+                return ObjectExt.getValue(this, key);
+            }
+        });
+    // @ts-ignore
+    if (Object.prototype["setValue"] === undefined)
+        Object.defineProperty(Object.prototype, "setValue", {
+            configurable: false,
+            enumerable: false,
+            writable: true,
+            value: function (key, value) {
+                ObjectExt.setValue(this, key, value);
+            }
+        });
+    // @ts-ignore
+    if (Object.prototype["serializeObject"] === undefined)
+        Object.defineProperty(Object.prototype, "serializeObject", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (...keys) {
+                return ObjectExt.serialize(this, ...keys);
+            }
+        });
+    // @ts-ignore
+    if (Object.prototype["deserializeObject"] === undefined)
+        Object.defineProperty(Object.prototype, "deserializeObject", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (targetClassOrObject, ...keysOrValues) {
+                return ObjectExt.deserialize(this, targetClassOrObject, ...keysOrValues);
+            }
+        });
+}
+defineObjectExtProperties();
 //# sourceMappingURL=object-ext.js.map

@@ -211,165 +211,198 @@ enum SystemFormatSymbol
 }
 
 
-Object.defineProperty(String.prototype, "isEmptyOrWhiteSpace", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (): boolean
-    {
-        return StringExt.isEmptyOrWhiteSpace(this.toString());
-    }
-});
+function defineStringExtProperties(): void
+{
+    // @ts-ignore
+    if (String.prototype["isEmptyOrWhiteSpace"] === undefined)
+        Object.defineProperty(String.prototype, "isEmptyOrWhiteSpace", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (): boolean
+            {
+                return StringExt.isEmptyOrWhiteSpace(this.toString());
+            }
+        });
 
-Object.defineProperty(String.prototype, "isNotEmptyOrWhiteSpace", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (): boolean
-    {
-        return !StringExt.isEmptyOrWhiteSpace(this.toString());
-    }
-});
+    // @ts-ignore
+    if (String.prototype["isNotEmptyOrWhiteSpace"] === undefined)
+        Object.defineProperty(String.prototype, "isNotEmptyOrWhiteSpace", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (): boolean
+            {
+                return !StringExt.isEmptyOrWhiteSpace(this.toString());
+            }
+        });
 
-Object.defineProperty(String.prototype, "contains", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (search: string): boolean
-    {
-        return StringExt.contains(this.toString(), search);
-    }
-});
+    // @ts-ignore
+    if (String.prototype["contains"] === undefined)
+        Object.defineProperty(String.prototype, "contains", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (search: string): boolean
+            {
+                return StringExt.contains(this.toString(), search);
+            }
+        });
 
-// Object.defineProperty(String.prototype, "startsWith", {
-//     configurable: false,
-//     enumerable: false,
-//     writable: false,
-//     value: function (sub: string): boolean
-//     {
-//         return StringExt.startsWith(this.toString(), sub);
-//     }
-// });
+    // Object.defineProperty(String.prototype, "startsWith", {
+    //     configurable: false,
+    //     enumerable: false,
+    //     writable: false,
+    //     value: function (sub: string): boolean
+    //     {
+    //         return StringExt.startsWith(this.toString(), sub);
+    //     }
+    // });
 
-// Object.defineProperty(String.prototype, "endsWith", {
-//     configurable: false,
-//     enumerable: false,
-//     writable: false,
-//     value: function (sub: string): boolean
-//     {
-//         return StringExt.endsWith(this.toString(), sub);
-//     }
-// });
+    // Object.defineProperty(String.prototype, "endsWith", {
+    //     configurable: false,
+    //     enumerable: false,
+    //     writable: false,
+    //     value: function (sub: string): boolean
+    //     {
+    //         return StringExt.endsWith(this.toString(), sub);
+    //     }
+    // });
 
-Object.defineProperty(String.prototype, "extractNumbers", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (): string
-    {
-        return StringExt.extractNumbers(this.toString());
-    }
-});
+    // @ts-ignore
+    if (String.prototype["extractNumbers"] === undefined)
+        Object.defineProperty(String.prototype, "extractNumbers", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (): string
+            {
+                return StringExt.extractNumbers(this.toString());
+            }
+        });
 
-Object.defineProperty(String.prototype, "extractCharacters", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (): string
-    {
-        return StringExt.extractCharacters(this.toString());
-    }
-});
+    // @ts-ignore
+    if (String.prototype["extractCharacters"] === undefined)
+        Object.defineProperty(String.prototype, "extractCharacters", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (): string
+            {
+                return StringExt.extractCharacters(this.toString());
+            }
+        });
 
-Object.defineProperty(String.prototype, "format", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (...params: any[]): string
-    {
-        return StringExt.format(this.toString(), ...params);
-    }
-});
+    // @ts-ignore
+    if (String.prototype["format"] === undefined)
+        Object.defineProperty(String.prototype, "format", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (...params: any[]): string
+            {
+                return StringExt.format(this.toString(), ...params);
+            }
+        });
 
-Object.defineProperty(String.prototype, "replaceAll", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (searchValue: string, replaceValue: string): string
-    {
-        return StringExt.replaceAll(this.toString(), searchValue, replaceValue);
-    }
-});
+    // @ts-ignore
+    if (String.prototype["replaceAll"] === undefined)
+        Object.defineProperty(String.prototype, "replaceAll", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (searchValue: string, replaceValue: string): string
+            {
+                return StringExt.replaceAll(this.toString(), searchValue, replaceValue);
+            }
+        });
 
-Object.defineProperty(String.prototype, "base64Encode", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (): string
-    {
-        return StringExt.base64Encode(this.toString());
-    }
-});
+    // @ts-ignore
+    if (String.prototype["base64Encode"] === undefined)
+        Object.defineProperty(String.prototype, "base64Encode", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (): string
+            {
+                return StringExt.base64Encode(this.toString());
+            }
+        });
 
-Object.defineProperty(String.prototype, "base64Decode", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (): string
-    {
-        return StringExt.base64Decode(this.toString());
-    }
-});
+    // @ts-ignore
+    if (String.prototype["base64Decode"] === undefined)
+        Object.defineProperty(String.prototype, "base64Decode", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (): string
+            {
+                return StringExt.base64Decode(this.toString());
+            }
+        });
 
-Object.defineProperty(String.prototype, "base64UrlEncode", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (): string
-    {
-        return StringExt.base64UrlEncode(this.toString());
-    }
-});
+    // @ts-ignore
+    if (String.prototype["base64UrlEncode"] === undefined)
+        Object.defineProperty(String.prototype, "base64UrlEncode", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (): string
+            {
+                return StringExt.base64UrlEncode(this.toString());
+            }
+        });
 
-Object.defineProperty(String.prototype, "base64UrlDecode", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (): string
-    {
-        return StringExt.base64UrlDecode(this.toString());
-    }
-});
+    // @ts-ignore
+    if (String.prototype["base64UrlDecode"] === undefined)
+        Object.defineProperty(String.prototype, "base64UrlDecode", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (): string
+            {
+                return StringExt.base64UrlDecode(this.toString());
+            }
+        });
 
-Object.defineProperty(String.prototype, "hexEncode", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (): string
-    {
-        return StringExt.hexEncode(this.toString());
-    }
-});
+    // @ts-ignore
+    if (String.prototype["hexEncode"] === undefined)
+        Object.defineProperty(String.prototype, "hexEncode", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (): string
+            {
+                return StringExt.hexEncode(this.toString());
+            }
+        });
 
-Object.defineProperty(String.prototype, "hexDecode", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (): string
-    {
-        return StringExt.hexDecode(this.toString());
-    }
-});
+    // @ts-ignore
+    if (String.prototype["hexDecode"] === undefined)
+        Object.defineProperty(String.prototype, "hexDecode", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (): string
+            {
+                return StringExt.hexDecode(this.toString());
+            }
+        });
 
-Object.defineProperty(String.prototype, "matchesFormat", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (format: string): boolean
-    {
-        if (format == null || typeof format !== "string" || StringExt.isEmptyOrWhiteSpace(format))
-            throw new Error("format must be a valid string");
-        
-        return StringExt.matchesFormat(this.toString(), format.trim());
-    }
-});
+    // @ts-ignore
+    if (String.prototype["matchesFormat"] === undefined)
+        Object.defineProperty(String.prototype, "matchesFormat", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (format: string): boolean
+            {
+                if (format == null || typeof format !== "string" || StringExt.isEmptyOrWhiteSpace(format))
+                    throw new Error("format must be a valid string");
+
+                return StringExt.matchesFormat(this.toString(), format.trim());
+            }
+        });
+}
+
+defineStringExtProperties();

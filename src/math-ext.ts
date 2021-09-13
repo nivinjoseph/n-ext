@@ -121,32 +121,43 @@ class MathExt
 }
 
 
-(<any>Math).percentage = function (partialValue: number, wholeValue: number): number
+function defineMathExtProperties(): void
 {
-    return MathExt.percentage(partialValue, wholeValue);
-};
+    if ((<any>Math).percentage === undefined)
+        (<any>Math).percentage = function (partialValue: number, wholeValue: number): number
+        {
+            return MathExt.percentage(partialValue, wholeValue);
+        };
 
-(<any>Math).percentagePartial = function (percentage: number, wholeValue: number): number
-{
-    return MathExt.percentagePartial(percentage, wholeValue);
-};
+    if ((<any>Math).percentagePartial === undefined)
+        (<any>Math).percentagePartial = function (percentage: number, wholeValue: number): number
+        {
+            return MathExt.percentagePartial(percentage, wholeValue);
+        };
 
-(<any>Math).percentageWhole = function (percentage: number, partialValue: number): number
-{
-    return MathExt.percentageWhole(percentage, partialValue);
-};
+    if ((<any>Math).percentageWhole === undefined)
+        (<any>Math).percentageWhole = function (percentage: number, partialValue: number): number
+        {
+            return MathExt.percentageWhole(percentage, partialValue);
+        };
 
-(<any>Math).clamp = function (value: number, min: number, max: number): number
-{
-    return MathExt.clamp(value, min, max);
-};
+    if ((<any>Math).clamp === undefined)
+        (<any>Math).clamp = function (value: number, min: number, max: number): number
+        {
+            return MathExt.clamp(value, min, max);
+        };
 
-(<any>Math).median = function (values: ReadonlyArray<number>): number | null
-{
-    return MathExt.median(values);
-};
+    if ((<any>Math).median === undefined)
+        (<any>Math).median = function (values: ReadonlyArray<number>): number | null
+        {
+            return MathExt.median(values);
+        };
 
-(<any>Math).linearSpace = function (start: number, end: number, count: number): Array<number>
-{
-    return MathExt.linearSpace(start, end, count);
-};
+    if ((<any>Math).linearSpace === undefined)
+        ((<any>Math).linearSpace = function (start: number, end: number, count: number): Array<number> 
+        {
+            return MathExt.linearSpace(start, end, count);
+        });
+}
+
+defineMathExtProperties();
