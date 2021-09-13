@@ -45,6 +45,23 @@ class MathExt {
             return sorted[mid];
         }
     }
+    static linearSpace(start, end, count) {
+        if (start == null || typeof start !== "number")
+            throw new Error("Argument start is not a valid number");
+        if (end == null || typeof end !== "number")
+            throw new Error("Argument end is not a valid number");
+        if (count == null || typeof count !== "number")
+            throw new Error("Argument count is not a valid number");
+        if (count === 0)
+            return [];
+        if (count === 1)
+            return [start];
+        const step = (end - start) / (count - 1);
+        const space = new Array();
+        for (let i = 0; i < count; i++)
+            space.push(start + (step * i));
+        return space;
+    }
     static _sortNumbersEliminateNulls(values) {
         let internalArray = [];
         for (let i = 0; i < values.length; i++) {
@@ -82,6 +99,10 @@ function defineMathExtProperties() {
         Math.median = function (values) {
             return MathExt.median(values);
         };
+    if (Math.linearSpace === undefined)
+        (Math.linearSpace = function (start, end, count) {
+            return MathExt.linearSpace(start, end, count);
+        });
 }
 defineMathExtProperties();
 //# sourceMappingURL=math-ext.js.map
