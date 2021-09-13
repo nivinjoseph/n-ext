@@ -4,13 +4,13 @@ class MathExt
     {
         if (partialValue == null || typeof partialValue !== "number" || partialValue < 0)
             throw new Error("Argument partialValue must be a valid non-negative number.");
-        
+
         if (wholeValue == null || typeof wholeValue !== "number" || wholeValue <= 0)
             throw new Error("Argument wholeValue must be a valid number > 0.");
-        
+
         return (partialValue / wholeValue) * 100;
     }
-    
+
     public static percentagePartial(percentage: number, wholeValue: number): number
     {
         if (percentage == null || typeof percentage !== "number" || percentage < 0)
@@ -18,10 +18,10 @@ class MathExt
 
         if (wholeValue == null || typeof wholeValue !== "number" || wholeValue <= 0)
             throw new Error("Argument wholeValue must be a valid number > 0.");
-        
+
         return (percentage * wholeValue) / 100;
     }
-    
+
     public static percentageWhole(percentage: number, partialValue: number): number
     {
         if (percentage == null || typeof percentage !== "number" || percentage < 0)
@@ -32,25 +32,25 @@ class MathExt
 
         return (partialValue / percentage) * 100;
     }
-    
+
     public static clamp(value: number, min: number, max: number): number
     {
         if (value < min)
             return min;
-        
+
         if (value > max)
             return max;
-        
+
         return value;
     }
-    
+
     public static median(values: ReadonlyArray<number>): number | null
     {
         const sorted = MathExt._sortNumbersEliminateNulls(values);
-        
+
         if (sorted.length === 0)
             return null;
-        
+
         if (sorted.length === 1)
             return sorted[0];
 
@@ -70,7 +70,36 @@ class MathExt
             return sorted[mid];
         }
     }
-    
+
+    public static linearSpace(start: number, end: number, count: number): Array<number>
+    {
+        if (start == null || typeof start !== "number")
+            throw new Error("Argument start is not a valid number");
+
+        if (end == null || typeof end !== "number")
+            throw new Error("Argument end is not a valid number");
+
+        if (count == null || typeof count !== "number")
+            throw new Error("Argument count is not a valid number");
+
+        if (count === 0)
+            return [];
+
+        if (count === 1)
+            return [start];
+
+        if (count === 2)
+            return [start, end];
+
+        const step = (end - start) / (count - 1);
+
+        const space = new Array<number>();
+        for (let i = 0; i < count; i++)
+            space.push(start + (step * i));
+
+        return space;
+    }
+
     private static _sortNumbersEliminateNulls(values: ReadonlyArray<number>): Array<number>
     {
         let internalArray: number[] = [];
@@ -115,4 +144,9 @@ class MathExt
 (<any>Math).median = function (values: ReadonlyArray<number>): number | null
 {
     return MathExt.median(values);
+};
+
+(<any>Math).linearSpace = function (start: number, end: number, count: number): Array<number>
+{
+    return MathExt.linearSpace(start, end, count);
 };
