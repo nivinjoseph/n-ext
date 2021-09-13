@@ -97,6 +97,7 @@ declare global
         percentageWhole(percentage: number, partialValue: number): number;
         clamp(value: number, min: number, max: number): number;
         median(values: ReadonlyArray<number>): number | null;
+        linearSpace(start: number, end: number, count: number): Array<number>;
     }
 }
 
