@@ -640,8 +640,11 @@ function defineArrayExtProperties(): void
             enumerable: false,
             get: function ()
             {
+                // if (this.length === 0)
+                //     throw new Error("Invalid Operation: Array is empty");
+                
                 if (this.length === 0)
-                    throw new Error("Invalid Operation: Array is empty");
+                    return undefined;
 
                 return this[0];
             }
@@ -654,8 +657,11 @@ function defineArrayExtProperties(): void
             enumerable: false,
             get: function ()
             {
+                // if (this.length === 0)
+                //     throw new Error("Invalid Operation: Array is empty");
+                
                 if (this.length === 0)
-                    throw new Error("Invalid Operation: Array is empty");
+                    return undefined;
 
                 return this[this.length - 1];
             }

@@ -643,11 +643,18 @@ suite("ArrayExt", () =>
             assert.strictEqual(target.first, 1);
         });
 
-        test("Given a empty array, When first is accessed, Then Array is empty exception should be thrown", () =>
+        // test("Given a empty array, When first is accessed, Then Array is empty exception should be thrown", () =>
+        // {
+        //     const target = new Array<any>();
+
+        //     assert.throws(() => target.first, (e) => e.message === "Invalid Operation: Array is empty");
+        // });
+        
+        test("Given a empty array, When first is accessed, undefined should be returned", () =>
         {
             const target = new Array<any>();
 
-            assert.throws(() => target.first, (e) => e.message === "Invalid Operation: Array is empty");
+            assert.strictEqual(target.first, undefined);
         });
     });
 
@@ -660,11 +667,18 @@ suite("ArrayExt", () =>
             assert.strictEqual(target.last, 4);
         });
 
-        test("Given a empty array, When last is accessed, Then Array is empty exception should be thrown", () =>
+        // test("Given a empty array, When last is accessed, Then Array is empty exception should be thrown", () =>
+        // {
+        //     const target = new Array<any>();
+
+        //     assert.throws(() => target.last, (e) => e.message === "Invalid Operation: Array is empty");
+        // });
+        
+        test("Given a empty array, When last is accessed, undefined should be returned", () =>
         {
             const target = new Array<any>();
 
-            assert.throws(() => target.last, (e) => e.message === "Invalid Operation: Array is empty");
+            assert.strictEqual(target.last, undefined);
         });
     });
 });
