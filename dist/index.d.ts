@@ -40,8 +40,10 @@ declare global
     {
         readonly isEmpty: boolean;
         readonly isNotEmpty: boolean;
-        readonly first: T;
-        readonly last: T;
+        // readonly first: T;
+        // readonly last: T;
+        takeFirst(): T;
+        takeLast(): T;
         contains(value: T): boolean;
         where(filterFunc: (value: T) => boolean): Array<T>;
         orderBy(): Array<T>;
@@ -68,8 +70,10 @@ declare global
     {
         readonly isEmpty: boolean;
         readonly isNotEmpty: boolean;
-        readonly first: T;
-        readonly last: T;
+        // readonly first: T;
+        // readonly last: T;
+        takeFirst(): T;
+        takeLast(): T;
         contains(value: T): boolean;
         where(filterFunc: (value: T) => boolean): Array<T>;
         orderBy(): Array<T>;

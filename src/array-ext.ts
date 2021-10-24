@@ -633,35 +633,71 @@ function defineArrayExtProperties(): void
             }
         });
 
+    // // @ts-ignore
+    // if (Array.prototype["first"] === undefined)
+    //     Object.defineProperty(Array.prototype, "first", {
+    //         configurable: false,
+    //         enumerable: false,
+    //         get: function ()
+    //         {
+    //             // if (this.length === 0)
+    //             //     throw new Error("Invalid Operation: Array is empty");
+                
+    //             if (this.length === 0)
+    //                 return undefined;
+
+    //             return this[0];
+    //         }
+    //     });
+    
     // @ts-ignore
-    if (Array.prototype["first"] === undefined)
-        Object.defineProperty(Array.prototype, "first", {
+    if (Array.prototype["takeFirst"] === undefined)
+        Object.defineProperty(Array.prototype, "takeFirst", {
             configurable: false,
             enumerable: false,
-            get: function ()
+            writable: false,
+            value: function (): any
             {
-                // if (this.length === 0)
-                //     throw new Error("Invalid Operation: Array is empty");
-                
                 if (this.length === 0)
-                    return undefined;
+                    throw new Error("Invalid Operation: Array is empty");
+                
+                // if (this.length === 0)
+                //     return undefined;
 
                 return this[0];
             }
         });
 
+    // // @ts-ignore
+    // if (Array.prototype["last"] === undefined)
+    //     Object.defineProperty(Array.prototype, "last", {
+    //         configurable: false,
+    //         enumerable: false,
+    //         get: function ()
+    //         {
+    //             if (this.length === 0)
+    //                 throw new Error("Invalid Operation: Array is empty");
+                
+    //             // if (this.length === 0)
+    //             //     return undefined;
+
+    //             return this[this.length - 1];
+    //         }
+    //     });
+    
     // @ts-ignore
-    if (Array.prototype["last"] === undefined)
-        Object.defineProperty(Array.prototype, "last", {
+    if (Array.prototype["takeLast"] === undefined)
+        Object.defineProperty(Array.prototype, "takeLast", {
             configurable: false,
             enumerable: false,
-            get: function ()
+            writable: false,
+            value: function (): any
             {
-                // if (this.length === 0)
-                //     throw new Error("Invalid Operation: Array is empty");
-                
                 if (this.length === 0)
-                    return undefined;
+                    throw new Error("Invalid Operation: Array is empty");
+                
+                // if (this.length === 0)
+                //     return undefined;
 
                 return this[this.length - 1];
             }
