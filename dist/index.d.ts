@@ -23,7 +23,6 @@ declare global
          * @example ```(###)-###-####```, ```*.xls```, ```*\@company.com```
          */
         matchesFormat(format: string): boolean;
-        compareTo(str: string, ignoreCase?: boolean): number;
     }
 
     interface Object
