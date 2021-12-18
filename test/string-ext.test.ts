@@ -11,29 +11,29 @@ suite("StringExt", () =>
             let result = target.isEmptyOrWhiteSpace();
             assert.strictEqual(result, true);
         });
-        
+
         test("should return true when called on a non-empty string with space characters", () =>
         {
             let target = "   ";
             let result = target.isEmptyOrWhiteSpace();
             assert.strictEqual(result, true);
         });
-        
+
         test("should return false when called on a non-empty string", () =>
         {
-            let target = "foo";    
+            let target = "foo";
             let result = target.isEmptyOrWhiteSpace();
             assert.strictEqual(result, false);
         });
-        
+
         test("should return false when called on a non-empty string with space and regular characters", () =>
         {
-            let target = "  foo bar  ";    
+            let target = "  foo bar  ";
             let result = target.isEmptyOrWhiteSpace();
             assert.strictEqual(result, false);
         });
     });
-    
+
     suite("isNotEmptyOrWhiteSpace", () =>
     {
         test("should return false when called on an empty string", () =>
@@ -64,7 +64,7 @@ suite("StringExt", () =>
             assert.strictEqual(result, true);
         });
     });
-    
+
     suite("contains", () =>
     {
         test("should return true if argument is a substring of the target string", () =>
@@ -74,7 +74,7 @@ suite("StringExt", () =>
             let result = target.contains(arg);
             assert.strictEqual(result, true);
         });
-        
+
         test("should return false if argument is not a substring of the target string", () =>
         {
             let target = "foo bar";
@@ -82,7 +82,7 @@ suite("StringExt", () =>
             let result = target.contains(arg);
             assert.strictEqual(result, false);
         });
-        
+
         test("should return false if argument is partially of the target string", () =>
         {
             let target = "foo bar";
@@ -90,7 +90,7 @@ suite("StringExt", () =>
             let result = target.contains(arg);
             assert.strictEqual(result, false);
         });
-        
+
         test("should return true if argument is a space character in the target string", () =>
         {
             let target = "foo bar";
@@ -98,7 +98,7 @@ suite("StringExt", () =>
             let result = target.contains(arg);
             assert.strictEqual(result, true);
         });
-        
+
         test("should return true if argument is an empty string of the target string", () =>
         {
             let target = "foo bar";
@@ -106,7 +106,7 @@ suite("StringExt", () =>
             let result = target.contains(arg);
             assert.strictEqual(result, true);
         });
-        
+
         test("should return true if argument and target string are both empty", () =>
         {
             let target = "";
@@ -115,7 +115,7 @@ suite("StringExt", () =>
             assert.strictEqual(result, true);
         });
     });
-    
+
     suite("startsWith", () =>
     {
         test("should return true if the first character in the target string matches the argument", () =>
@@ -125,15 +125,15 @@ suite("StringExt", () =>
             let result = target.startsWith(arg);
             assert.strictEqual(result, true);
         });
-        
+
         test("should return false if the first character in the target string does not match the argument", () =>
         {
             let target = "Foo";
-            let arg = "A"; 
+            let arg = "A";
             let result = target.startsWith(arg);
             assert.strictEqual(result, false);
         });
-        
+
         test("should return false if the the first character in the target string is not the same capitalization as the argument", () =>
         {
             let target = "Foo";
@@ -141,7 +141,7 @@ suite("StringExt", () =>
             let result = target.startsWith(arg);
             assert.strictEqual(result, false);
         });
-        
+
         test("should return true if first character in the target string does not match the argument that is an empty string", () =>
         {
             let target = "Foo";
@@ -149,7 +149,7 @@ suite("StringExt", () =>
             let result = target.startsWith(arg);
             assert.strictEqual(result, true);
         });
-        
+
         test("should return false if the first character in the target string does not match the argument that is a space character", () =>
         {
             let target = "Foo";
@@ -157,7 +157,7 @@ suite("StringExt", () =>
             let result = target.startsWith(arg);
             assert.strictEqual(result, false);
         });
-        
+
         test("should return false if the target string is an empty string and the argument has a single character", () =>
         {
             let target = "";
@@ -181,7 +181,7 @@ suite("StringExt", () =>
             let result = target.startsWith(arg);
             assert.strictEqual(result, true);
         });
-        
+
         test("should return false if target string starts with a space character and the argument has a non space character", () =>
         {
             let target = " Foo";
@@ -189,7 +189,7 @@ suite("StringExt", () =>
             let result = target.startsWith(arg);
             assert.strictEqual(result, false);
         });
-        
+
         test("should return true if target string is a space character and the argument is a non space character", () =>
         {
             let target = " ";
@@ -197,7 +197,7 @@ suite("StringExt", () =>
             let result = target.startsWith(arg);
             assert.strictEqual(result, true);
         });
-        
+
         test("should return false if target is an empty string and the argument is a space character", () =>
         {
             let target = "";
@@ -206,7 +206,7 @@ suite("StringExt", () =>
             assert.strictEqual(result, false);
         });
     });
-    
+
     suite("endsWith", () =>
     {
         test("should return true if the last character in the target string matches the argument", () =>
@@ -297,37 +297,37 @@ suite("StringExt", () =>
             assert.strictEqual(result, false);
         });
     });
-    
+
     suite("extractNumbers", () =>
     {
         test("should return empty string when target string contains no numbers", () =>
         {
-            let target = "abc";        
+            let target = "abc";
             let result = target.extractNumbers();
             assert.strictEqual(result, "");
         });
-        
+
         test("should return numbers when target string has numbers at the beginning", () =>
         {
             let target = "123abc";
             let result = target.extractNumbers();
             assert.strictEqual(result, "123");
         });
-        
+
         test("should return numbers when target string has numbers at the end", () =>
         {
             let target = "abc123";
             let result = target.extractNumbers();
             assert.strictEqual(result, "123");
         });
-        
+
         test("should return numbers when target string has numbers in the middle", () =>
         {
             let target = "abc123abc";
             let result = target.extractNumbers();
             assert.strictEqual(result, "123");
         });
-        
+
         test("should return all numbers when target string has numbers scattered through out", () =>
         {
             let target = "1a24-b34__89c/78l";
@@ -335,7 +335,7 @@ suite("StringExt", () =>
             assert.strictEqual(result, "124348978");
         });
     });
-    
+
     suite("extractCharacters", () =>
     {
         test("should return empty string when target string contains no characters", () =>
@@ -373,16 +373,16 @@ suite("StringExt", () =>
             assert.strictEqual(result, "abkjf c  l ");
         });
     });
-    
+
     suite("format", () =>
     {
         test("should return formated string with arguments in order", () =>
         {
-            let target = "my name is {0} {1}";  
+            let target = "my name is {0} {1}";
             let result = target.format("Viola", "Deluca");
             assert.strictEqual(result, "my name is Viola Deluca");
         });
-        
+
         test("should return formated string containing only first argument twice", () =>
         {
             let target = "my name is {0} {0}";
@@ -403,42 +403,42 @@ suite("StringExt", () =>
             let result = target.format("Viola", "Deluca");
             assert.strictEqual(result, "my name is Viola {2}");
         });
-        
+
         test("should return an empty string if target is an empty string and argument has value", () =>
         {
             let target = "";
             let result = target.format("Viola", "Deluca");
             assert.strictEqual(result, "");
         });
-        
+
         test("should return original target unformated when target provides no placeholders", () =>
         {
             let target = "my name is";
             let result = target.format("Viola", "Deluca");
             assert.strictEqual(result, "my name is");
         });
-        
+
         test("should return formated string with placeholder replaced by empty string if target has placeholders and argument provided is an empty string", () =>
         {
             let target = "my name is {0} {1}";
             let result = target.format("");
             assert.strictEqual(result, "my name is  {1}");
         });
-        
+
         test("should return original string if target has placeholders but no arguments are provided", () =>
         {
             let target = "my name is {0} {1}";
             let result = target.format();
             assert.strictEqual(result, "my name is {0} {1}");
         });
-        
+
         test("should return formated string with first two arguments when there are more arguments than placeholders", () =>
         {
             let target = "my name is {0} {1}";
             let result = target.format("Viola", "Deluca", "Nivin", "Joseph");
             assert.strictEqual(result, "my name is Viola Deluca");
         });
-        
+
         test("should return formated string with only first placeholder changed given a single argument", () =>
         {
             let target = "my name is {0} {1}";
@@ -446,7 +446,7 @@ suite("StringExt", () =>
             assert.strictEqual(result, "my name is Viola {1}");
         });
     });
-    
+
     suite("replaceAll", () =>
     {
         test("should not change anything if search value is not found", () =>
@@ -454,12 +454,12 @@ suite("StringExt", () =>
             let target = "Mr Blue has a blue house and a blue car";
             let searchValue = "red";
             let replaceValue = "green";
-            
+
             let result = target.replaceAll(searchValue, replaceValue);
-            
+
             assert.strictEqual(result, target);
         });
-        
+
         test("should replace all occurances of search value if it is found", () =>
         {
             let target = "Mr Blue has a blue house and a blue car";
@@ -470,7 +470,7 @@ suite("StringExt", () =>
 
             assert.strictEqual(result, "Mr Blue has a red house and a red car");
         });
-        
+
         // test("should replace all occurances of search value case insensitive if found", () =>
         // {
         //     let target = "Mr Blue has a blue house and a blue car";
@@ -481,7 +481,7 @@ suite("StringExt", () =>
 
         //     assert.strictEqual(result, "Mr red has a red house and a red car");
         // });
-        
+
         test("should replace all occurances of search value when original value contains special characters", () =>
         {
             let target = "http://localhost:4002/pim-api/getProducts?$pageNumber=1&$pageSize=500";
@@ -493,7 +493,7 @@ suite("StringExt", () =>
             assert.strictEqual(result, "http://localhost:4002/pim-api/getAssets?$pageNumber=1&$pageSize=500");
         });
     });
-    
+
     suite("base64Encode and base64Decode", () =>
     {
         test("should successfully encode and decode", () =>
@@ -506,7 +506,7 @@ suite("StringExt", () =>
             assert.strictEqual(decoded, value);
         });
     });
-    
+
     suite("base64UrlEncode and base64UrlDecode", () =>
     {
         test("should successfully encode and decode", () =>
@@ -519,7 +519,7 @@ suite("StringExt", () =>
             assert.strictEqual(decoded, value);
         });
     });
-    
+
     suite("hexEncode and hexDecode", () =>
     {
         test("should successfully encode and decode", () =>
@@ -533,6 +533,82 @@ suite("StringExt", () =>
         });
     });
 
+    suite.only("compareTo", () =>
+    {
+        test("should return 0 when the both string are empty", () =>
+        {
+            const str1 = "";
+            const str2 = "";
+
+            assert.strictEqual(str1.compareTo(str2), 0);
+        });
+
+        test("should return 0 when str1 = 'A' str2 ='a' and case is ignored", () =>
+        {
+            const str1 = "A";
+            const str2 = "a";
+
+            assert.strictEqual(str1.compareTo(str2), 0);
+        });
+        
+        test("should return -1 when str1 = 'A' str2 ='a' and case is not ignored", () =>
+        {
+            const str1 = "A";
+            const str2 = "a";
+
+            assert.strictEqual(str1.compareTo(str2, true), -1);
+        });
+
+        test("should return -1 when the str1 = 'A' str2 ='B'", () =>
+        {
+            const str1 = "A";
+            const str2 = "B";
+
+            assert.strictEqual(str1.compareTo(str2), -1);
+        });
+
+        test("should return 1 when the str1 = 'B' str2 ='A'", () =>
+        {
+            const str1 = "B";
+            const str2 = "A";
+
+            assert.strictEqual(str1.compareTo(str2), 1);
+        });
+
+        test("should return -1 when the str1 = 'hello' str2 ='world'", () =>
+        {
+            const str1 = "hello";
+            const str2 = "world";
+
+            assert.strictEqual(str1.compareTo(str2, true), -1);
+        });
+
+        test("should return 1 when the str1 = 'world' str2 ='hello'", () =>
+        {
+            const str1 = "world";
+            const str2 = "hello";
+
+            assert.strictEqual(str1.compareTo(str2, true), 1);
+        });
+
+        test("should return 1 when the str1 = 'a' str2 ='B' and case is not ignored", () =>
+        {
+            const str1 = "a";
+            const str2 = "B";
+
+            assert.strictEqual(str1.compareTo(str2), 1);
+        });
+
+        test("should return -1 when the str1 = 'a' str2 ='B' and case is ignored", () =>
+        {
+            const str1 = "a";
+            const str2 = "B";
+
+            assert.strictEqual(str1.compareTo(str2, true), -1);
+        });
+
+    });
+
     suite("matchesFormat", () =>
     {
         suite("basic", () =>
@@ -544,7 +620,7 @@ suite("StringExt", () =>
 
                 assert.strictEqual(value.matchesFormat(format), false);
             });
-            
+
 
             test(`Given value "1234" and format "####" when matchesFormat is called then it should return true`, () =>
             {
@@ -618,7 +694,7 @@ suite("StringExt", () =>
                 assert.strictEqual(value.matchesFormat(format), false);
             });
         });
-        
+
         suite("with constants", () =>
         {
             test(`Given value "hello1" and format "hello1" when matchesFormat is called then it should return true`, () =>
@@ -636,7 +712,7 @@ suite("StringExt", () =>
 
                 assert.strictEqual(value.matchesFormat(format), false);
             });
-            
+
             test(`Given value "12(34)" and format "##(##)" when matchesFormat is called then it should return true`, () =>
             {
                 const value = "12(34)";
@@ -661,7 +737,7 @@ suite("StringExt", () =>
                 assert.strictEqual(value.matchesFormat(format), true);
             });
         });
-    
+
         suite("with escape sequence", () =>
         {
             test(`Given value "32@co" and format "##\\@@@" when matchesFormat is called then it should return true`, () =>
@@ -695,7 +771,7 @@ suite("StringExt", () =>
 
                 assert.strictEqual(value.matchesFormat(format), true);
             });
-            
+
             test(`Given value "01\\01\\2020" and format "##\\\\##\\\\####" when matchesFormat is called then it should return true`, () =>
             {
                 const value = "01\\01\\2020";
@@ -703,7 +779,7 @@ suite("StringExt", () =>
 
                 assert.strictEqual(value.matchesFormat(format), true);
             });
-            
+
             test(`Given value "01\\#1\\2020" and format "##\\\\##\\\\####" when matchesFormat is called then it should return false`, () =>
             {
                 const value = "01\\#1\\2020";
@@ -711,7 +787,7 @@ suite("StringExt", () =>
 
                 assert.strictEqual(value.matchesFormat(format), false);
             });
-            
+
             test(`Given value "01\\31\\20##" and format "##\\\\##\\\\##\\#\\#" when matchesFormat is called then it should return true`, () =>
             {
                 const value = "01\\31\\20##";
@@ -728,7 +804,7 @@ suite("StringExt", () =>
                 assert.strictEqual(value.matchesFormat(format), false);
             });
         });
-        
+
         suite("with *", () =>
         {
             test(`Given value "Hello World" and format "*" when matchesFormat is called then it should return true`, () =>
@@ -738,7 +814,7 @@ suite("StringExt", () =>
 
                 assert.strictEqual(value.matchesFormat(format), true);
             });
-            
+
             test(`Given value "" and format "*" when matchesFormat is called then it should return true`, () =>
             {
                 const value = "";
@@ -746,7 +822,7 @@ suite("StringExt", () =>
 
                 assert.strictEqual(value.matchesFormat(format), true);
             });
-            
+
             test(`Given value "Hello World" and format "Hello*" when matchesFormat is called then it should return true`, () =>
             {
                 const value = "Hello World";
@@ -754,7 +830,7 @@ suite("StringExt", () =>
 
                 assert.strictEqual(value.matchesFormat(format), true);
             });
-            
+
             test(`Given value "Hello" and format "Hello*" when matchesFormat is called then it should return true`, () =>
             {
                 const value = "Hello";
@@ -770,7 +846,7 @@ suite("StringExt", () =>
 
                 assert.strictEqual(value.matchesFormat(format), true);
             });
-            
+
             test(`Given value "hello" and format "he*llo" when matchesFormat is called then it should return true`, () =>
             {
                 const value = "hello";
@@ -785,40 +861,40 @@ suite("StringExt", () =>
                 const format = "*hello";
 
                 assert.strictEqual(value.matchesFormat(format), true);
-            }); 
-            
+            });
+
             test(`Given value "hello" and format "*hello" when matchesFormat is called then it should return true`, () =>
             {
                 const value = "hello";
                 const format = "*hello";
 
                 assert.strictEqual(value.matchesFormat(format), true);
-            }); 
-            
+            });
+
             test(`Given value "hello" and format "*@@" when matchesFormat is called then it should return true`, () =>
             {
                 const value = "hello";
                 const format = "*@@";
 
                 assert.strictEqual(value.matchesFormat(format), true);
-            }); 
-            
+            });
+
             test(`Given value "hellos1" and format "*@@" when matchesFormat is called then it should return false`, () =>
             {
                 const value = "hellos1";
                 const format = "*@@";
 
                 assert.strictEqual(value.matchesFormat(format), false);
-            }); 
-            
+            });
+
             test(`Given value "*hello*" and format "\\**\\*" when matchesFormat is called then it should return true`, () =>
             {
                 const value = "*hello*";
                 const format = "\\**\\*";
 
                 assert.strictEqual(value.matchesFormat(format), true);
-            }); 
-            
+            });
+
             test(`Given value "**" and format "\\**\\*" when matchesFormat is called then it should return true`, () =>
             {
                 const value = "**";
@@ -833,7 +909,7 @@ suite("StringExt", () =>
                 const format = "\\**\\*";
 
                 assert.strictEqual(value.matchesFormat(format), false);
-            }); 
+            });
         });
     });
 });

@@ -11,7 +11,7 @@ class StringExt
     public static contains(primary: string, search: string): boolean
     {
         // return primary.indexOf(sub) !== -1;
-        
+
         return primary.includes(search);
     }
 
@@ -31,7 +31,7 @@ class StringExt
     {
         return value.replace(/[^0-9]/g, "");
     }
-    
+
     public static extractCharacters(value: string): string
     {
         return value.replace(/[^a-zA-Z ]/g, "");
@@ -53,32 +53,32 @@ class StringExt
 
         return result;
     }
-    
+
     public static replaceAll(primary: string, searchValue: string, replaceValue: string): string
     {
         // let matchOperatorsRe = /[|\\{}()[\]^$+*?.]/g;
         // let result = primary.replace(matchOperatorsRe, "\\$&");
-        
+
         // let searchRe = new RegExp(searchValue, ignoreCase ? "gi" : "g");
-        
+
         // return result.replace(searchRe, replaceValue);
-        
+
         while (primary.indexOf(searchValue) !== -1)
             primary = primary.replace(searchValue, replaceValue);
-        
+
         return primary;
     }
-    
+
     public static base64Encode(value: string): string
     {
         return Buffer.from(value, "utf8").toString("base64");
     }
-    
+
     public static base64Decode(value: string): string
     {
         return Buffer.from(value, "base64").toString("utf8");
     }
-    
+
     public static base64UrlEncode(value: string): string
     {
         return Buffer.from(value, "utf8").toString("base64")
@@ -86,16 +86,16 @@ class StringExt
             .replace(/\+/g, "-")
             .replace(/\//g, "_");
     }
-    
+
     public static base64UrlDecode(value: string): string
     {
         value = StringExt.padString(value)
             .replace(/\-/g, "+")
             .replace(/_/g, "/");
-        
+
         return Buffer.from(value, "base64").toString("utf8");
     }
-    
+
     public static hexEncode(value: string): string
     {
         return Buffer.from(value, "utf8").toString("hex");
@@ -110,7 +110,7 @@ class StringExt
     {
         if (format === SystemFormatSymbol.wildcard)
             return true;
-        
+
         const allSystemFormatSymbols = Object.entries(SystemFormatSymbol).map(t => t[1] as string);
         const formatTokens = new Array<string>();
         let index = 0;
@@ -130,13 +130,13 @@ class StringExt
             formatTokens.push(char);
             index++;
         }
-        
+
         if (formatTokens.filter(t => t === SystemFormatSymbol.wildcard).length > 1)
-            throw new Error("Invalid format, only 1 wildcard allowed");  
-            
+            throw new Error("Invalid format, only 1 wildcard allowed");
+
         return StringExt.stringMatchesFormatTokens(primary, formatTokens);
     }
-    
+
     private static stringMatchesFormatTokens(primary: string, formatTokens: ReadonlyArray<string>): boolean
     {
         if (formatTokens.includes(SystemFormatSymbol.wildcard))
@@ -144,19 +144,19 @@ class StringExt
             const indexOfWildCard = formatTokens.indexOf(SystemFormatSymbol.wildcard);
             const beforeWildcard = formatTokens.slice(0, indexOfWildCard);
             const afterWildcard = formatTokens.slice(indexOfWildCard + 1);
-            
+
             return StringExt.stringMatchesFormatTokens(primary.substring(0, beforeWildcard.length), beforeWildcard) &&
-                StringExt.stringMatchesFormatTokens(primary.substring(primary.length - afterWildcard.length), afterWildcard); 
+                StringExt.stringMatchesFormatTokens(primary.substring(primary.length - afterWildcard.length), afterWildcard);
         }
-        
+
         if (formatTokens.length !== primary.length)
             return false;
-            
+
         for (let i = 0; i < formatTokens.length; i++)
-        {    
+        {
             const char = primary[i];
             const token = formatTokens[i];
-            
+
             if (token === SystemFormatSymbol.alphabet)
             {
                 const charCode = char.charCodeAt(0);
@@ -176,10 +176,25 @@ class StringExt
                     return false;
             }
         }
-        
+
         return true;
     }
-    
+
+    public static compareTo(primary: string, secondary: string, ignoreCase: boolean): number
+    {
+        if (ignoreCase)
+        {
+            primary = primary.toLowerCase();
+            secondary = secondary.toLowerCase();
+        }
+
+        if (primary < secondary) return -1;
+        if (primary > secondary) return 1;
+
+        return 0;
+    }
+
+
     private static padString(input: string): string
     {
         let segmentLength = 4;
@@ -205,7 +220,7 @@ class StringExt
 enum SystemFormatSymbol
 {
     wildcard = "*",
-    number = "#", 
+    number = "#",
     alphabet = "@",
     escape = "\\"
 }
@@ -401,6 +416,21 @@ function defineStringExtProperties(): void
                     throw new Error("format must be a valid string");
 
                 return StringExt.matchesFormat(this.toString(), format.trim());
+            }
+        });
+
+    // @ts-ignore
+    if (String.prototype["compareTo"] === undefined)
+        Object.defineProperty(String.prototype, "compareTo", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: function (str: string, ignoreCase = false): number
+            {
+                if (str == null || typeof str !== "string")
+                    throw new Error("str should be a valid string");
+
+                return StringExt.compareTo(this.toString(), str, ignoreCase);
             }
         });
 }
