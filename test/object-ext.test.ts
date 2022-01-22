@@ -141,8 +141,8 @@ suite("ObjectExt", () =>
         
         test("should return empty string for an anonymous function", () =>
         {
-            val = function () { };
-            typeName = val.getTypeName();
+            // val = function () { };
+            typeName = (function () { }).getTypeName();
             assert.strictEqual(typeName, "");
         });
         
