@@ -18,6 +18,7 @@ class ObjectExt {
     //     Object.assign(target, source);
     // }
     static getTypeName(source) {
+        // @ts-ignore
         let getName = (funcDef) => {
             let name = funcDef.trim();
             if (ObjectExt.stringStartsWith(name, "function")) {
@@ -32,15 +33,15 @@ class ObjectExt {
             }
             return name.trim();
         };
-        if (typeof source === "object") {
-            let value = getName(source.constructor.toString());
-            if (value === "n Object")
-                return "Object";
-            else
-                return value;
+        if (typeof source === "function") {
+            return source.name;
+            // return getName(source.toString());
         }
-        else if (typeof source === "function") {
-            return getName(source.toString());
+        if (typeof source === "object") {
+            return source.constructor.name;
+            // let value = getName(source.constructor.toString());
+            // if (value === "n Object") return "Object";
+            // else return value;
         }
         return (typeof source);
     }

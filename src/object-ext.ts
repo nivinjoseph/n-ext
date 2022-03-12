@@ -23,6 +23,7 @@ class ObjectExt
     
     public static getTypeName(source: any): string 
     {
+        // @ts-ignore
         let getName = (funcDef: string) =>
         {
             let name = funcDef.trim();
@@ -41,15 +42,18 @@ class ObjectExt
             return name.trim();
         };
         
+        if (typeof source === "function")
+        {
+            return source.name;
+            // return getName(source.toString());
+        }
+        
         if (typeof source === "object")
         {
-            let value = getName(source.constructor.toString());
-            if (value === "n Object") return "Object";
-            else return value;
-        }
-        else if (typeof source === "function")
-        {
-            return getName(source.toString());
+            return source.constructor.name;
+            // let value = getName(source.constructor.toString());
+            // if (value === "n Object") return "Object";
+            // else return value;
         }
 
         return (typeof source);
