@@ -49,6 +49,7 @@ suite("MathExt", () =>
 
         test("median nulls", () =>
         {
+            // @ts-expect-error: just testing
             Assert.strictEqual(Math.median([null, undefined, null, null]), null);
         });
 
@@ -70,7 +71,7 @@ suite("MathExt", () =>
 
     suite("linerSpace", () =>
     {
-        const assertValueCloseEnough = (actual: number, expected: number) =>
+        const assertValueCloseEnough = (actual: number, expected: number): void =>
         {
             // checks if the value is correct till 8 decimal places.
 
@@ -112,6 +113,7 @@ suite("MathExt", () =>
         {
             const expected = [1., -0.22222222, -1.44444444, -2.66666667,
                 -3.88888889, -5.11111111, -6.33333333, -7.55555556,
+                // eslint-disable-next-line @typescript-eslint/no-loss-of-precision
                 -8.77777778, -10.];
 
             const result = Math.linearSpace(1, -10, 10);

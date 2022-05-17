@@ -3,17 +3,17 @@ import "../src/array-ext";
 
 suite("ArrayExt", () =>    
 {
-    let numbers: number[];
-    let largeNumbers: number[];
-    let strings: string[];
-    let empty: any[];
-    let single: number[];
+    let numbers: Array<number>;
+    let largeNumbers: Array<number>;
+    let strings: Array<string>;
+    let empty: Array<any>;
+    let single: Array<number>;
 
-    let objects: any[];
-    let first = { item: "item1", value: 1 };
-    let second = { item: "item2", value: 2 };
-    let third = { item: "item3", value: 3 };
-    let fourth = { item: "item4", value: 4 };
+    let objects: Array<{ item: string; value: number; }>;
+    const first = { item: "item1", value: 1 };
+    const second = { item: "item2", value: 2 };
+    const third = { item: "item3", value: 3 };
+    const fourth = { item: "item4", value: 4 };
 
 
     setup(() =>
@@ -32,11 +32,12 @@ suite("ArrayExt", () =>
         ];
     });
 
-    let arrayEqual = (actual: Array<any>, expected: Array<any>) =>
+    const arrayEqual = (actual: Array<any>, expected: Array<any>): boolean =>
     {
         if (actual === expected)
             return true;
 
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (actual === null || expected === null)
             return false;
 
@@ -61,15 +62,15 @@ suite("ArrayExt", () =>
     {
         test("should return true if item is in the target array", () =>
         {
-            let target = ["a", "b", "c"];
-            let result = target.contains("c");
+            const target = ["a", "b", "c"];
+            const result = target.contains("c");
             assert.strictEqual(result, true);
         });
 
         test("should return false if item is not in the target array", () =>
         {
-            let target = [1, 2, 3];
-            let result = target.contains(4);
+            const target = [1, 2, 3];
+            const result = target.contains(4);
             assert.strictEqual(result, false);
         });
     });
@@ -102,40 +103,40 @@ suite("ArrayExt", () =>
     {
         test("should return a new empty array object when target is an empty array", () =>
         {
-            let ordered = empty.orderBy();
+            const ordered = empty.orderBy();
             assert.strictEqual(ordered.length, 0);
             assert.notStrictEqual(ordered, empty);
         });
 
         test("should return a new array object of the same length as the target when target is a single element array", () =>
         {
-            let ordered = single.orderBy();
+            const ordered = single.orderBy();
             assert.strictEqual(ordered.length, 1);
             assert.notStrictEqual(ordered, single);
         });
 
         test("should return a new array object of the same length as the target when target is a n element array", () =>
         {
-            let ordered = numbers.orderBy();
+            const ordered = numbers.orderBy();
             assert.strictEqual(ordered.length, numbers.length);
             assert.notStrictEqual(ordered, numbers);
         });
 
         test("should return array of numbers in ascending order", () => 
         {
-            let ordered = largeNumbers.orderBy();
+            const ordered = largeNumbers.orderBy();
             assert.ok(arrayEqual(ordered, [0, 1, 2, 5, 8, 9, 12, 17, 25, 100]));
         });
 
         test("should return array of strings in ascending order", () =>
         {
-            let ordered = strings.orderBy();
+            const ordered = strings.orderBy();
             assert.ok(arrayEqual(ordered, ["alpha", "bravo", "charlie", "india"]));
         });
 
         test("should return array of objects in ascending order", () =>
         {
-            let ordered = objects.orderBy(t => t.item);
+            const ordered = objects.orderBy(t => t.item);
             assert.ok(arrayEqual(ordered, [first, second, third, fourth]));
         });
     });
@@ -144,40 +145,40 @@ suite("ArrayExt", () =>
     {
         test("should return a new empty array object when target is an empty array", () =>
         {
-            let ordered = empty.orderByDesc();
+            const ordered = empty.orderByDesc();
             assert.strictEqual(ordered.length, empty.length);
             assert.notStrictEqual(ordered, empty);
         });
 
         test("should return a new array object of the same length as the target when target is a single element array", () =>
         {
-            let ordered = single.orderByDesc();
+            const ordered = single.orderByDesc();
             assert.strictEqual(ordered.length, single.length);
             assert.notStrictEqual(ordered, single);
         });
 
         test("should return a new array object of the same length as the target when target is a n element array", () =>
         {
-            let ordered = numbers.orderByDesc();
+            const ordered = numbers.orderByDesc();
             assert.strictEqual(ordered.length, numbers.length);
             assert.notStrictEqual(ordered, numbers);
         });
 
         test("should return array of numbers in descending order", () =>
         {
-            let ordered = numbers.orderByDesc();
+            const ordered = numbers.orderByDesc();
             assert.ok(arrayEqual(ordered, [7, 3, 2, 1]));
         });
 
         test("should return array of strings in descending order", () =>
         {
-            let ordered = strings.orderByDesc();
+            const ordered = strings.orderByDesc();
             assert.ok(arrayEqual(ordered, ["india", "charlie", "bravo", "alpha"]));
         });
 
         test("should return array of objects in descending order", () =>
         {
-            let ordered = objects.orderByDesc(t => t.value);
+            const ordered = objects.orderByDesc(t => t.value);
             assert.ok(arrayEqual(ordered, [fourth, third, second, first]));
         });
     });
@@ -200,8 +201,8 @@ suite("ArrayExt", () =>
             const grouped = items.groupBy(t => t.Phase);
 
             assert.strictEqual(grouped.length, 2);
-            assert.strictEqual(grouped.find(t => t.key === "Phase 1").values.length, 3);
-            assert.strictEqual(grouped.find(t => t.key === "Phase 2").values.length, 4);
+            assert.strictEqual(grouped.find(t => t.key === "Phase 1")!.values.length, 3);
+            assert.strictEqual(grouped.find(t => t.key === "Phase 2")!.values.length, 4);
         });
     });
 
@@ -209,26 +210,26 @@ suite("ArrayExt", () =>
     {
         test("given array with primitives, should return distinct values", () =>
         {
-            let duplicates = ["foo", "bar", "foo", "baz"];
-            let distinct = duplicates.distinct();
+            const duplicates = ["foo", "bar", "foo", "baz"];
+            const distinct = duplicates.distinct();
             assert.strictEqual(distinct.length, 3);
             assert.ok(arrayEqual(distinct, ["foo", "bar", "baz"]));
         });
 
         test("given array of objects, should return distinct values", () =>
         {
-            let duplicate = { id: 1, name: "shrey" };
-            let duplicates = [duplicate, { id: 2, name: "nivin" }, { id: 3, name: "shrey" }, duplicate];
-            let distinct = duplicates.distinct();
+            const duplicate = { id: 1, name: "shrey" };
+            const duplicates = [duplicate, { id: 2, name: "nivin" }, { id: 3, name: "shrey" }, duplicate];
+            const distinct = duplicates.distinct();
             assert.strictEqual(distinct.length, 3);
             assert.ok(arrayEqual(distinct, [duplicates[0], duplicates[1], duplicates[2]]));
         });
 
         test("given array of objects and equality func, should return distinct values in accordance with the equality func", () =>
         {
-            let duplicate = { id: 1, name: "shrey" };
-            let duplicates = [duplicate, { id: 2, name: "nivin" }, { id: 3, name: "shrey" }, duplicate];
-            let distinct = duplicates.distinct(t => t.name);
+            const duplicate = { id: 1, name: "shrey" };
+            const duplicates = [duplicate, { id: 2, name: "nivin" }, { id: 3, name: "shrey" }, duplicate];
+            const distinct = duplicates.distinct(t => t.name);
             assert.strictEqual(distinct.length, 2);
             assert.ok(arrayEqual(distinct, [duplicates[0], duplicates[1]]));
         });
@@ -256,52 +257,52 @@ suite("ArrayExt", () =>
     {
         test("should return a new empty array object when target is an empty array", () =>
         {
-            let skipped = empty.skip(0);
+            const skipped = empty.skip(0);
             assert.ok(arrayEqual(skipped, []));
             assert.notStrictEqual(skipped, empty);
         });
 
         test("should return a new array object excluding elements skipped when target is a single element array", () =>
         {
-            let skipped = single.skip(1);
+            const skipped = single.skip(1);
             assert.ok(arrayEqual(skipped, []));
             assert.notStrictEqual(skipped, single);
         });
 
         test("should return a new array object excluding elements skipped when target is a n element array", () =>
         {
-            let skipped = numbers.skip(1);
+            const skipped = numbers.skip(1);
             assert.ok(arrayEqual(skipped, [3, 1, 7]));
             assert.notStrictEqual(skipped, numbers);
         });
 
         test("should return all array elements when number skipped is < 0", () =>
         {
-            let skipped = numbers.skip(-2);
+            const skipped = numbers.skip(-2);
             assert.ok(arrayEqual(skipped, numbers));
         });
 
         test("should return numbers in array excluding elements skipped", () =>
         {
-            let skipped = numbers.skip(2);
+            const skipped = numbers.skip(2);
             assert.ok(arrayEqual(skipped, [1, 7]));
         });
 
         test("should return empty array if number skipped is > array.length", () =>
         {
-            let skipped = numbers.skip(7);
+            const skipped = numbers.skip(7);
             assert.ok(arrayEqual(skipped, []));
         });
 
         test("should return strings in array excluding elements skipped", () =>
         {
-            let skipped = strings.skip(2);
+            const skipped = strings.skip(2);
             assert.ok(arrayEqual(skipped, ["india", "bravo"]));
         });
 
         test("should return objects in array excluding elements skipped", () =>
         {
-            let skipped = objects.skip(2);
+            const skipped = objects.skip(2);
             assert.ok(arrayEqual(skipped, [third, second]));
         });
     });
@@ -310,58 +311,58 @@ suite("ArrayExt", () =>
     {
         test("should return a new empty array object when target is an empty array", () =>
         {
-            let taken = empty.take(1);
+            const taken = empty.take(1);
             assert.ok(arrayEqual(taken, []));
             assert.notStrictEqual(taken, empty);
         });
 
         test("should return a new empty array object when target is a single element array and no elements have been taken", () =>
         {
-            let taken = single.take(0);
+            const taken = single.take(0);
             assert.ok(arrayEqual(taken, []));
             assert.notStrictEqual(taken, single);
         });
 
         test("should return a new array object containing element taken when target is a n element array", () =>
         {
-            let taken = numbers.take(1);
+            const taken = numbers.take(1);
             assert.ok(arrayEqual(taken, [2]));
             assert.notStrictEqual(taken, numbers);
         });
 
         test("should return empty array if number taken from target array is < 0", () =>
         {
-            let taken = numbers.take(-3);
+            const taken = numbers.take(-3);
             assert.ok(arrayEqual(taken, []));
         });
 
         test("should return array of elements taken when target elements are numbers", () =>
         {
-            let taken = numbers.take(2);
+            const taken = numbers.take(2);
             assert.ok(arrayEqual(taken, [2, 3]));
         });
 
         test("should return all array elements if number taken from target is > array.length", () =>
         {
-            let taken = numbers.take(6);
+            const taken = numbers.take(6);
             assert.ok(arrayEqual(taken, numbers));
         });
 
         test("should return all array elements if number taken from target is == array.length", () =>
         {
-            let taken = numbers.take(numbers.length);
+            const taken = numbers.take(numbers.length);
             assert.ok(arrayEqual(taken, numbers));
         });
 
         test("should return array of elements taken when target elements are strings", () =>
         {
-            let taken = strings.take(2);
+            const taken = strings.take(2);
             assert.ok(arrayEqual(taken, ["charlie", "alpha"]));
         });
 
         test("should return array of elements taken when target elements are objects", () =>
         {
-            let taken = objects.take(2);
+            const taken = objects.take(2);
             assert.ok(arrayEqual(taken, [fourth, first]));
         });
     });
@@ -370,25 +371,25 @@ suite("ArrayExt", () =>
     {
         test("should return the length of the empty array when called on the target without a predicate", () =>
         {
-            let count = empty.count();
+            const count = empty.count();
             assert.strictEqual(count, empty.length);
         });
 
         test("should return the length of the single element array when called on the target without a predicate", () =>
         {
-            let count = single.count();
+            const count = single.count();
             assert.strictEqual(count, single.length);
         });
 
         test("should return the length of the n element array when called on the target without a predicate", () =>
         {
-            let count = strings.count();
+            const count = strings.count();
             assert.strictEqual(count, strings.length);
         });
 
         test("should return number of items that satisfy the predicate condition when called on the target with a predicate", () =>
         {
-            let count = numbers.count(t => t > 5);
+            const count = numbers.count(t => t > 5);
             assert.strictEqual(count, 1);
         });
     });
@@ -415,7 +416,7 @@ suite("ArrayExt", () =>
 
         test("should return false if element is not in target array", () =>
         {
-            let removed = numbers.remove(8);
+            const removed = numbers.remove(8);
             assert.strictEqual(removed, false);
         });
 
@@ -463,20 +464,20 @@ suite("ArrayExt", () =>
     {
         test("should return true when arrays are similar", () =>
         {
-            let obj = {};
-            let original = ["a", 1, false, obj];
-            let compare = ["a", 1, false, obj];
+            const obj = {};
+            const original = ["a", 1, false, obj];
+            const compare = ["a", 1, false, obj];
 
-            let result = original.equals(compare);
+            const result = original.equals(compare);
             assert.strictEqual(result, true);
         });
 
         test("should return false when arrays are not similar", () =>
         {
-            let original = ["a", 1, false, {}];
-            let compare = ["a", 1, false, {}];
+            const original = ["a", 1, false, {}];
+            const compare = ["a", 1, false, {}];
 
-            let result = original.equals(compare);
+            const result = original.equals(compare);
             assert.strictEqual(result, false);
         });
     });
@@ -485,12 +486,11 @@ suite("ArrayExt", () =>
     {
         test("should successfully execute", async () =>
         {
-            let target = [1, 2, 3, 4, 5, 6];
-            let result: number[] = [];
-            let asyncFunc = (num: number) =>
+            const target = [1, 2, 3, 4, 5, 6];
+            const result: Array<number> = [];
+            const asyncFunc = (num: number): Promise<void> =>
             {
-                // @ts-ignore
-                return new Promise<void>((resolve, reject) =>
+                return new Promise<void>((resolve, _reject) =>
                 {
                     setTimeout(() =>
                     {
@@ -500,9 +500,9 @@ suite("ArrayExt", () =>
                 });
             };
 
-            let before = Date.now();
+            const before = Date.now();
             await target.forEachAsync(asyncFunc, 5);
-            let after = Date.now();
+            const after = Date.now();
 
             assert.strictEqual(target.length, result.length);
             // console.log(result);
@@ -515,11 +515,10 @@ suite("ArrayExt", () =>
     {
         test("should successfully execute", async () =>
         {
-            let target = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
-            let asyncFunc = (num: number) =>
+            const target = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+            const asyncFunc = (num: number): Promise<number> =>
             {
-                // @ts-ignore
-                return new Promise<number>((resolve, reject) =>
+                return new Promise<number>((resolve, _reject) =>
                 {
                     setTimeout(() =>
                     {
@@ -528,9 +527,9 @@ suite("ArrayExt", () =>
                 });
             };
 
-            let before = Date.now();
-            let result = await target.mapAsync(asyncFunc, 5);
-            let after = Date.now();
+            const before = Date.now();
+            const result = await target.mapAsync(asyncFunc, 5);
+            const after = Date.now();
 
             assert.strictEqual(target.length, result.length);
             console.log(result);
@@ -543,20 +542,18 @@ suite("ArrayExt", () =>
     {
         test("should return right value when called without accumulator", async () =>
         {
-            let target = [1, 2, 3, 4, 5, 6];
-            // @ts-ignore
-            let numExecutions = 0;
-            let reduced = target.reduce((acc, num) =>
+            const target = [1, 2, 3, 4, 5, 6];
+            // let numExecutions = 0;
+            const reduced = target.reduce((acc, num) =>
             {
-                numExecutions++;
+                // numExecutions++;
                 return acc + num;
             });
 
             // console.log("numExecutions", numExecutions);
-            let asyncFunc = (acc: number, num: number) =>
+            const asyncFunc = (acc: number, num: number): Promise<number> =>
             {
-                // @ts-ignore
-                return new Promise<number>((resolve, reject) =>
+                return new Promise<number>((resolve, _reject) =>
                 {
                     setTimeout(() =>
                     {
@@ -565,9 +562,9 @@ suite("ArrayExt", () =>
                 });
             };
 
-            let before = Date.now();
-            let result = await target.reduceAsync(asyncFunc);
-            let after = Date.now();
+            const before = Date.now();
+            const result = await target.reduceAsync(asyncFunc);
+            const after = Date.now();
 
             assert.strictEqual(result, 21);
             assert.strictEqual(result, reduced);
@@ -576,12 +573,11 @@ suite("ArrayExt", () =>
 
         test("should return right value when called with accumulator", async () =>
         {
-            let target = [1, 2, 3, 4, 5, 6];
-            let reduced = target.reduce((acc, num) => acc + num, 0);
-            let asyncFunc = (acc: number, num: number) =>
+            const target = [1, 2, 3, 4, 5, 6];
+            const reduced = target.reduce((acc, num) => acc + num, 0);
+            const asyncFunc = (acc: number, num: number): Promise<number> =>
             {
-                // @ts-ignore
-                return new Promise<number>((resolve, reject) =>
+                return new Promise<number>((resolve, _reject) =>
                 {
                     setTimeout(() =>
                     {
@@ -590,9 +586,9 @@ suite("ArrayExt", () =>
                 });
             };
 
-            let before = Date.now();
-            let result = await target.reduceAsync(asyncFunc, 0);
-            let after = Date.now();
+            const before = Date.now();
+            const result = await target.reduceAsync(asyncFunc, 0);
+            const after = Date.now();
 
             assert.strictEqual(result, 21);
             assert.strictEqual(result, reduced);
@@ -669,7 +665,7 @@ suite("ArrayExt", () =>
 
         test("Given a empty array, When first is accessed, Then Array is empty exception should be thrown", () =>
         {
-            const target = new Array<any>();
+            const target = new Array<unknown>();
 
             assert.throws(() => target.takeFirst(), (e) => e.message === "Invalid Operation: Array is empty");
         });
@@ -717,7 +713,7 @@ suite("ArrayExt", () =>
 
         test("Given a empty array, When last is accessed, Then Array is empty exception should be thrown", () =>
         {
-            const target = new Array<any>();
+            const target = new Array<unknown>();
 
             assert.throws(() => target.takeLast(), (e) => e.message === "Invalid Operation: Array is empty");
         });

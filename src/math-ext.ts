@@ -2,9 +2,11 @@ class MathExt
 {
     public static percentage(partialValue: number, wholeValue: number): number
     {
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (partialValue == null || typeof partialValue !== "number" || partialValue < 0)
             throw new Error("Argument partialValue must be a valid non-negative number.");
 
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (wholeValue == null || typeof wholeValue !== "number" || wholeValue <= 0)
             throw new Error("Argument wholeValue must be a valid number > 0.");
 
@@ -13,9 +15,11 @@ class MathExt
 
     public static percentagePartial(percentage: number, wholeValue: number): number
     {
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (percentage == null || typeof percentage !== "number" || percentage < 0)
             throw new Error("Argument percentage must be a valid non-negative number.");
 
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (wholeValue == null || typeof wholeValue !== "number" || wholeValue <= 0)
             throw new Error("Argument wholeValue must be a valid number > 0.");
 
@@ -24,9 +28,11 @@ class MathExt
 
     public static percentageWhole(percentage: number, partialValue: number): number
     {
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (percentage == null || typeof percentage !== "number" || percentage < 0)
             throw new Error("Argument percentage must be a valid non-negative number.");
 
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (partialValue == null || typeof partialValue !== "number" || partialValue < 0)
             throw new Error("Argument partialValue must be a valid non-negative number.");
 
@@ -52,6 +58,7 @@ class MathExt
             return null;
 
         if (sorted.length === 1)
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             return sorted[0];
 
         if ((sorted.length % 2) === 0)
@@ -67,18 +74,22 @@ class MathExt
         {
             const mid = Math.floor(sorted.length / 2);
 
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             return sorted[mid];
         }
     }
 
     public static linearSpace(start: number, end: number, count: number): Array<number>
     {
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (start == null || typeof start !== "number")
             throw new Error("Argument start is not a valid number");
 
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (end == null || typeof end !== "number")
             throw new Error("Argument end is not a valid number");
 
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (count == null || typeof count !== "number")
             throw new Error("Argument count is not a valid number");
 
@@ -99,9 +110,10 @@ class MathExt
 
     private static _sortNumbersEliminateNulls(values: ReadonlyArray<number>): Array<number>
     {
-        let internalArray: number[] = [];
+        const internalArray: Array<number> = [];
         for (let i = 0; i < values.length; i++)
         {
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             if (values[i] != null)
                 internalArray.push(values[i]);
         }
@@ -141,20 +153,23 @@ function defineMathExtProperties(): void
     if ((<any>Math).clamp === undefined)
         (<any>Math).clamp = function (value: number, min: number, max: number): number
         {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             return MathExt.clamp(value, min, max);
         };
 
     if ((<any>Math).median === undefined)
         (<any>Math).median = function (values: ReadonlyArray<number>): number | null
         {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             return MathExt.median(values);
         };
 
     if ((<any>Math).linearSpace === undefined)
-        ((<any>Math).linearSpace = function (start: number, end: number, count: number): Array<number> 
+        (<any>Math).linearSpace = function (start: number, end: number, count: number): Array<number> 
         {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             return MathExt.linearSpace(start, end, count);
-        });
+        };
 }
 
 defineMathExtProperties();

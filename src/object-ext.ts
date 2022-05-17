@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 class ObjectExt
 {
     // public static mapToObject(source: any, factoryFunc: () => any): any
@@ -23,20 +24,20 @@ class ObjectExt
     
     public static getTypeName(source: any): string 
     {
-        // @ts-ignore
-        let getName = (funcDef: string) =>
+        // @ts-expect-error: not used atm
+        const getName = (funcDef: string): string =>
         {
             let name = funcDef.trim();
-            if (ObjectExt.stringStartsWith(name, "function"))
+            if (name.startsWith("function"))
             {
                 name = name.substr("function".length);
                 name = name.substr(0, name.indexOf("("));
             }    
-            else if (ObjectExt.stringStartsWith(name, "class"))
+            else if (name.startsWith("class"))
             {
                 name = name.substr("class".length);
                 name = name.substr(0, name.indexOf("{")).trim();
-                if (ObjectExt.stringContains(name, " "))
+                if (name.includes(" "))
                     name = name.split(" ")[0];
             }    
             return name.trim();
@@ -56,22 +57,23 @@ class ObjectExt
             // else return value;
         }
 
-        return (typeof source);
+        return typeof source;
     }
     
     public static getValue(source: any, key: string): any
     {
-        if (!ObjectExt.hasValue(key))
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        if (!ObjectExt._hasValue(key))
             return undefined;
         
-        if (typeof (key) !== "string")
+        if (typeof key !== "string")
             return source[key];
         
         key = key.trim();
-        if (!ObjectExt.stringContains(key, "."))
+        if (!key.includes("."))
             return source[key] === undefined ? null : source[key];
         
-        let splitted = key.split(".").map(t => t.trim());
+        const splitted = key.split(".").map(t => t.trim());
         let current = source;
 
         for (let i = 0; i < splitted.length; i++)
@@ -84,27 +86,30 @@ class ObjectExt
     
     public static setValue(target: any, key: string, value: any): void
     {
-        if (!ObjectExt.hasValue(key))
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        if (!ObjectExt._hasValue(key))
             return;
         
-        if (typeof (key) !== "string")
+        if (typeof key !== "string")
         {
             target[key] = value;
             return;
         }
         
         key = key.trim();
-        ObjectExt.ensureKeySafe(key);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        ObjectExt._ensureKeySafe(key);
         
         value = value === undefined ? null : value;
-        if (!ObjectExt.stringContains(key, "."))
+        if (!key.includes("."))
         {
             target[key] = value;
             return;
         }
         
         const splitted = key.split(".").map(t => t.trim());
-        splitted.forEach(t => ObjectExt.ensureKeySafe(t));
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        splitted.forEach(t => ObjectExt._ensureKeySafe(t));
         let current = target;
         
         for (let i = 0; i < splitted.length - 1; i++)
@@ -123,17 +128,19 @@ class ObjectExt
     {
         const keyMaps = keys.map(t =>
         {
-            if (ObjectExt.stringContains(t, " as "))
+            if (t.includes(" as "))
             {
                 const splitted = t.split(" as ");
-                splitted.forEach(u => ObjectExt.ensureKeySafe(u));
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+                splitted.forEach(u => ObjectExt._ensureKeySafe(u));
                 return {
                     sourceKey: splitted[0].trim(),
                     targetKey: splitted[1].trim()
                 };
             }
             
-            ObjectExt.ensureKeySafe(t);
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+            ObjectExt._ensureKeySafe(t);
             return {
                 sourceKey: t,
                 targetKey: t
@@ -153,19 +160,21 @@ class ObjectExt
 
     public static deserialize(source: any, targetClassOrObject: Function | object, ...keysOrValues: Array<any>): object
     {
-        if (typeof (targetClassOrObject) === "function")
+        if (typeof targetClassOrObject === "function")
         {
             const values = keysOrValues.map(t =>
             {
-                if (typeof (t) === "string")
+                if (typeof t === "string")
                 {
                     const key = t.trim();
-                    return key[0] === ":" ? key.substr(1) : ObjectExt.getValue(source, key);
+                    return key.startsWith(":") ? key.substring(1) : ObjectExt.getValue(source, key);
                 }
 
                 return t;
             });
 
+            
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-call
             return new (<any>targetClassOrObject)(...values);
         }
         else
@@ -180,38 +189,39 @@ class ObjectExt
         }
     }
     
-    private static hasValue(item: any): boolean
+    private static _hasValue(item: any): boolean
     {
         if (item == null)
             return false;
         
-        if (typeof (item) === "string" && ObjectExt.stringIsWhiteSpace(item))
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        if (typeof item === "string" && ObjectExt._stringIsWhiteSpace(item))
             return false;
         
         return true;
     }
     
-    private static ensureKeySafe(key: string): void
+    private static _ensureKeySafe(key: string): void | never
     {
         const dangerous = ["constructor", "prototype", "__proto__"];
         if (dangerous.some(t => t === key))
             throw new Error(`Dangerous key '${key}' detected`);
     }
 
-    private static stringIsWhiteSpace(value: string): boolean
+    private static _stringIsWhiteSpace(value: string): boolean
     {
         return value.trim().length === 0;
     }
 
-    private static stringContains(primary: string, sub: string): boolean
-    {
-        return primary.indexOf(sub) !== -1;
-    }
+    // private static _stringContains(primary: string, sub: string): boolean
+    // {
+    //     return primary.includes(sub);
+    // }
     
-    private static stringStartsWith(primary: string, sub: string): boolean
-    {
-        return primary.indexOf(sub) === 0;
-    }
+    // private static _stringStartsWith(primary: string, sub: string): boolean
+    // {
+    //     return primary.startsWith(sub);
+    // }
 }
 
 
@@ -236,8 +246,8 @@ function defineObjectExtProperties(): void
     //         ObjectExt.merge(this, value);
     //     }
     // });
-
-    // @ts-ignore
+    
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (Object.prototype["getTypeName"] === undefined)
         Object.defineProperty(Object.prototype, "getTypeName", {
             configurable: false,
@@ -249,7 +259,7 @@ function defineObjectExtProperties(): void
             }
         });
 
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (Object.prototype["getValue"] === undefined)
         Object.defineProperty(Object.prototype, "getValue", {
             configurable: false,
@@ -261,7 +271,7 @@ function defineObjectExtProperties(): void
             }
         });
 
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (Object.prototype["setValue"] === undefined)
         Object.defineProperty(Object.prototype, "setValue", {
             configurable: false,
@@ -273,7 +283,7 @@ function defineObjectExtProperties(): void
             }
         });
 
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (Object.prototype["serializeObject"] === undefined)
         Object.defineProperty(Object.prototype, "serializeObject", {
             configurable: false,
@@ -285,7 +295,7 @@ function defineObjectExtProperties(): void
             }
         });
 
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (Object.prototype["deserializeObject"] === undefined)
         Object.defineProperty(Object.prototype, "deserializeObject", {
             configurable: false,
