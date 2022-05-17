@@ -26,15 +26,14 @@ class StringExt {
         return value.replace(/[^a-zA-Z ]/g, "");
     }
     static format(formatString, ...params) {
+        var _a, _b;
         let result = formatString.toString();
-        if (result == null)
-            return null;
-        if (params == null || params.length === 0)
+        if (params.length === 0)
             return result;
         for (let i = 0; i < params.length; i++) {
-            let format = "{" + i.toString() + "}";
-            while (StringExt.contains(result, format))
-                result = result.replace(format, params[i].toString());
+            const searchValue = "{" + i.toString() + "}";
+            const replaceValue = (_b = (_a = params[i]) === null || _a === void 0 ? void 0 : _a.toString()) !== null && _b !== void 0 ? _b : "NULL";
+            result = StringExt.replaceAll(result, searchValue, replaceValue);
         }
         return result;
     }
@@ -43,7 +42,9 @@ class StringExt {
         // let result = primary.replace(matchOperatorsRe, "\\$&");
         // let searchRe = new RegExp(searchValue, ignoreCase ? "gi" : "g");
         // return result.replace(searchRe, replaceValue);
-        while (primary.indexOf(searchValue) !== -1)
+        if (replaceValue.includes(searchValue))
+            throw new Error("replaceValue cannot include searchValue [infinite loop possibility]");
+        while (primary.includes(searchValue))
             primary = primary.replace(searchValue, replaceValue);
         return primary;
     }
@@ -60,7 +61,8 @@ class StringExt {
             .replace(/\//g, "_");
     }
     static base64UrlDecode(value) {
-        value = StringExt.padString(value)
+        value = StringExt._padString(value)
+            // eslint-disable-next-line no-useless-escape
             .replace(/\-/g, "+")
             .replace(/_/g, "/");
         return buffer_1.Buffer.from(value, "base64").toString("utf8");
@@ -92,15 +94,15 @@ class StringExt {
         }
         if (formatTokens.filter(t => t === SystemFormatSymbol.wildcard).length > 1)
             throw new Error("Invalid format, only 1 wildcard allowed");
-        return StringExt.stringMatchesFormatTokens(primary, formatTokens);
+        return StringExt._stringMatchesFormatTokens(primary, formatTokens);
     }
-    static stringMatchesFormatTokens(primary, formatTokens) {
+    static _stringMatchesFormatTokens(primary, formatTokens) {
         if (formatTokens.includes(SystemFormatSymbol.wildcard)) {
             const indexOfWildCard = formatTokens.indexOf(SystemFormatSymbol.wildcard);
             const beforeWildcard = formatTokens.slice(0, indexOfWildCard);
             const afterWildcard = formatTokens.slice(indexOfWildCard + 1);
-            return StringExt.stringMatchesFormatTokens(primary.substring(0, beforeWildcard.length), beforeWildcard) &&
-                StringExt.stringMatchesFormatTokens(primary.substring(primary.length - afterWildcard.length), afterWildcard);
+            return StringExt._stringMatchesFormatTokens(primary.substring(0, beforeWildcard.length), beforeWildcard) &&
+                StringExt._stringMatchesFormatTokens(primary.substring(primary.length - afterWildcard.length), afterWildcard);
         }
         if (formatTokens.length !== primary.length)
             return false;
@@ -125,16 +127,16 @@ class StringExt {
         }
         return true;
     }
-    static padString(input) {
-        let segmentLength = 4;
-        let stringLength = input.length;
-        let diff = stringLength % segmentLength;
+    static _padString(input) {
+        const segmentLength = 4;
+        const stringLength = input.length;
+        const diff = stringLength % segmentLength;
         if (!diff)
             return input;
         let position = stringLength;
         let padLength = segmentLength - diff;
-        let paddedStringLength = stringLength + padLength;
-        let buffer = buffer_1.Buffer.alloc(paddedStringLength);
+        const paddedStringLength = stringLength + padLength;
+        const buffer = buffer_1.Buffer.alloc(paddedStringLength);
         buffer.write(input);
         while (padLength--)
             buffer.write("=", position++);
@@ -149,33 +151,36 @@ var SystemFormatSymbol;
     SystemFormatSymbol["escape"] = "\\";
 })(SystemFormatSymbol || (SystemFormatSymbol = {}));
 function defineStringExtProperties() {
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (String.prototype["isEmptyOrWhiteSpace"] === undefined)
         Object.defineProperty(String.prototype, "isEmptyOrWhiteSpace", {
             configurable: false,
             enumerable: false,
             writable: false,
             value: function () {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
                 return StringExt.isEmptyOrWhiteSpace(this.toString());
             }
         });
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (String.prototype["isNotEmptyOrWhiteSpace"] === undefined)
         Object.defineProperty(String.prototype, "isNotEmptyOrWhiteSpace", {
             configurable: false,
             enumerable: false,
             writable: false,
             value: function () {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
                 return !StringExt.isEmptyOrWhiteSpace(this.toString());
             }
         });
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (String.prototype["contains"] === undefined)
         Object.defineProperty(String.prototype, "contains", {
             configurable: false,
             enumerable: false,
             writable: false,
             value: function (search) {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
                 return StringExt.contains(this.toString(), search);
             }
         });
@@ -197,115 +202,127 @@ function defineStringExtProperties() {
     //         return StringExt.endsWith(this.toString(), sub);
     //     }
     // });
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (String.prototype["extractNumbers"] === undefined)
         Object.defineProperty(String.prototype, "extractNumbers", {
             configurable: false,
             enumerable: false,
             writable: false,
             value: function () {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
                 return StringExt.extractNumbers(this.toString());
             }
         });
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (String.prototype["extractCharacters"] === undefined)
         Object.defineProperty(String.prototype, "extractCharacters", {
             configurable: false,
             enumerable: false,
             writable: false,
             value: function () {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
                 return StringExt.extractCharacters(this.toString());
             }
         });
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (String.prototype["format"] === undefined)
         Object.defineProperty(String.prototype, "format", {
             configurable: false,
             enumerable: false,
             writable: false,
             value: function (...params) {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
                 return StringExt.format(this.toString(), ...params);
             }
         });
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (String.prototype["replaceAll"] === undefined)
         Object.defineProperty(String.prototype, "replaceAll", {
             configurable: false,
             enumerable: false,
             writable: false,
             value: function (searchValue, replaceValue) {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
                 return StringExt.replaceAll(this.toString(), searchValue, replaceValue);
             }
         });
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (String.prototype["base64Encode"] === undefined)
         Object.defineProperty(String.prototype, "base64Encode", {
             configurable: false,
             enumerable: false,
             writable: false,
             value: function () {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
                 return StringExt.base64Encode(this.toString());
             }
         });
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (String.prototype["base64Decode"] === undefined)
         Object.defineProperty(String.prototype, "base64Decode", {
             configurable: false,
             enumerable: false,
             writable: false,
             value: function () {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
                 return StringExt.base64Decode(this.toString());
             }
         });
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (String.prototype["base64UrlEncode"] === undefined)
         Object.defineProperty(String.prototype, "base64UrlEncode", {
             configurable: false,
             enumerable: false,
             writable: false,
             value: function () {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
                 return StringExt.base64UrlEncode(this.toString());
             }
         });
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (String.prototype["base64UrlDecode"] === undefined)
         Object.defineProperty(String.prototype, "base64UrlDecode", {
             configurable: false,
             enumerable: false,
             writable: false,
             value: function () {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
                 return StringExt.base64UrlDecode(this.toString());
             }
         });
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (String.prototype["hexEncode"] === undefined)
         Object.defineProperty(String.prototype, "hexEncode", {
             configurable: false,
             enumerable: false,
             writable: false,
             value: function () {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
                 return StringExt.hexEncode(this.toString());
             }
         });
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (String.prototype["hexDecode"] === undefined)
         Object.defineProperty(String.prototype, "hexDecode", {
             configurable: false,
             enumerable: false,
             writable: false,
             value: function () {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
                 return StringExt.hexDecode(this.toString());
             }
         });
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (String.prototype["matchesFormat"] === undefined)
         Object.defineProperty(String.prototype, "matchesFormat", {
             configurable: false,
             enumerable: false,
             writable: false,
             value: function (format) {
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 if (format == null || typeof format !== "string" || StringExt.isEmptyOrWhiteSpace(format))
                     throw new Error("format must be a valid string");
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
                 return StringExt.matchesFormat(this.toString(), format.trim());
             }
         });

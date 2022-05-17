@@ -1,4 +1,5 @@
 "use strict";
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 class ObjectExt {
     // public static mapToObject(source: any, factoryFunc: () => any): any
     // {
@@ -18,17 +19,17 @@ class ObjectExt {
     //     Object.assign(target, source);
     // }
     static getTypeName(source) {
-        // @ts-ignore
-        let getName = (funcDef) => {
+        // @ts-expect-error: not used atm
+        const getName = (funcDef) => {
             let name = funcDef.trim();
-            if (ObjectExt.stringStartsWith(name, "function")) {
+            if (name.startsWith("function")) {
                 name = name.substr("function".length);
                 name = name.substr(0, name.indexOf("("));
             }
-            else if (ObjectExt.stringStartsWith(name, "class")) {
+            else if (name.startsWith("class")) {
                 name = name.substr("class".length);
                 name = name.substr(0, name.indexOf("{")).trim();
-                if (ObjectExt.stringContains(name, " "))
+                if (name.includes(" "))
                     name = name.split(" ")[0];
             }
             return name.trim();
@@ -43,17 +44,18 @@ class ObjectExt {
             // if (value === "n Object") return "Object";
             // else return value;
         }
-        return (typeof source);
+        return typeof source;
     }
     static getValue(source, key) {
-        if (!ObjectExt.hasValue(key))
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        if (!ObjectExt._hasValue(key))
             return undefined;
-        if (typeof (key) !== "string")
+        if (typeof key !== "string")
             return source[key];
         key = key.trim();
-        if (!ObjectExt.stringContains(key, "."))
+        if (!key.includes("."))
             return source[key] === undefined ? null : source[key];
-        let splitted = key.split(".").map(t => t.trim());
+        const splitted = key.split(".").map(t => t.trim());
         let current = source;
         for (let i = 0; i < splitted.length; i++) {
             if (current === null || current === undefined)
@@ -63,21 +65,24 @@ class ObjectExt {
         return current === undefined ? null : current;
     }
     static setValue(target, key, value) {
-        if (!ObjectExt.hasValue(key))
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        if (!ObjectExt._hasValue(key))
             return;
-        if (typeof (key) !== "string") {
+        if (typeof key !== "string") {
             target[key] = value;
             return;
         }
         key = key.trim();
-        ObjectExt.ensureKeySafe(key);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        ObjectExt._ensureKeySafe(key);
         value = value === undefined ? null : value;
-        if (!ObjectExt.stringContains(key, ".")) {
+        if (!key.includes(".")) {
             target[key] = value;
             return;
         }
         const splitted = key.split(".").map(t => t.trim());
-        splitted.forEach(t => ObjectExt.ensureKeySafe(t));
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        splitted.forEach(t => ObjectExt._ensureKeySafe(t));
         let current = target;
         for (let i = 0; i < splitted.length - 1; i++) {
             let next = current[splitted[i]];
@@ -90,15 +95,17 @@ class ObjectExt {
     }
     static serialize(source, ...keys) {
         const keyMaps = keys.map(t => {
-            if (ObjectExt.stringContains(t, " as ")) {
+            if (t.includes(" as ")) {
                 const splitted = t.split(" as ");
-                splitted.forEach(u => ObjectExt.ensureKeySafe(u));
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+                splitted.forEach(u => ObjectExt._ensureKeySafe(u));
                 return {
                     sourceKey: splitted[0].trim(),
                     targetKey: splitted[1].trim()
                 };
             }
-            ObjectExt.ensureKeySafe(t);
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+            ObjectExt._ensureKeySafe(t);
             return {
                 sourceKey: t,
                 targetKey: t
@@ -112,14 +119,15 @@ class ObjectExt {
         return target;
     }
     static deserialize(source, targetClassOrObject, ...keysOrValues) {
-        if (typeof (targetClassOrObject) === "function") {
+        if (typeof targetClassOrObject === "function") {
             const values = keysOrValues.map(t => {
-                if (typeof (t) === "string") {
+                if (typeof t === "string") {
                     const key = t.trim();
-                    return key[0] === ":" ? key.substr(1) : ObjectExt.getValue(source, key);
+                    return key.startsWith(":") ? key.substring(1) : ObjectExt.getValue(source, key);
                 }
                 return t;
             });
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-call
             return new targetClassOrObject(...values);
         }
         else {
@@ -130,26 +138,21 @@ class ObjectExt {
             return targetClassOrObject;
         }
     }
-    static hasValue(item) {
+    static _hasValue(item) {
         if (item == null)
             return false;
-        if (typeof (item) === "string" && ObjectExt.stringIsWhiteSpace(item))
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        if (typeof item === "string" && ObjectExt._stringIsWhiteSpace(item))
             return false;
         return true;
     }
-    static ensureKeySafe(key) {
+    static _ensureKeySafe(key) {
         const dangerous = ["constructor", "prototype", "__proto__"];
         if (dangerous.some(t => t === key))
             throw new Error(`Dangerous key '${key}' detected`);
     }
-    static stringIsWhiteSpace(value) {
+    static _stringIsWhiteSpace(value) {
         return value.trim().length === 0;
-    }
-    static stringContains(primary, sub) {
-        return primary.indexOf(sub) !== -1;
-    }
-    static stringStartsWith(primary, sub) {
-        return primary.indexOf(sub) === 0;
     }
 }
 function defineObjectExtProperties() {
@@ -171,7 +174,7 @@ function defineObjectExtProperties() {
     //         ObjectExt.merge(this, value);
     //     }
     // });
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (Object.prototype["getTypeName"] === undefined)
         Object.defineProperty(Object.prototype, "getTypeName", {
             configurable: false,
@@ -181,7 +184,7 @@ function defineObjectExtProperties() {
                 return ObjectExt.getTypeName(this);
             }
         });
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (Object.prototype["getValue"] === undefined)
         Object.defineProperty(Object.prototype, "getValue", {
             configurable: false,
@@ -191,7 +194,7 @@ function defineObjectExtProperties() {
                 return ObjectExt.getValue(this, key);
             }
         });
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (Object.prototype["setValue"] === undefined)
         Object.defineProperty(Object.prototype, "setValue", {
             configurable: false,
@@ -201,7 +204,7 @@ function defineObjectExtProperties() {
                 ObjectExt.setValue(this, key, value);
             }
         });
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (Object.prototype["serializeObject"] === undefined)
         Object.defineProperty(Object.prototype, "serializeObject", {
             configurable: false,
@@ -211,7 +214,7 @@ function defineObjectExtProperties() {
                 return ObjectExt.serialize(this, ...keys);
             }
         });
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (Object.prototype["deserializeObject"] === undefined)
         Object.defineProperty(Object.prototype, "deserializeObject", {
             configurable: false,

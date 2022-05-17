@@ -1,26 +1,17 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 class ArrayExt {
     static contains(array, value) {
         return array.some(t => t === value);
     }
     static orderBy(array, compareFunc) {
-        let internalArray = [];
+        const internalArray = [];
         for (let i = 0; i < array.length; i++)
             internalArray.push(array[i]);
         if (compareFunc == null)
             compareFunc = (value) => value;
         internalArray.sort((a, b) => {
-            let valA = compareFunc(a);
-            let valB = compareFunc(b);
+            const valA = compareFunc(a);
+            const valB = compareFunc(b);
             if (valA < valB)
                 return -1;
             if (valA > valB)
@@ -30,14 +21,14 @@ class ArrayExt {
         return internalArray;
     }
     static orderByDesc(array, compareFunc) {
-        let internalArray = [];
+        const internalArray = [];
         for (let i = 0; i < array.length; i++)
             internalArray.push(array[i]);
         if (compareFunc == null)
             compareFunc = (value) => value;
         internalArray.sort((a, b) => {
-            let valA = compareFunc(a);
-            let valB = compareFunc(b);
+            const valA = compareFunc(a);
+            const valB = compareFunc(b);
             if (valB < valA)
                 return -1;
             if (valB > valA)
@@ -61,6 +52,7 @@ class ArrayExt {
         const result = new Array();
         array.reduce((acc, t) => {
             const key = keyFunc(t);
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             if (!acc[key]) {
                 acc[key] = [];
                 result.push({ key, values: acc[key] });
@@ -142,7 +134,7 @@ class ArrayExt {
         }
     }
     static remove(array, value) {
-        let index = array.indexOf(value);
+        const index = array.indexOf(value);
         if (index < 0)
             return false;
         array.splice(index, 1);
@@ -156,6 +148,7 @@ class ArrayExt {
     static equals(array, compareArray, compareFunc) {
         if (array === compareArray)
             return true;
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (array === null || compareArray === null)
             return false;
         if (!(array instanceof Array) || !(compareArray instanceof Array))
@@ -202,13 +195,14 @@ class ArrayExt {
             if (array.length === 0)
                 return new Array();
             const bte = new BatchTaskExec(array, asyncFunc, true, degreesOfParallelism);
-            return yield bte.process();
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+            return bte.process();
         });
     }
     static reduceAsync(array, asyncFunc, accumulator) {
         return __awaiter(this, void 0, void 0, function* () {
             let index = 0;
-            if (accumulator === undefined) {
+            if (accumulator == null) {
                 accumulator = array[0];
                 index = 1;
             }
@@ -319,7 +313,7 @@ class BatchTaskExec {
     process() {
         return __awaiter(this, void 0, void 0, function* () {
             if (this._taskCount === this._array.length)
-                return yield Promise.all(this._array.map(t => this._taskFunc(t)));
+                return Promise.all(this._array.map(t => this._taskFunc(t)));
             const remainder = this._array.length % this._taskCount;
             const batchSize = (this._array.length - remainder) / this._taskCount;
             // console.log("BATCH SIZE", batchSize);
@@ -372,6 +366,7 @@ class BatchTaskExec {
 }
 class TaskManager {
     constructor(array, taskFunc, taskCount, captureResults) {
+        this._results = [];
         this._array = array;
         this._taskFunc = taskFunc;
         this._taskCount = !taskCount || taskCount <= 0 ? this._array.length : taskCount;
@@ -379,17 +374,15 @@ class TaskManager {
         this._tasks = [];
         for (let i = 0; i < this._taskCount; i++)
             this._tasks.push(new Task(this, i, this._taskFunc, captureResults));
-        if (this._captureResults)
-            this._results = [];
     }
     execute() {
         return __awaiter(this, void 0, void 0, function* () {
             for (let i = 0; i < this._array.length; i++) {
                 if (this._captureResults)
                     this._results.push(null);
-                yield this.executeTaskForItem(this._array[i], i);
+                yield this._executeTaskForItem(this._array[i], i);
             }
-            yield this.finish();
+            yield this._finish();
         });
     }
     addResult(itemIndex, result) {
@@ -398,18 +391,22 @@ class TaskManager {
     getResults() {
         return this._results;
     }
-    executeTaskForItem(item, itemIndex) {
+    _executeTaskForItem(item, itemIndex) {
         return __awaiter(this, void 0, void 0, function* () {
             let availableTask = this._tasks.find(t => t.isFree);
             if (!availableTask) {
-                let task = yield Promise.race(this._tasks.map(t => t.promise));
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+                const task = yield Promise.race(this._tasks.map(t => t.promise));
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
                 task.free();
                 availableTask = task;
             }
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-call
             availableTask.execute(item, itemIndex);
         });
     }
-    finish() {
+    _finish() {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         return Promise.all(this._tasks.filter(t => !t.isFree).map(t => t.promise));
     }
 }
@@ -428,6 +425,7 @@ class Task {
             this._taskFunc(item)
                 .then((result) => {
                 if (this._captureResult)
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
                     this._manager.addResult(itemIndex, result);
                 resolve(this);
             })
@@ -439,7 +437,7 @@ class Task {
     }
 }
 function defineArrayExtProperties() {
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (Array.prototype["isEmpty"] === undefined)
         Object.defineProperty(Array.prototype, "isEmpty", {
             configurable: false,
@@ -448,7 +446,7 @@ function defineArrayExtProperties() {
                 return this.length === 0;
             }
         });
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (Array.prototype["isNotEmpty"] === undefined)
         Object.defineProperty(Array.prototype, "isNotEmpty", {
             configurable: false,
@@ -471,7 +469,7 @@ function defineArrayExtProperties() {
     //             return this[0];
     //         }
     //     });
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (Array.prototype["takeFirst"] === undefined)
         Object.defineProperty(Array.prototype, "takeFirst", {
             configurable: false,
@@ -499,7 +497,7 @@ function defineArrayExtProperties() {
     //             return this[this.length - 1];
     //         }
     //     });
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (Array.prototype["takeLast"] === undefined)
         Object.defineProperty(Array.prototype, "takeLast", {
             configurable: false,
@@ -513,17 +511,18 @@ function defineArrayExtProperties() {
                 return this[this.length - 1];
             }
         });
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (Array.prototype["contains"] === undefined)
         Object.defineProperty(Array.prototype, "contains", {
             configurable: false,
             enumerable: false,
             writable: false,
             value: function (value) {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-return
                 return ArrayExt.contains(this, value);
             }
         });
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (Array.prototype["where"] === undefined)
         Object.defineProperty(Array.prototype, "where", {
             configurable: false,
@@ -533,7 +532,7 @@ function defineArrayExtProperties() {
                 return this.filter(filterFunc);
             }
         });
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (Array.prototype["orderBy"] === undefined)
         Object.defineProperty(Array.prototype, "orderBy", {
             configurable: false,
@@ -543,7 +542,7 @@ function defineArrayExtProperties() {
                 return ArrayExt.orderBy(this, compareFunc);
             }
         });
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (Array.prototype["orderByDesc"] === undefined)
         Object.defineProperty(Array.prototype, "orderByDesc", {
             configurable: false,
@@ -553,17 +552,18 @@ function defineArrayExtProperties() {
                 return ArrayExt.orderByDesc(this, compareFunc);
             }
         });
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (Array.prototype["groupBy"] === undefined)
         Object.defineProperty(Array.prototype, "groupBy", {
             configurable: false,
             enumerable: false,
             writable: false,
             value: function (keyFunc) {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-return
                 return ArrayExt.groupBy(this, keyFunc);
             }
         });
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (Array.prototype["distinct"] === undefined)
         Object.defineProperty(Array.prototype, "distinct", {
             configurable: false,
@@ -573,37 +573,40 @@ function defineArrayExtProperties() {
                 return ArrayExt.distinct(this, compareFunc);
             }
         });
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (Array.prototype["skip"] === undefined)
         Object.defineProperty(Array.prototype, "skip", {
             configurable: false,
             enumerable: false,
             writable: false,
             value: function (count) {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-return
                 return ArrayExt.skip(this, count);
             }
         });
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (Array.prototype["take"] === undefined)
         Object.defineProperty(Array.prototype, "take", {
             configurable: false,
             enumerable: false,
             writable: false,
             value: function (count) {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-return
                 return ArrayExt.take(this, count);
             }
         });
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (Array.prototype["count"] === undefined)
         Object.defineProperty(Array.prototype, "count", {
             configurable: false,
             enumerable: false,
             writable: false,
             value: function (predicate) {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-return
                 return ArrayExt.count(this, predicate);
             }
         });
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (Array.prototype["remove"] === undefined)
         Object.defineProperty(Array.prototype, "remove", {
             configurable: false,
@@ -613,17 +616,17 @@ function defineArrayExtProperties() {
                 return ArrayExt.remove(this, value);
             }
         });
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (Array.prototype["clear"] === undefined)
         Object.defineProperty(Array.prototype, "clear", {
             configurable: false,
             enumerable: false,
             writable: true,
             value: function () {
-                return ArrayExt.clear(this);
+                ArrayExt.clear(this);
             }
         });
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (Array.prototype["equals"] === undefined)
         Object.defineProperty(Array.prototype, "equals", {
             configurable: false,
@@ -633,33 +636,36 @@ function defineArrayExtProperties() {
                 return ArrayExt.equals(this, compareArray, compareFunc);
             }
         });
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (Array.prototype["forEachAsync"] === undefined)
         Object.defineProperty(Array.prototype, "forEachAsync", {
             configurable: false,
             enumerable: false,
             writable: false,
             value: function (asyncFunc, degreesOfParallelism) {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-return
                 return ArrayExt.forEachAsync(this, asyncFunc, degreesOfParallelism);
             }
         });
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (Array.prototype["mapAsync"] === undefined)
         Object.defineProperty(Array.prototype, "mapAsync", {
             configurable: false,
             enumerable: false,
             writable: false,
             value: function (asyncFunc, degreesOfParallelism) {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-return
                 return ArrayExt.mapAsync(this, asyncFunc, degreesOfParallelism);
             }
         });
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (Array.prototype["reduceAsync"] === undefined)
         Object.defineProperty(Array.prototype, "reduceAsync", {
             configurable: false,
             enumerable: false,
             writable: false,
             value: function (asyncFunc, accumulator) {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-return
                 return ArrayExt.reduceAsync(this, asyncFunc, accumulator);
             }
         });
