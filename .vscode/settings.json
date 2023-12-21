@@ -1,0 +1,89 @@
+{
+    "search.exclude": {
+        "**/.yarn": true,
+        "**/.pnp.*": true
+    },
+    "typescript.tsdk": "./node_modules/typescript/lib",
+    "typescript.enablePromptUseWorkspaceTsdk": true,
+    "typescript.format.placeOpenBraceOnNewLineForFunctions": true,
+    "typescript.format.placeOpenBraceOnNewLineForControlBlocks": true,
+    "typescript.preferences.importModuleSpecifier": "project-relative",
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "editor.formatOnType": true,
+    "editor.formatOnPaste": true,
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/.DS_Store": true,
+        "**/*.js": {
+            "when": "$(basename).ts"
+        },
+        "**/*.map": {
+            "when": "$(basename).map"
+        },
+        "**/*.tsbuildinfo": true,
+        "**/*.d.ts": {
+            "when": "$(basename).ts"
+        }
+    },
+    "editor.trimAutoWhitespace": false,
+    "editor.wordWrapColumn": 120,
+    "editor.rulers": [
+        120
+    ],
+    "[scss]": {
+        "editor.defaultFormatter": "vscode.css-language-features"
+    },
+    "scss.format.braceStyle": "expand",
+    "scss.format.preserveNewLines": true,
+    "scss.format.maxPreserveNewLines": 3,
+    "cSpell.words": [
+        "aircrafts",
+        "chartjs",
+        "crwdb",
+        "Csop",
+        "datalabels",
+        "Dtos",
+        "fdps",
+        "ILIKE",
+        "ject",
+        "luxon",
+        "Millis",
+        "nivinjoseph",
+        "Otel",
+        "pulumi",
+        "rebooking",
+        "Rolledback",
+        "Routable",
+        "Solutioned",
+        "Solutioning",
+        "SSIM",
+        "strument",
+        "Unaugmented",
+        "unnest",
+        "unstage",
+        "unstaged",
+        "unstaging",
+        "vuetify"
+    ],
+    "peacock.color": "#041849",
+    "workbench.colorCustomizations": {
+        "statusBar.background": "#041849",
+        "statusBar.foreground": "#e7e7e7",
+        "statusBarItem.hoverBackground": "#072879",
+        "statusBarItem.remoteBackground": "#041849",
+        "statusBarItem.remoteForeground": "#e7e7e7",
+        "sash.hoverBorder": "#072879",
+        "tab.activeBorder": "#072879"
+    },
+    "terminal.integrated.profiles.osx": {
+        "zsh": {
+            "path": "zsh",
+            "args": [
+                "-i",
+                "-l"
+            ]
+        },
+    }
+}

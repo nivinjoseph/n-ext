@@ -11,7 +11,7 @@ class StringExt
     public static contains(primary: string, search: string): boolean
     {
         // return primary.indexOf(sub) !== -1;
-        
+
         return primary.includes(search);
     }
 
@@ -31,7 +31,7 @@ class StringExt
     {
         return value.replace(/[^0-9]/g, "");
     }
-    
+
     public static extractCharacters(value: string): string
     {
         return value.replace(/[^a-zA-Z ]/g, "");
@@ -53,35 +53,35 @@ class StringExt
 
         return result;
     }
-    
+
     // public static replaceAll(primary: string, searchValue: string, replaceValue: string): string
     // {
     //     // let matchOperatorsRe = /[|\\{}()[\]^$+*?.]/g;
     //     // let result = primary.replace(matchOperatorsRe, "\\$&");
-        
+
     //     // let searchRe = new RegExp(searchValue, ignoreCase ? "gi" : "g");
-        
+
     //     // return result.replace(searchRe, replaceValue);
-        
+
     //     if (replaceValue.includes(searchValue))
     //         throw new Error("replaceValue cannot include searchValue [infinite loop possibility]");
-        
+
     //     while (primary.includes(searchValue))
     //         primary = primary.replace(searchValue, replaceValue);
-        
+
     //     return primary;
     // }
-    
+
     public static base64Encode(value: string): string
     {
         return Buffer.from(value, "utf8").toString("base64");
     }
-    
+
     public static base64Decode(value: string): string
     {
         return Buffer.from(value, "base64").toString("utf8");
     }
-    
+
     public static base64UrlEncode(value: string): string
     {
         return Buffer.from(value, "utf8").toString("base64")
@@ -89,17 +89,17 @@ class StringExt
             .replace(/\+/g, "-")
             .replace(/\//g, "_");
     }
-    
+
     public static base64UrlDecode(value: string): string
     {
         value = StringExt._padString(value)
             // eslint-disable-next-line no-useless-escape
             .replace(/\-/g, "+")
             .replace(/_/g, "/");
-        
+
         return Buffer.from(value, "base64").toString("utf8");
     }
-    
+
     public static hexEncode(value: string): string
     {
         return Buffer.from(value, "utf8").toString("hex");
@@ -114,7 +114,7 @@ class StringExt
     {
         if (format === SystemFormatSymbol.wildcard)
             return true;
-        
+
         const allSystemFormatSymbols = Object.entries(SystemFormatSymbol).map(t => t[1] as string);
         const formatTokens = new Array<string>();
         let index = 0;
@@ -134,13 +134,13 @@ class StringExt
             formatTokens.push(char);
             index++;
         }
-        
+
         if (formatTokens.filter(t => t === SystemFormatSymbol.wildcard).length > 1)
-            throw new Error("Invalid format, only 1 wildcard allowed");  
-            
+            throw new Error("Invalid format, only 1 wildcard allowed");
+
         return StringExt._stringMatchesFormatTokens(primary, formatTokens);
     }
-    
+
     private static _stringMatchesFormatTokens(primary: string, formatTokens: ReadonlyArray<string>): boolean
     {
         if (formatTokens.includes(SystemFormatSymbol.wildcard))
@@ -148,19 +148,19 @@ class StringExt
             const indexOfWildCard = formatTokens.indexOf(SystemFormatSymbol.wildcard);
             const beforeWildcard = formatTokens.slice(0, indexOfWildCard);
             const afterWildcard = formatTokens.slice(indexOfWildCard + 1);
-            
+
             return StringExt._stringMatchesFormatTokens(primary.substring(0, beforeWildcard.length), beforeWildcard) &&
-                StringExt._stringMatchesFormatTokens(primary.substring(primary.length - afterWildcard.length), afterWildcard); 
+                StringExt._stringMatchesFormatTokens(primary.substring(primary.length - afterWildcard.length), afterWildcard);
         }
-        
+
         if (formatTokens.length !== primary.length)
             return false;
-            
+
         for (let i = 0; i < formatTokens.length; i++)
-        {    
+        {
             const char = primary[i];
             const token = formatTokens[i];
-            
+
             if (token === SystemFormatSymbol.alphabet)
             {
                 const charCode = char.charCodeAt(0);
@@ -180,10 +180,10 @@ class StringExt
                     return false;
             }
         }
-        
+
         return true;
     }
-    
+
     private static _padString(input: string): string
     {
         const segmentLength = 4;
@@ -209,7 +209,7 @@ class StringExt
 enum SystemFormatSymbol
 {
     wildcard = "*",
-    number = "#", 
+    number = "#",
     alphabet = "@",
     escape = "\\"
 }

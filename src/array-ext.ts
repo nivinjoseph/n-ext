@@ -628,7 +628,7 @@ function defineArrayExtProperties(): void
             }
         });
 
-    
+
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (Array.prototype["isNotEmpty"] === undefined)
         Object.defineProperty(Array.prototype, "isNotEmpty", {
@@ -796,7 +796,7 @@ function defineArrayExtProperties(): void
                 return ArrayExt.skip(this, count);
             }
         });
-    
+
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (Array.prototype["take"] === undefined)
         Object.defineProperty(Array.prototype, "take", {
