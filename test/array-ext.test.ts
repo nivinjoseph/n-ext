@@ -667,7 +667,7 @@ suite("ArrayExt", () =>
         {
             const target = new Array<unknown>();
 
-            assert.throws(() => target.takeFirst(), (e) => e.message === "Invalid Operation: Array is empty");
+            assert.throws(() => target.takeFirst(), (e: Error) => e.message === "Invalid Operation: Array is empty");
         });
 
         // test("Given a empty array, When first is accessed, undefined should be returned", () =>
@@ -715,7 +715,7 @@ suite("ArrayExt", () =>
         {
             const target = new Array<unknown>();
 
-            assert.throws(() => target.takeLast(), (e) => e.message === "Invalid Operation: Array is empty");
+            assert.throws(() => target.takeLast(), (e: Error) => e.message === "Invalid Operation: Array is empty");
         });
 
         // test("Given a empty array, When last is accessed, undefined should be returned", () =>

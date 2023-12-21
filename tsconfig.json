@@ -2,7 +2,9 @@
     "compilerOptions": {
         "module": "commonjs",
         "target": "es2015",
-        "lib": ["ES2021"],
+        "lib": [
+            "ES2021"
+        ],
         "strict": true,
         "strictNullChecks": true,
         "strictFunctionTypes": true,
@@ -13,8 +15,6 @@
         "noFallthroughCasesInSwitch": true,
         "noEmitOnError": true,
         "sourceMap": true,
-        "experimentalDecorators": true,
-        "emitDecoratorMetadata": true,
         "removeComments": false,
         "forceConsistentCasingInFileNames": true,
         "incremental": false,

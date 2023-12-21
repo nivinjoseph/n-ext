@@ -3,6 +3,7 @@
     "compilerOptions": {
         "noImplicitAny": false,
         "outDir": ".",
+        "removeComments": true
     },
     "include": [
         "../src/**/*.ts"
