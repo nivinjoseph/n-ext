@@ -1,6 +1,6 @@
 import { describe, test } from "node:test";
 import assert from "node:assert";
-import '../src/string-ext.js';
+import "../src/string-ext.js";
 
 await describe("StringExt", async () =>
 {

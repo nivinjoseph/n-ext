@@ -3,7 +3,7 @@
         "module": "NodeNext",
         "target": "ES2017",
         "lib": [
-            "ES2021"
+            "ES2023"
         ],
         "strict": true,
         "strictNullChecks": true,

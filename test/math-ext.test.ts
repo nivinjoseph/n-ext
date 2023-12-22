@@ -1,6 +1,6 @@
 import { describe, test } from "node:test";
 import assert from "node:assert";
-import '../src/math-ext.js';
+import "../src/math-ext.js";
 
 
 await describe("MathExt", async () =>

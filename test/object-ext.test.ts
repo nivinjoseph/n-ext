@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { describe, test, before, after } from "node:test";
 import assert from "node:assert";
-import '../src/object-ext.js';
+import "../src/object-ext.js";
 
 await describe("ObjectExt", async () =>
 {

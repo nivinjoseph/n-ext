@@ -24,7 +24,7 @@ await describe("ArrayExt", async () =>
         strings = ["charlie", "alpha", "india", "bravo"];
         empty = [];
         single = [1];
-
+        
         objects = [
             fourth,
             first,
