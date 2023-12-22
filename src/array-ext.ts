@@ -9,14 +9,10 @@ class ArrayExt
     public static orderBy<T>(array: Array<T>, compareFunc: (value: T) => any): Array<T>;
     public static orderBy<T>(array: Array<T>, compareFunc?: (value: T) => any): Array<T>
     {
-        const internalArray: Array<T> = [];
-        for (let i = 0; i < array.length; i++)
-            internalArray.push(array[i]);
-
         if (compareFunc == null)
             compareFunc = (value: T): T => value;
-
-        internalArray.sort((a, b) =>
+        
+        return array.toSorted((a, b) =>
         {
             const valA = compareFunc!(a);
             const valB = compareFunc!(b);
@@ -24,8 +20,6 @@ class ArrayExt
             if (valA > valB) return 1;
             return 0;
         });
-
-        return internalArray;
     }
 
     public static orderByDesc<T>(array: Array<T>): Array<T>;
@@ -39,7 +33,7 @@ class ArrayExt
         if (compareFunc == null)
             compareFunc = (value: T): T => value;
 
-        internalArray.sort((a, b) =>
+        return array.toSorted((a, b) =>
         {
             const valA = compareFunc!(a);
             const valB = compareFunc!(b);
@@ -628,7 +622,7 @@ function defineArrayExtProperties(): void
             }
         });
 
-    
+
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (Array.prototype["isNotEmpty"] === undefined)
         Object.defineProperty(Array.prototype, "isNotEmpty", {
@@ -796,7 +790,7 @@ function defineArrayExtProperties(): void
                 return ArrayExt.skip(this, count);
             }
         });
-    
+
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (Array.prototype["take"] === undefined)
         Object.defineProperty(Array.prototype, "take", {
