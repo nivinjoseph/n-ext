@@ -1,4 +1,26 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
+
+function tryParseArrayIndex(key: any): number | null
+{
+    if (key === null || key === undefined)
+        return null;
+
+    const isNumberValidArrayIndex = (indexNumber: number): boolean =>
+    {
+        return !Number.isNaN(indexNumber) && Number.isFinite(indexNumber) && Number.isInteger(indexNumber) && key >= 0;
+    };
+
+    if (typeof key === "number" && isNumberValidArrayIndex(key))
+        return key;
+
+    if (typeof key === "string" && isNumberValidArrayIndex(Number.parseFloat(key)))
+        return Number.parseInt(key);
+    
+    return null;
+}
+
+
+
 class ObjectExt
 {
     // public static mapToObject(source: any, factoryFunc: () => any): any
@@ -62,6 +84,9 @@ class ObjectExt
     
     public static getValue(source: any, key: string): any
     {
+        if (source === null || source === undefined)
+            return undefined;
+        
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         if (!ObjectExt._hasValue(key))
             return undefined;
@@ -75,17 +100,36 @@ class ObjectExt
         
         const splitted = key.split(".").map(t => t.trim());
         let current = source;
-
-        for (let i = 0; i < splitted.length; i++)
+        
+        while (splitted.length > 0)
         {
-            if (current === null || current === undefined) return null;
-            current = current[splitted[i]];
+            if (current === null || current === undefined)
+                break;
+            
+            const key = splitted.shift()!;
+            
+            if (Array.isArray(current))
+            {
+                const parsedIndex = tryParseArrayIndex(key);
+                
+                current = parsedIndex != null
+                    ? current[parsedIndex]
+                    : current.map(t => t === null || t === undefined || t[key] === null || t[key] === undefined ? null : t[key]);
+            }
+            else
+            {
+                current = current[key];
+            }
         }
+        
         return current === undefined ? null : current;
     }
     
     public static setValue(target: any, key: string, value: any): void
     {
+        if (target === null || target === undefined)
+            return;
+        
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         if (!ObjectExt._hasValue(key))
             return;
@@ -107,21 +151,30 @@ class ObjectExt
             return;
         }
         
-        const splitted = key.split(".").map(t => t.trim());
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        splitted.forEach(t => ObjectExt._ensureKeySafe(t));
-        let current = target;
-        
-        for (let i = 0; i < splitted.length - 1; i++)
+        const splitted = key.split(".").map(t =>
         {
-            let next = current[splitted[i]]; 
-            if (next === null || next === undefined)
-                next = {};
-            current[splitted[i]] = next;
-            current = next;
-        }
+            const k = t.trim();
+            ObjectExt._ensureKeySafe(k);
+            return k;
+        });
         
-        current[splitted[splitted.length - 1]] = value;
+        let parent = target;
+        while (splitted.length > 0)
+        {
+            const key = splitted.shift()!;
+            const isLast = splitted.length === 0;
+            if (isLast)
+            {
+                parent[key] = value; // this will work for arrays and objects
+                break;
+            }
+            
+            let current = parent[key];
+            if (current === null || current === undefined)
+                parent[key] = current = tryParseArrayIndex(splitted[0]) != null ? [] : {};   
+            
+            parent = current;
+        }
     }
 
     public static serialize(source: any, ...keys: Array<string>): object
