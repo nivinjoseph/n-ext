@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const buffer_1 = require("buffer");
+import { Buffer } from "buffer";
 class StringExt {
     static isEmptyOrWhiteSpace(value) {
         return value.trim().length === 0;
@@ -51,13 +49,13 @@ class StringExt {
     //     return primary;
     // }
     static base64Encode(value) {
-        return buffer_1.Buffer.from(value, "utf8").toString("base64");
+        return Buffer.from(value, "utf8").toString("base64");
     }
     static base64Decode(value) {
-        return buffer_1.Buffer.from(value, "base64").toString("utf8");
+        return Buffer.from(value, "base64").toString("utf8");
     }
     static base64UrlEncode(value) {
-        return buffer_1.Buffer.from(value, "utf8").toString("base64")
+        return Buffer.from(value, "utf8").toString("base64")
             .replace(/=/g, "")
             .replace(/\+/g, "-")
             .replace(/\//g, "_");
@@ -67,13 +65,13 @@ class StringExt {
             // eslint-disable-next-line no-useless-escape
             .replace(/\-/g, "+")
             .replace(/_/g, "/");
-        return buffer_1.Buffer.from(value, "base64").toString("utf8");
+        return Buffer.from(value, "base64").toString("utf8");
     }
     static hexEncode(value) {
-        return buffer_1.Buffer.from(value, "utf8").toString("hex");
+        return Buffer.from(value, "utf8").toString("hex");
     }
     static hexDecode(value) {
-        return buffer_1.Buffer.from(value, "hex").toString("utf8");
+        return Buffer.from(value, "hex").toString("utf8");
     }
     static matchesFormat(primary, format) {
         if (format === SystemFormatSymbol.wildcard)
@@ -138,7 +136,7 @@ class StringExt {
         let position = stringLength;
         let padLength = segmentLength - diff;
         const paddedStringLength = stringLength + padLength;
-        const buffer = buffer_1.Buffer.alloc(paddedStringLength);
+        const buffer = Buffer.alloc(paddedStringLength);
         buffer.write(input);
         while (padLength--)
             buffer.write("=", position++);

@@ -1,7 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-require("./string-ext");
-require("./object-ext");
-require("./array-ext");
-require("./math-ext");
+import "./string-ext.js";
+import "./object-ext.js";
+import "./array-ext.js";
+import "./math-ext.js";
 //# sourceMappingURL=index.js.map

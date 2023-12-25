@@ -1,4 +1,3 @@
-"use strict";
 class MathExt {
     static percentage(partialValue, wholeValue) {
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -120,4 +119,5 @@ function defineMathExtProperties() {
         };
 }
 defineMathExtProperties();
+export {};
 //# sourceMappingURL=math-ext.js.map

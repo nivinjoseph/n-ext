@@ -1,5 +1,16 @@
-"use strict";
 /* eslint-disable @typescript-eslint/no-unsafe-return */
+function tryParseArrayIndex(key) {
+    if (key === null || key === undefined)
+        return null;
+    const isNumberValidArrayIndex = (indexNumber) => {
+        return !Number.isNaN(indexNumber) && Number.isFinite(indexNumber) && Number.isInteger(indexNumber) && key >= 0;
+    };
+    if (typeof key === "number" && isNumberValidArrayIndex(key))
+        return key;
+    if (typeof key === "string" && isNumberValidArrayIndex(Number.parseFloat(key)))
+        return Number.parseInt(key);
+    return null;
+}
 class ObjectExt {
     // public static mapToObject(source: any, factoryFunc: () => any): any
     // {
@@ -47,6 +58,8 @@ class ObjectExt {
         return typeof source;
     }
     static getValue(source, key) {
+        if (source === null || source === undefined)
+            return undefined;
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         if (!ObjectExt._hasValue(key))
             return undefined;
@@ -57,14 +70,25 @@ class ObjectExt {
             return source[key] === undefined ? null : source[key];
         const splitted = key.split(".").map(t => t.trim());
         let current = source;
-        for (let i = 0; i < splitted.length; i++) {
+        while (splitted.length > 0) {
             if (current === null || current === undefined)
-                return null;
-            current = current[splitted[i]];
+                break;
+            const key = splitted.shift();
+            if (Array.isArray(current)) {
+                const parsedIndex = tryParseArrayIndex(key);
+                current = parsedIndex != null
+                    ? current[parsedIndex]
+                    : current.map(t => t === null || t === undefined || t[key] === null || t[key] === undefined ? null : t[key]);
+            }
+            else {
+                current = current[key];
+            }
         }
         return current === undefined ? null : current;
     }
     static setValue(target, key, value) {
+        if (target === null || target === undefined)
+            return;
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         if (!ObjectExt._hasValue(key))
             return;
@@ -80,18 +104,24 @@ class ObjectExt {
             target[key] = value;
             return;
         }
-        const splitted = key.split(".").map(t => t.trim());
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        splitted.forEach(t => ObjectExt._ensureKeySafe(t));
-        let current = target;
-        for (let i = 0; i < splitted.length - 1; i++) {
-            let next = current[splitted[i]];
-            if (next === null || next === undefined)
-                next = {};
-            current[splitted[i]] = next;
-            current = next;
+        const splitted = key.split(".").map(t => {
+            const k = t.trim();
+            ObjectExt._ensureKeySafe(k);
+            return k;
+        });
+        let parent = target;
+        while (splitted.length > 0) {
+            const key = splitted.shift();
+            const isLast = splitted.length === 0;
+            if (isLast) {
+                parent[key] = value; // this will work for arrays and objects
+                break;
+            }
+            let current = parent[key];
+            if (current === null || current === undefined)
+                parent[key] = current = tryParseArrayIndex(splitted[0]) != null ? [] : {};
+            parent = current;
         }
-        current[splitted[splitted.length - 1]] = value;
     }
     static serialize(source, ...keys) {
         const keyMaps = keys.map(t => {
@@ -189,7 +219,7 @@ function defineObjectExtProperties() {
         Object.defineProperty(Object.prototype, "getValue", {
             configurable: false,
             enumerable: false,
-            writable: true,
+            writable: true, // for webpack compatibility
             value: function (key) {
                 return ObjectExt.getValue(this, key);
             }
@@ -199,7 +229,7 @@ function defineObjectExtProperties() {
         Object.defineProperty(Object.prototype, "setValue", {
             configurable: false,
             enumerable: false,
-            writable: true,
+            writable: true, // for webpack compatibility
             value: function (key, value) {
                 ObjectExt.setValue(this, key, value);
             }
@@ -226,4 +256,5 @@ function defineObjectExtProperties() {
         });
 }
 defineObjectExtProperties();
+export {};
 //# sourceMappingURL=object-ext.js.map
