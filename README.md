@@ -184,9 +184,7 @@ Math.linearSpace(0, 10, 5); // [0, 2.5, 5, 7.5, 10]
 - `linearSpace(start: number, end: number, count: number): Array<number>` - Generates evenly spaced numbers
 
 ## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome! Please follow the existing code style and include tests for new features.
 
 ## License
-
-MIT
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
