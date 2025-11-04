@@ -123,51 +123,61 @@ class ObjectExt {
             parent = current;
         }
     }
-    static serialize(source, ...keys) {
-        const keyMaps = keys.map(t => {
-            if (t.includes(" as ")) {
-                const splitted = t.split(" as ");
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-                splitted.forEach(u => ObjectExt._ensureKeySafe(u));
-                return {
-                    sourceKey: splitted[0].trim(),
-                    targetKey: splitted[1].trim()
-                };
-            }
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-            ObjectExt._ensureKeySafe(t);
-            return {
-                sourceKey: t,
-                targetKey: t
-            };
-        });
-        const target = {};
-        keyMaps.forEach(t => {
-            const value = ObjectExt.getValue(source, t.sourceKey);
-            ObjectExt.setValue(target, t.targetKey, value);
-        });
-        return target;
-    }
-    static deserialize(source, targetClassOrObject, ...keysOrValues) {
-        if (typeof targetClassOrObject === "function") {
-            const values = keysOrValues.map(t => {
-                if (typeof t === "string") {
-                    const key = t.trim();
-                    return key.startsWith(":") ? key.substring(1) : ObjectExt.getValue(source, key);
-                }
-                return t;
-            });
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-            return new targetClassOrObject(...values);
-        }
-        else {
-            keysOrValues.forEach(t => {
-                const value = ObjectExt.getValue(source, t);
-                ObjectExt.setValue(targetClassOrObject, t, value);
-            });
-            return targetClassOrObject;
-        }
-    }
+    // public static serialize(source: any, ...keys: Array<string>): object
+    // {
+    //     const keyMaps = keys.map(t =>
+    //     {
+    //         if (t.includes(" as "))
+    //         {
+    //             const splitted = t.split(" as ");
+    //             // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    //             splitted.forEach(u => ObjectExt._ensureKeySafe(u));
+    //             return {
+    //                 sourceKey: splitted[0].trim(),
+    //                 targetKey: splitted[1].trim()
+    //             };
+    //         }
+    //         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    //         ObjectExt._ensureKeySafe(t);
+    //         return {
+    //             sourceKey: t,
+    //             targetKey: t
+    //         };
+    //     });
+    //     const target = {};
+    //     keyMaps.forEach(t =>
+    //     {
+    //         const value = ObjectExt.getValue(source, t.sourceKey);
+    //         ObjectExt.setValue(target, t.targetKey, value);
+    //     });
+    //     return target;
+    // }
+    // public static deserialize(source: any, targetClassOrObject: Function | object, ...keysOrValues: Array<any>): object
+    // {
+    //     if (typeof targetClassOrObject === "function")
+    //     {
+    //         const values = keysOrValues.map(t =>
+    //         {
+    //             if (typeof t === "string")
+    //             {
+    //                 const key = t.trim();
+    //                 return key.startsWith(":") ? key.substring(1) : ObjectExt.getValue(source, key);
+    //             }
+    //             return t;
+    //         });
+    //         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    //         return new (<any>targetClassOrObject)(...values);
+    //     }
+    //     else
+    //     {
+    //         keysOrValues.forEach(t =>
+    //         {
+    //             const value = ObjectExt.getValue(source, t);
+    //             ObjectExt.setValue(targetClassOrObject, t, value); 
+    //         });   
+    //         return targetClassOrObject;
+    //     }
+    // }
     static _hasValue(item) {
         if (item == null)
             return false;
@@ -235,25 +245,27 @@ function defineObjectExtProperties() {
             }
         });
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (Object.prototype["serializeObject"] === undefined)
-        Object.defineProperty(Object.prototype, "serializeObject", {
-            configurable: false,
-            enumerable: false,
-            writable: false,
-            value: function (...keys) {
-                return ObjectExt.serialize(this, ...keys);
-            }
-        });
+    // if (Object.prototype["serializeObject"] === undefined)
+    //     Object.defineProperty(Object.prototype, "serializeObject", {
+    //         configurable: false,
+    //         enumerable: false,
+    //         writable: false,
+    //         value: function (...keys: Array<string>): object
+    //         {
+    //             return ObjectExt.serialize(this, ...keys);
+    //         }
+    //     });
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (Object.prototype["deserializeObject"] === undefined)
-        Object.defineProperty(Object.prototype, "deserializeObject", {
-            configurable: false,
-            enumerable: false,
-            writable: false,
-            value: function (targetClassOrObject, ...keysOrValues) {
-                return ObjectExt.deserialize(this, targetClassOrObject, ...keysOrValues);
-            }
-        });
+    // if (Object.prototype["deserializeObject"] === undefined)
+    //     Object.defineProperty(Object.prototype, "deserializeObject", {
+    //         configurable: false,
+    //         enumerable: false,
+    //         writable: false,
+    //         value: function (targetClassOrObject: Function | object, ...keysOrValues: Array<any>): object
+    //         {
+    //             return ObjectExt.deserialize(this, targetClassOrObject, ...keysOrValues);
+    //         }
+    //     });
 }
 defineObjectExtProperties();
 export {};

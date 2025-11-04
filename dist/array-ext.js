@@ -1,3 +1,4 @@
+/* eslint-disable */
 class ArrayExt {
     static contains(array, value) {
         return array.some(t => t === value);
