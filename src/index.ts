@@ -172,14 +172,14 @@ declare global
          * @param value - The value to set to the `key`.
          */
         setValue(key: string, value: any): void;
-        /**
-         * @deprecated
-         */
-        serializeObject(...keys: Array<string>): object; // FIXME: Skeleton Code
-        /**
-         * @deprecated
-         */
-        deserializeObject(targetClassOrObject: Function | object, ...keysOrValues: Array<any>): object; // FIXME: Skeleton Code
+        // /**
+        //  * @deprecated
+        //  */
+        // serializeObject(...keys: Array<string>): object; // FIXME: Skeleton Code
+        // /**
+        //  * @deprecated
+        //  */
+        // deserializeObject(targetClassOrObject: Function | object, ...keysOrValues: Array<any>): object; // FIXME: Skeleton Code
     }
 
     interface Array<T>

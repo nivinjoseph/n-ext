@@ -154,14 +154,14 @@ declare global {
          * @param value - The value to set to the `key`.
          */
         setValue(key: string, value: any): void;
-        /**
-         * @deprecated
-         */
-        serializeObject(...keys: Array<string>): object;
-        /**
-         * @deprecated
-         */
-        deserializeObject(targetClassOrObject: Function | object, ...keysOrValues: Array<any>): object;
+        // /**
+        //  * @deprecated
+        //  */
+        // serializeObject(...keys: Array<string>): object;
+        // /**
+        //  * @deprecated
+        //  */
+        // deserializeObject(targetClassOrObject: Function | object, ...keysOrValues: Array<any>): object;
     }
     interface Array<T> {
         readonly isEmpty: boolean;

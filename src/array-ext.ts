@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 class ArrayExt
 {
     public static contains<T>(array: Array<T>, value: T): boolean

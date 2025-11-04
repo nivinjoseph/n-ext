@@ -385,77 +385,77 @@ await describe("ObjectExt", async () =>
         });
     });
 
-    await describe("serialize deserialize", async () =>
-    {
-        class Address
-        {
-            private readonly _line1: string;
-            private readonly _line2: string;
+    // await describe("serialize deserialize", async () =>
+    // {
+    //     class Address
+    //     {
+    //         private readonly _line1: string;
+    //         private readonly _line2: string;
 
 
-            public get line1(): string { return this._line1; }
-            public get line2(): string { return this._line2; }
+    //         public get line1(): string { return this._line1; }
+    //         public get line2(): string { return this._line2; }
 
 
-            public constructor(line1: string, line2: string)
-            {
-                this._line1 = line1;
-                this._line2 = line2;
-            }
-        }
+    //         public constructor(line1: string, line2: string)
+    //         {
+    //             this._line1 = line1;
+    //             this._line2 = line2;
+    //         }
+    //     }
 
-        class Customer
-        {
-            private readonly _firstName: string;
-            private readonly _lastName: string;
-            private readonly _address: Address;
-
-
-            public get firstName(): string { return this._firstName; }
-            public get lastName(): string { return this._lastName; }
-            public get address(): Address { return this._address; }
+    //     class Customer
+    //     {
+    //         private readonly _firstName: string;
+    //         private readonly _lastName: string;
+    //         private readonly _address: Address;
 
 
-            public constructor(firstName: string, lastName: string, address: Address)
-            {
-                this._firstName = firstName;
-                this._lastName = lastName;
-                this._address = address;
-            }
-        }
+    //         public get firstName(): string { return this._firstName; }
+    //         public get lastName(): string { return this._lastName; }
+    //         public get address(): Address { return this._address; }
 
-        await test("serialize", () =>
-        {
-            const original: Object = new Customer("Nivin", "Joseph", new Address("26 Kennedy rd", "Apt 23"));
 
-            const serialized = original.serializeObject("firstName", "lastName as lname", "address.line1 as add.l1", "address.line2 as apt");
-            // console.log("serialized", serialized);
+    //         public constructor(firstName: string, lastName: string, address: Address)
+    //         {
+    //             this._firstName = firstName;
+    //             this._lastName = lastName;
+    //             this._address = address;
+    //         }
+    //     }
 
-            assert.deepStrictEqual(serialized, {
-                firstName: "Nivin",
-                lname: "Joseph",
-                add: {
-                    l1: "26 Kennedy rd"
-                },
-                apt: "Apt 23"
-            });
-        });
+    //     await test("serialize", () =>
+    //     {
+    //         const original: Object = new Customer("Nivin", "Joseph", new Address("26 Kennedy rd", "Apt 23"));
 
-        await test("deserialize", () =>
-        {
-            const serialized: Object = {
-                firstName: "Nivin",
-                lname: "Joseph",
-                add: {
-                    l1: "26 Kennedy rd"
-                },
-                apt: "Apt 23"
-            };
+    //         const serialized = original.serializeObject("firstName", "lastName as lname", "address.line1 as add.l1", "address.line2 as apt");
+    //         // console.log("serialized", serialized);
 
-            const deserialized = serialized.deserializeObject(Customer, "firstName", "lname", serialized.deserializeObject(Address, "add.l1", "apt"));
-            // console.log("deserialized", deserialized);
+    //         assert.deepStrictEqual(serialized, {
+    //             firstName: "Nivin",
+    //             lname: "Joseph",
+    //             add: {
+    //                 l1: "26 Kennedy rd"
+    //             },
+    //             apt: "Apt 23"
+    //         });
+    //     });
 
-            assert.deepStrictEqual(deserialized, new Customer("Nivin", "Joseph", new Address("26 Kennedy rd", "Apt 23")));
-        });
-    });
+    //     await test("deserialize", () =>
+    //     {
+    //         const serialized: Object = {
+    //             firstName: "Nivin",
+    //             lname: "Joseph",
+    //             add: {
+    //                 l1: "26 Kennedy rd"
+    //             },
+    //             apt: "Apt 23"
+    //         };
+
+    //         const deserialized = serialized.deserializeObject(Customer, "firstName", "lname", serialized.deserializeObject(Address, "add.l1", "apt"));
+    //         // console.log("deserialized", deserialized);
+
+    //         assert.deepStrictEqual(deserialized, new Customer("Nivin", "Joseph", new Address("26 Kennedy rd", "Apt 23")));
+    //     });
+    // });
 });
