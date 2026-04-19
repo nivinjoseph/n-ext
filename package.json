@@ -1,6 +1,6 @@
 {
     "name": "@nivinjoseph/n-ext",
-    "version": "2.0.4",
+    "version": "2.0.5",
     "description": "Extensions for core Javascript types",
     "packageManager": "yarn@4.14.1",
     "type": "module",
