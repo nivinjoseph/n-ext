@@ -12,7 +12,7 @@
         "ts-build": "yarn ts-compile && npm run ts-lint",
         "ts-build-dist": "yarn ts-build && tsc -p ./dist",
         "test": "yarn ts-build && node --test --enable-source-maps ./test/**/*.test.js",
-        "publish-package": "yarn ts-build-dist && git add . && git commit -m 'preparing to publish new version' && npm version patch && git push && npm publish --access=public"
+        "publish-package": "yarn ts-build-dist && git add . && git commit -m 'preparing to publish new version' && yarn version patch && git add . && git commit -m 'new version' && git push && npm publish --access=public"
     },
     "repository": {
         "type": "git",
