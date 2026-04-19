@@ -58,7 +58,6 @@ class MathExt
             return null;
 
         if (sorted.length === 1)
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             return sorted[0];
 
         if ((sorted.length % 2) === 0)
@@ -74,7 +73,6 @@ class MathExt
         {
             const mid = Math.floor(sorted.length / 2);
 
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             return sorted[mid];
         }
     }
@@ -153,21 +151,18 @@ function defineMathExtProperties(): void
     if ((<any>Math).clamp === undefined)
         (<any>Math).clamp = function (value: number, min: number, max: number): number
         {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             return MathExt.clamp(value, min, max);
         };
 
     if ((<any>Math).median === undefined)
         (<any>Math).median = function (values: ReadonlyArray<number>): number | null
         {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             return MathExt.median(values);
         };
 
     if ((<any>Math).linearSpace === undefined)
         (<any>Math).linearSpace = function (start: number, end: number, count: number): Array<number> 
         {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             return MathExt.linearSpace(start, end, count);
         };
 }

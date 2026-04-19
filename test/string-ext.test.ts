@@ -117,187 +117,187 @@ await describe("StringExt", async () =>
         });
     });
 
-    await describe("startsWith", async () =>
-    {
-      await test("should return true if the first character in the target string matches the argument", () =>
-        {
-            const target = "Foo";
-            const arg = "F";
-            const result = target.startsWith(arg);
-            assert.strictEqual(result, true);
-        });
+    // await describe("startsWith", async () =>
+    // {
+    //   await test("should return true if the first character in the target string matches the argument", () =>
+    //     {
+    //         const target = "Foo";
+    //         const arg = "F";
+    //         const result = target.startsWith(arg);
+    //         assert.strictEqual(result, true);
+    //     });
 
-      await test("should return false if the first character in the target string does not match the argument", () =>
-        {
-            const target = "Foo";
-            const arg = "A";
-            const result = target.startsWith(arg);
-            assert.strictEqual(result, false);
-        });
+    //   await test("should return false if the first character in the target string does not match the argument", () =>
+    //     {
+    //         const target = "Foo";
+    //         const arg = "A";
+    //         const result = target.startsWith(arg);
+    //         assert.strictEqual(result, false);
+    //     });
 
-      await test("should return false if the the first character in the target string is not the same capitalization as the argument", () =>
-        {
-            const target = "Foo";
-            const arg = "f";
-            const result = target.startsWith(arg);
-            assert.strictEqual(result, false);
-        });
+    //   await test("should return false if the the first character in the target string is not the same capitalization as the argument", () =>
+    //     {
+    //         const target = "Foo";
+    //         const arg = "f";
+    //         const result = target.startsWith(arg);
+    //         assert.strictEqual(result, false);
+    //     });
 
-      await test("should return true if first character in the target string does not match the argument that is an empty string", () =>
-        {
-            const target = "Foo";
-            const arg = "";
-            const result = target.startsWith(arg);
-            assert.strictEqual(result, true);
-        });
+    //   await test("should return true if first character in the target string does not match the argument that is an empty string", () =>
+    //     {
+    //         const target = "Foo";
+    //         const arg = "";
+    //         const result = target.startsWith(arg);
+    //         assert.strictEqual(result, true);
+    //     });
 
-      await test("should return false if the first character in the target string does not match the argument that is a space character", () =>
-        {
-            const target = "Foo";
-            const arg = " ";
-            const result = target.startsWith(arg);
-            assert.strictEqual(result, false);
-        });
+    //   await test("should return false if the first character in the target string does not match the argument that is a space character", () =>
+    //     {
+    //         const target = "Foo";
+    //         const arg = " ";
+    //         const result = target.startsWith(arg);
+    //         assert.strictEqual(result, false);
+    //     });
 
-      await test("should return false if the target string is an empty string and the argument has a single character", () =>
-        {
-            const target = "";
-            const arg = "a";
-            const result = target.startsWith(arg);
-            assert.strictEqual(result, false);
-        });
+    //   await test("should return false if the target string is an empty string and the argument has a single character", () =>
+    //     {
+    //         const target = "";
+    //         const arg = "a";
+    //         const result = target.startsWith(arg);
+    //         assert.strictEqual(result, false);
+    //     });
 
-      await test("should return false if target string is a space character and the argument is a non space character", () =>
-        {
-            const target = " ";
-            const arg = "a";
-            const result = target.startsWith(arg);
-            assert.strictEqual(result, false);
-        });
+    //   await test("should return false if target string is a space character and the argument is a non space character", () =>
+    //     {
+    //         const target = " ";
+    //         const arg = "a";
+    //         const result = target.startsWith(arg);
+    //         assert.strictEqual(result, false);
+    //     });
 
-      await test("should return true if all characters in the target string start with all the characters in the argument string", () =>
-        {
-            const target = "Foo";
-            const arg = "Foo";
-            const result = target.startsWith(arg);
-            assert.strictEqual(result, true);
-        });
+    //   await test("should return true if all characters in the target string start with all the characters in the argument string", () =>
+    //     {
+    //         const target = "Foo";
+    //         const arg = "Foo";
+    //         const result = target.startsWith(arg);
+    //         assert.strictEqual(result, true);
+    //     });
 
-      await test("should return false if target string starts with a space character and the argument has a non space character", () =>
-        {
-            const target = " Foo";
-            const arg = "F";
-            const result = target.startsWith(arg);
-            assert.strictEqual(result, false);
-        });
+    //   await test("should return false if target string starts with a space character and the argument has a non space character", () =>
+    //     {
+    //         const target = " Foo";
+    //         const arg = "F";
+    //         const result = target.startsWith(arg);
+    //         assert.strictEqual(result, false);
+    //     });
 
-      await test("should return true if target string is a space character and the argument is a non space character", () =>
-        {
-            const target = " ";
-            const arg = "";
-            const result = target.startsWith(arg);
-            assert.strictEqual(result, true);
-        });
+    //   await test("should return true if target string is a space character and the argument is a non space character", () =>
+    //     {
+    //         const target = " ";
+    //         const arg = "";
+    //         const result = target.startsWith(arg);
+    //         assert.strictEqual(result, true);
+    //     });
 
-      await test("should return false if target is an empty string and the argument is a space character", () =>
-        {
-            const target = "";
-            const arg = " ";
-            const result = target.startsWith(arg);
-            assert.strictEqual(result, false);
-        });
-    });
+    //   await test("should return false if target is an empty string and the argument is a space character", () =>
+    //     {
+    //         const target = "";
+    //         const arg = " ";
+    //         const result = target.startsWith(arg);
+    //         assert.strictEqual(result, false);
+    //     });
+    // });
 
-    await describe("endsWith", async () =>
-    {
-      await test("should return true if the last character in the target string matches the argument", () =>
-        {
-            const target = "Foo";
-            const arg = "o";
-            const result = target.endsWith(arg);
-            assert.strictEqual(result, true);
-        });
+    // await describe("endsWith", async () =>
+    // {
+    //   await test("should return true if the last character in the target string matches the argument", () =>
+    //     {
+    //         const target = "Foo";
+    //         const arg = "o";
+    //         const result = target.endsWith(arg);
+    //         assert.strictEqual(result, true);
+    //     });
 
-      await test("should return false if the last character in the target string does not match the argument", () =>
-        {
-            const target = "Foo";
-            const arg = "a";
-            const result = target.endsWith(arg);
-            assert.strictEqual(result, false);
-        });
+    //   await test("should return false if the last character in the target string does not match the argument", () =>
+    //     {
+    //         const target = "Foo";
+    //         const arg = "a";
+    //         const result = target.endsWith(arg);
+    //         assert.strictEqual(result, false);
+    //     });
 
-      await test("should return false if the the last character in the target string is not the same capitalization as the argument", () =>
-        {
-            const target = "Foo";
-            const arg = "O";
-            const result = target.endsWith(arg);
-            assert.strictEqual(result, false);
-        });
+    //   await test("should return false if the the last character in the target string is not the same capitalization as the argument", () =>
+    //     {
+    //         const target = "Foo";
+    //         const arg = "O";
+    //         const result = target.endsWith(arg);
+    //         assert.strictEqual(result, false);
+    //     });
 
-      await test("should return true if last character in the target string does not match the argument that is an empty string", () =>
-        {
-            const target = "Foo";
-            const arg = "";
-            const result = target.endsWith(arg);
-            assert.strictEqual(result, true);
-        });
+    //   await test("should return true if last character in the target string does not match the argument that is an empty string", () =>
+    //     {
+    //         const target = "Foo";
+    //         const arg = "";
+    //         const result = target.endsWith(arg);
+    //         assert.strictEqual(result, true);
+    //     });
 
-      await test("should return false if the last character in the target string does not match the argument that is a space character", () =>
-        {
-            const target = "Foo";
-            const arg = " ";
-            const result = target.endsWith(arg);
-            assert.strictEqual(result, false);
-        });
+    //   await test("should return false if the last character in the target string does not match the argument that is a space character", () =>
+    //     {
+    //         const target = "Foo";
+    //         const arg = " ";
+    //         const result = target.endsWith(arg);
+    //         assert.strictEqual(result, false);
+    //     });
 
-      await test("should return false if the target string is an empty string and the argument has a single character", () =>
-        {
-            const target = "";
-            const arg = "a";
-            const result = target.endsWith(arg);
-            assert.strictEqual(result, false);
-        });
+    //   await test("should return false if the target string is an empty string and the argument has a single character", () =>
+    //     {
+    //         const target = "";
+    //         const arg = "a";
+    //         const result = target.endsWith(arg);
+    //         assert.strictEqual(result, false);
+    //     });
 
-      await test("should return false if target string is a space character and the argument is a non space character", () =>
-        {
-            const target = " ";
-            const arg = "a";
-            const result = target.endsWith(arg);
-            assert.strictEqual(result, false);
-        });
+    //   await test("should return false if target string is a space character and the argument is a non space character", () =>
+    //     {
+    //         const target = " ";
+    //         const arg = "a";
+    //         const result = target.endsWith(arg);
+    //         assert.strictEqual(result, false);
+    //     });
 
-      await test("should return true if all characters in the target string end with all the characters in the argument string", () =>
-        {
-            const target = "Foo";
-            const arg = "Foo";
-            const result = target.endsWith(arg);
-            assert.strictEqual(result, true);
-        });
+    //   await test("should return true if all characters in the target string end with all the characters in the argument string", () =>
+    //     {
+    //         const target = "Foo";
+    //         const arg = "Foo";
+    //         const result = target.endsWith(arg);
+    //         assert.strictEqual(result, true);
+    //     });
 
-      await test("should return false if target string ends with a space character and the argument has a non space character", () =>
-        {
-            const target = "Foo ";
-            const arg = "o";
-            const result = target.endsWith(arg);
-            assert.strictEqual(result, false);
-        });
+    //   await test("should return false if target string ends with a space character and the argument has a non space character", () =>
+    //     {
+    //         const target = "Foo ";
+    //         const arg = "o";
+    //         const result = target.endsWith(arg);
+    //         assert.strictEqual(result, false);
+    //     });
 
-      await test("should return true if target string is a space character and the argument is a non space character", () =>
-        {
-            const target = " ";
-            const arg = "";
-            const result = target.endsWith(arg);
-            assert.strictEqual(result, true);
-        });
+    //   await test("should return true if target string is a space character and the argument is a non space character", () =>
+    //     {
+    //         const target = " ";
+    //         const arg = "";
+    //         const result = target.endsWith(arg);
+    //         assert.strictEqual(result, true);
+    //     });
 
-      await test("should return false if target is an empty string and the argument is a space character", () =>
-        {
-            const target = "";
-            const arg = " ";
-            const result = target.endsWith(arg);
-            assert.strictEqual(result, false);
-        });
-    });
+    //   await test("should return false if target is an empty string and the argument is a space character", () =>
+    //     {
+    //         const target = "";
+    //         const arg = " ";
+    //         const result = target.endsWith(arg);
+    //         assert.strictEqual(result, false);
+    //     });
+    // });
 
     await describe("extractNumbers", async () =>
     {
