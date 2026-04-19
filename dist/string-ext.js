@@ -24,13 +24,12 @@ class StringExt {
         return value.replace(/[^a-zA-Z ]/g, "");
     }
     static format(formatString, ...params) {
-        var _a, _b;
         let result = formatString.toString();
         if (params.length === 0)
             return result;
         for (let i = 0; i < params.length; i++) {
             const searchValue = "{" + i.toString() + "}";
-            const replaceValue = (_b = (_a = params[i]) === null || _a === void 0 ? void 0 : _a.toString()) !== null && _b !== void 0 ? _b : "NULL";
+            const replaceValue = params[i]?.toString() ?? "NULL";
             // result = StringExt.replaceAll(result, searchValue, replaceValue);
             result = result.replaceAll(searchValue, replaceValue);
         }

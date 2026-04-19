@@ -307,11 +307,10 @@ declare global {
          */
         mapAsync<U>(asyncFunc: (input: T) => Promise<U>, degreesOfParallelism?: number): Promise<Array<U>>;
         /**
-         * @description Has the same functionality as `Array.prototype.reduce` while applying `asyncFunc` to each element of the array
-         * with the specification of the `degreeOfParallelism` to be applied.
+         * @description Has the same functionality as `Array.prototype.reduce` while applying `asyncFunc` to each element of the array.
          *
-         * @param asyncFunc - The async function to be provided to each elements inside the array.
-         * @param degreesOfParallelism - Optional: The amount of calls executed in parallel. Defaults to all.
+         * @param asyncFunc - The async function to be provided to each element inside the array.
+         * @param accumulator - Optional: The initial value of the accumulator. If omitted, the first element of the array is used.
          */
         reduceAsync<U>(asyncFunc: (acc: U, input: T) => Promise<U>, accumulator?: U): Promise<U>;
     }
@@ -467,11 +466,10 @@ declare global {
          */
         mapAsync<U>(asyncFunc: (input: T) => Promise<U>, degreesOfParallelism?: number): Promise<Array<U>>;
         /**
-         * @description Has the same functionality as `Array.prototype.reduce` while applying `asyncFunc` to each element of the array
-         * with the specification of the `degreeOfParallelism` to be applied.
+         * @description Has the same functionality as `Array.prototype.reduce` while applying `asyncFunc` to each element of the array.
          *
-         * @param asyncFunc - The async function to be provided to each elements inside the array.
-         * @param degreesOfParallelism - Optional: The amount of calls executed in parallel. Defaults to all.
+         * @param asyncFunc - The async function to be provided to each element inside the array.
+         * @param accumulator - Optional: The initial value of the accumulator. If omitted, the first element of the array is used.
          */
         reduceAsync<U>(asyncFunc: (acc: U, input: T) => Promise<U>, accumulator?: U): Promise<U>;
     }

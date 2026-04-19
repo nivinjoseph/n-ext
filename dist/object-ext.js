@@ -1,9 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
 function tryParseArrayIndex(key) {
     if (key === null || key === undefined)
         return null;
     const isNumberValidArrayIndex = (indexNumber) => {
-        return !Number.isNaN(indexNumber) && Number.isFinite(indexNumber) && Number.isInteger(indexNumber) && key >= 0;
+        return !Number.isNaN(indexNumber) && Number.isFinite(indexNumber)
+            && Number.isInteger(indexNumber) && indexNumber >= 0;
     };
     if (typeof key === "number" && isNumberValidArrayIndex(key))
         return key;
@@ -30,26 +30,30 @@ class ObjectExt {
     //     Object.assign(target, source);
     // }
     static getTypeName(source) {
-        // @ts-expect-error: not used atm
-        const getName = (funcDef) => {
-            let name = funcDef.trim();
-            if (name.startsWith("function")) {
-                name = name.substr("function".length);
-                name = name.substr(0, name.indexOf("("));
-            }
-            else if (name.startsWith("class")) {
-                name = name.substr("class".length);
-                name = name.substr(0, name.indexOf("{")).trim();
-                if (name.includes(" "))
-                    name = name.split(" ")[0];
-            }
-            return name.trim();
-        };
+        // const getName = (funcDef: string): string =>
+        // {
+        //     let name = funcDef.trim();
+        //     if (name.startsWith("function"))
+        //     {
+        //         name = name.substr("function".length);
+        //         name = name.substr(0, name.indexOf("("));
+        //     }
+        //     else if (name.startsWith("class"))
+        //     {
+        //         name = name.substr("class".length);
+        //         name = name.substr(0, name.indexOf("{")).trim();
+        //         if (name.includes(" "))
+        //             name = name.split(" ")[0];
+        //     }
+        //     return name.trim();
+        // };
         if (typeof source === "function") {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             return source.name;
             // return getName(source.toString());
         }
         if (typeof source === "object") {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             return source.constructor.name;
             // let value = getName(source.constructor.toString());
             // if (value === "n Object") return "Object";
@@ -60,7 +64,6 @@ class ObjectExt {
     static getValue(source, key) {
         if (source === null || source === undefined)
             return undefined;
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         if (!ObjectExt._hasValue(key))
             return undefined;
         if (typeof key !== "string")
@@ -78,6 +81,7 @@ class ObjectExt {
                 const parsedIndex = tryParseArrayIndex(key);
                 current = parsedIndex != null
                     ? current[parsedIndex]
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
                     : current.map(t => t === null || t === undefined || t[key] === null || t[key] === undefined ? null : t[key]);
             }
             else {
@@ -89,7 +93,6 @@ class ObjectExt {
     static setValue(target, key, value) {
         if (target === null || target === undefined)
             return;
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         if (!ObjectExt._hasValue(key))
             return;
         if (typeof key !== "string") {
@@ -97,7 +100,6 @@ class ObjectExt {
             return;
         }
         key = key.trim();
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         ObjectExt._ensureKeySafe(key);
         value = value === undefined ? null : value;
         if (!key.includes(".")) {
@@ -181,7 +183,6 @@ class ObjectExt {
     static _hasValue(item) {
         if (item == null)
             return false;
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         if (typeof item === "string" && ObjectExt._stringIsWhiteSpace(item))
             return false;
         return true;
@@ -244,7 +245,6 @@ function defineObjectExtProperties() {
                 ObjectExt.setValue(this, key, value);
             }
         });
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     // if (Object.prototype["serializeObject"] === undefined)
     //     Object.defineProperty(Object.prototype, "serializeObject", {
     //         configurable: false,
@@ -255,7 +255,6 @@ function defineObjectExtProperties() {
     //             return ObjectExt.serialize(this, ...keys);
     //         }
     //     });
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     // if (Object.prototype["deserializeObject"] === undefined)
     //     Object.defineProperty(Object.prototype, "deserializeObject", {
     //         configurable: false,

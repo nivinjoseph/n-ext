@@ -38,7 +38,6 @@ class MathExt {
         if (sorted.length === 0)
             return null;
         if (sorted.length === 1)
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             return sorted[0];
         if ((sorted.length % 2) === 0) {
             const midish = sorted.length / 2;
@@ -48,7 +47,6 @@ class MathExt {
         }
         else {
             const mid = Math.floor(sorted.length / 2);
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             return sorted[mid];
         }
     }
@@ -104,17 +102,14 @@ function defineMathExtProperties() {
         };
     if (Math.clamp === undefined)
         Math.clamp = function (value, min, max) {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             return MathExt.clamp(value, min, max);
         };
     if (Math.median === undefined)
         Math.median = function (values) {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             return MathExt.median(values);
         };
     if (Math.linearSpace === undefined)
         Math.linearSpace = function (start, end, count) {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             return MathExt.linearSpace(start, end, count);
         };
 }
